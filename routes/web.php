@@ -17,8 +17,19 @@ Route::middleware(['auth'])->group(function () {
     Route::get('settings/profile', Profile::class)->name('settings.profile');
     Route::get('settings/password', Password::class)->name('settings.password');
     Route::get('settings/appearance', Appearance::class)->name('settings.appearance');
-Route::get('waste-categories', [WasteCategoryController::class, 'index'])
+    
+    Route::get('waste-categories', [WasteCategoryController::class, 'index'])
         ->name('waste_categories.index');
+    Route::get('waste-categories/create', [WasteCategoryController::class, 'create'])
+        ->name('waste_categories.create');
+    Route::post('waste-categories', [WasteCategoryController::class, 'store'])
+        ->name('waste_categories.store');
+    Route::get('waste-categories/{id}/edit', [WasteCategoryController::class, 'edit'])
+        ->name('waste_categories.edit');
+    Route::put('waste-categories/{id}', [WasteCategoryController::class, 'update'])
+        ->name('waste_categories.update');
+    Route::delete('waste-categories/{id}', [WasteCategoryController::class, 'destroy'])
+        ->name('waste_categories.destroy');
 
     // Optionnel : route pour voir une catégorie spécifique
     Route::get('waste-categories/{id}', [WasteCategoryController::class, 'show'])

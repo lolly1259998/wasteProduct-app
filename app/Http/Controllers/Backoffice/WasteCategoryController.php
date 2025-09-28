@@ -24,6 +24,7 @@ class WasteCategoryController extends Controller
     public function create()
     {
         //
+        return view('wastecategory.create');
     }
 
     /**
@@ -32,6 +33,14 @@ class WasteCategoryController extends Controller
     public function store(Request $request)
     {
         //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+        ]);
+
+        WasteCategory::create($validated);
+
+        return redirect()->route('waste_categories.index')->with('success', 'Category created successfully');
     }
 
     /**
@@ -50,6 +59,8 @@ class WasteCategoryController extends Controller
     public function edit(string $id)
     {
         //
+        $category = WasteCategory::findOrFail($id);
+        return view('wastecategory.edit', compact('category'));
     }
 
     /**
@@ -58,6 +69,16 @@ class WasteCategoryController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+        ]);
+
+        $category = WasteCategory::findOrFail($id);
+        $category->update($validated);
+
+        return redirect()->route('waste_categories.index')->with('success', 'Category updated successfully');
+    
     }
 
     /**
@@ -66,5 +87,8 @@ class WasteCategoryController extends Controller
     public function destroy(string $id)
     {
         //
+        $category = WasteCategory::findOrFail($id);
+        $category->delete();
+        return redirect()->route('waste_categories.index')->with('success', 'Category deleted successfully');
     }
 }
