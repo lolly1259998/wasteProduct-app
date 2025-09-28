@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backoffice;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\WasteCategory; 
 
 class WasteCategoryController extends Controller
 {

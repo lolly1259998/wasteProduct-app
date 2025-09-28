@@ -5,7 +5,7 @@ use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backoffice\WasteCategoryController;
-use App\Models\WasteCategory; // ✅ Import du modèle
+use App\Models\WasteCategory;
 
 Route::get('/', function () {
     return view('welcome');
@@ -17,7 +17,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('settings/profile', Profile::class)->name('settings.profile');
     Route::get('settings/password', Password::class)->name('settings.password');
     Route::get('settings/appearance', Appearance::class)->name('settings.appearance');
+Route::get('waste-categories', [WasteCategoryController::class, 'index'])
+        ->name('waste_categories.index');
 
+    // Optionnel : route pour voir une catégorie spécifique
+    Route::get('waste-categories/{id}', [WasteCategoryController::class, 'show'])
+        ->name('waste_categories.show');
    
     Route::get('dashboard', function () {
         $categories = WasteCategory::all(); 
