@@ -71,4 +71,19 @@ class User extends Authenticatable
     {
         return $this->role->name === $roleName;
     }
+     public function initials(): string
+    {
+        if (empty($this->name)) {
+            return 'U'; // U pour "User" si pas de nom
+        }
+
+        $words = preg_split('/\s+/', $this->name);
+        $initials = '';
+
+        foreach ($words as $word) {
+            $initials .= strtoupper(substr($word, 0, 1));
+        }
+
+        return $initials;
+    }
 }
