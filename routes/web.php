@@ -22,7 +22,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('settings/appearance', Appearance::class)->name('settings.appearance');
     
 });
-Route::get('/', function () {
+Route::get('/waste2product', function () {
     return view('front.home');
 });
 Route::view('/products', 'front.products');
