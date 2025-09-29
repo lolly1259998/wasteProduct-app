@@ -5,7 +5,10 @@ use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backoffice\WasteCategoryController;
+use App\Http\Controllers\Backoffice\WasteController;
 use App\Models\WasteCategory;
+use APP\Models\Waste;
+use app\Models\CollectionPoint;
 
 Route::get('/', function () {
     return view('welcome');
@@ -17,7 +20,17 @@ Route::middleware(['auth'])->group(function () {
     Route::get('settings/profile', Profile::class)->name('settings.profile');
     Route::get('settings/password', Password::class)->name('settings.password');
     Route::get('settings/appearance', Appearance::class)->name('settings.appearance');
-    
+
+    //Waste Routes
+    Route::get('wastes', [WasteController::class, 'index'])->name('wastes.index');
+    Route::get('wastes/create', [WasteController::class, 'create'])->name('wastes.create');
+    Route::post('wastes', [WasteController::class, 'store'])->name('wastes.store');
+    Route::get('wastes/{id}/edit', [WasteController::class, 'edit'])->name('wastes.edit');
+    Route::put('wastes/{id}', [WasteController::class, 'update'])->name('wastes.update');
+    Route::delete('wastes/{id}', [WasteController::class, 'destroy'])->name('wastes.destroy');
+    Route::get('wastes/{id}', [WasteController::class, 'show'])->name('wastes.show');
+
+    //Waste Category Routes
     Route::get('waste-categories', [WasteCategoryController::class, 'index'])
         ->name('waste_categories.index');
     Route::get('waste-categories/create', [WasteCategoryController::class, 'create'])
@@ -36,6 +49,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('dashboard', function () {
         $categories = WasteCategory::all(); 
         return view('dashboard', compact('categories')); 
+
     })->middleware(['auth', 'verified'])->name('dashboard');
 });
 
