@@ -2,7 +2,7 @@
 
 <div class="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-zinc-900">
     <div class="container mx-auto px-4 py-6">
-        <h1 class="text-2xl font-bold mb-6 text-gray-800 dark:text-gray-200 text-center">Waste Categories</h1>
+        <h1 class="text-2xl font-bold mb-6 text-gray-800 dark:text-gray-200 text-center">Waste Categoriesss</h1>
         
         <!-- Single Add Button Below Title -->
         <div class="text-center mb-6">
@@ -11,11 +11,16 @@
             </a>
         </div>
 
-        <!-- Success Message -->
+        <!-- Success Message with Auto-Hide -->
         @if (session('success'))
-            <div class="mb-4 p-3 bg-green-100 dark:bg-green-900 border border-green-400 dark:border-green-600 text-green-700 dark:text-green-200 rounded text-center">
+            <div id="success-message" class="mb-4 p-3 bg-green-100 dark:bg-green-900 border border-green-400 dark:border-green-600 text-green-700 dark:text-green-200 rounded text-center">
                 {{ session('success') }}
             </div>
+            <script>
+                setTimeout(() => {
+                    document.getElementById('success-message').style.display = 'none';
+                }, 3000); // Hide after 3 seconds
+            </script>
         @endif
 
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">

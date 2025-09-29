@@ -30,8 +30,6 @@ Route::middleware(['auth'])->group(function () {
         ->name('waste_categories.update');
     Route::delete('waste-categories/{id}', [WasteCategoryController::class, 'destroy'])
         ->name('waste_categories.destroy');
-
-    // Optionnel : route pour voir une catégorie spécifique
     Route::get('waste-categories/{id}', [WasteCategoryController::class, 'show'])
         ->name('waste_categories.show');
    
@@ -44,13 +42,11 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/waste2product', function () {
     return view('front.home');
 });
+
 Route::view('/products', 'front.products');
 Route::view('/recycling', 'front.recycling');
 Route::view('/donations', 'front.donations');
 Route::view('/contact', 'front.contact');
 
-Route::get('/back/home', function () {
-    return view('back.home');
-});
 
 require __DIR__.'/auth.php';
