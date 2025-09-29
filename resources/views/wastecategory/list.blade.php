@@ -2,7 +2,7 @@
 
 <div class="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-zinc-900">
     <div class="container mx-auto px-4 py-6">
-        <h1 class="text-2xl font-bold mb-6 text-gray-800 dark:text-gray-200 text-center">Waste Categoriesss</h1>
+        <h1 class="text-2xl font-bold mb-6 text-gray-800 dark:text-gray-200 text-center">Waste Categories</h1>
         
         <!-- Single Add Button Below Title -->
         <div class="text-center mb-6">
@@ -28,7 +28,14 @@
                 <div class="bg-white dark:bg-zinc-800 shadow-md rounded-lg p-4 hover:shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1">
                     <h2 class="text-xl font-semibold mb-2 text-gray-800 dark:text-gray-200">{{ $category->name }}</h2>
                     <p class="text-gray-600 dark:text-gray-400">{{ $category->description }}</p>
-                    <p class="text-gray-500 dark:text-gray-500 text-sm mt-1">{{ $category->recycling_instructions }}</p>
+                    <p class="text-gray-500 dark:text-gray-500 text-sm mt-1">
+                        Recycling Instructions: 
+                        @if($category->recycling_instructions)
+                            {{ $category->recycling_instructions }}
+                        @else
+                            <span class="text-red-500">No recycling instructions available</span>
+                        @endif
+                    </p>
                     <div class="mt-4 flex space-x-2">
                         <a href="{{ route('waste_categories.edit', $category->id) }}" class="bg-blue-400 p-2 rounded-full hover:bg-blue-500 transition duration-150 ease-in-out debug">
                             <x-heroicon-o-pencil class="h-5 w-5 text-white" />

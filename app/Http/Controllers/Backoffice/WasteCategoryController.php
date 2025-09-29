@@ -34,10 +34,11 @@ class WasteCategoryController extends Controller
     {
         //
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
+           'name' => ['required', 'max:10', 'regex:/^[a-zA-Z0-9]+$/'],
+            'description' => ['required', 'regex:/^[a-zA-Z\s]+$/'],
+            'recycling_instructions' => ['required', 'regex:/^[a-zA-Z\s]+$/'],
         ]);
-
+        $validated['recycling_instructions'] = $request->input('recycling_instructions', 'No instructions provided');
         WasteCategory::create($validated);
 
         return redirect()->route('waste_categories.index')->with('success', 'Category created successfully');
@@ -70,8 +71,9 @@ class WasteCategoryController extends Controller
     {
         //
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
+           'name' => ['required', 'max:10', 'regex:/^[a-zA-Z0-9]+$/'],
+            'description' => ['required', 'regex:/^[a-zA-Z\s]+$/'],
+            'recycling_instructions' => ['required', 'regex:/^[a-zA-Z\s]+$/'],
         ]);
 
         $category = WasteCategory::findOrFail($id);
