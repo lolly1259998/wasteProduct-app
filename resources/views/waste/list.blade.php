@@ -4,14 +4,14 @@
     <div class="container mx-auto px-4 py-6">
         <h1 class="text-2xl font-bold mb-6 text-gray-800 dark:text-gray-200 text-center">Waste List</h1>
 
-        <!-- Single Add Button Below Title -->
+        
         <div class="text-center mb-6">
             <a href="{{ route('wastes.create') }}" class="inline-block bg-green-400 p-2 rounded-full hover:bg-green-500 transition duration-150 ease-in-out debug">
                 <x-heroicon-o-plus class="h-5 w-5 text-white" />
             </a>
         </div>
 
-        <!-- Success Message with Auto-Hide -->
+       
         @if (session('success'))
             <div id="success-message" class="mb-4 p-3 bg-green-100 dark:bg-green-900 border border-green-400 dark:border-green-600 text-green-700 dark:text-green-200 rounded text-center">
                 {{ session('success') }}
@@ -19,7 +19,7 @@
             <script>
                 setTimeout(() => {
                     document.getElementById('success-message').style.display = 'none';
-                }, 3000); // Hide after 3 seconds
+                }, 3000); 
             </script>
         @endif
 
@@ -56,6 +56,6 @@
 
 <style>
     .debug {
-        outline: 1px solid yellow; /* Visual debug border */
+        outline: 1px solid yellow; 
     }
 </style>
