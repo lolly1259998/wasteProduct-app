@@ -24,7 +24,7 @@ class FrontWasteCategoryController extends Controller
     public function create()
     {
         //
-        return view('front.waste-categories-create');
+        return view('front.create');
     }
 
     /**
@@ -63,7 +63,8 @@ class FrontWasteCategoryController extends Controller
     public function edit(string $id)
     {
         //
-        return redirect()->route('front.waste-categories.index')->with('error', 'Editing categories is only available in the backoffice.');
+        $category = WasteCategory::findOrFail($id);
+        return view('front.edit', compact('category'));
     }
 
     /**
@@ -72,7 +73,16 @@ class FrontWasteCategoryController extends Controller
     public function update(Request $request, string $id)
     {
         //
-        return redirect()->route('front.waste-categories.index')->with('error', 'Updating categories is only available in the backoffice.');
+        $validated = $request->validate([
+           'name' => ['required', 'max:10', 'regex:/^[a-zA-Z0-9]+$/'],
+            'description' => ['required', 'regex:/^[a-zA-Z\s]+$/'],
+            'recycling_instructions' => ['required', 'regex:/^[a-zA-Z\s]+$/'],
+        ]);
+
+        $category = WasteCategory::findOrFail($id);
+        $category->update($validated);
+
+        return redirect()->route('front.waste-categories.index')->with('success', 'Category updated successfully');
     }
 
     

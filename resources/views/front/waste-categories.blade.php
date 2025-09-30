@@ -1,19 +1,45 @@
 @extends('front.layout')
 
-
 @section('content')
-<div class="container mx-auto px-4 py-6">
-    <h1 class="text-2xl font-bold mb-6 text-gray-900 dark:text-gray-100">Waste Categories</h1>
+<div class="container py-5">
+    <h1 class="mb-4 text-center text-success">Waste Categories</h1>
+
+
+    
+    <div class="mb-4 text-right">
+        <a href="{{ route('front.waste-categories.create') }}" class="btn btn-success">
+           +
+        </a>
+    </div>
 
     @if($categories->isEmpty())
-        <p class="text-gray-500">No categories available yet.</p>
+        <p class="text-muted">No categories available yet.</p>
     @else
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="row">
             @foreach($categories as $category)
-                <div class="bg-white dark:bg-zinc-800 shadow-md rounded-lg p-4">
-                    <h2 class="text-xl font-semibold">{{ $category->name }}</h2>
-                    <p class="text-gray-600 dark:text-gray-300">{{ $category->description }}</p>
-                    <small class="text-gray-400">Instructions: {{ $category->recycling_instructions }}</small>
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 shadow">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title text-success text-center">Name:{{ $category->name }}</h5>
+                            <p class="card-text">Description:{{ $category->description }}</p>
+                            <small class="text-muted mb-3">Recycling_Instructions: {{ $category->recycling_instructions }}</small>
+                            
+                            
+                            <div class="mt-auto d-flex justify-content-between">
+                                <a href="{{ route('front.waste-categories.edit', $category->id) }}" class="btn btn-primary btn-sm">
+                                    Modifier
+                                </a>
+
+                                <form action="{{ route('front.waste-categories.destroy', $category->id) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette catégorie ?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm">
+                                        Supprimer
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             @endforeach
         </div>
