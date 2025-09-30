@@ -3,7 +3,7 @@
 
 @section('content')
 <div class="container py-5">
-    <h1 class="mb-4 text-center text-success">Modifier Waste Category</h1>
+    <h1 class="mb-4 text-center text-success">Edit Waste Category</h1>
 
     <div class="row justify-content-center">
         <div class="col-md-6">
@@ -44,10 +44,10 @@
                         <!-- Boutons -->
                         <div class="d-flex justify-content-between">
                             <a href="{{ route('front.waste-categories.index') }}" class="btn btn-secondary">
-                                Annuler
+                                Cancel
                             </a>
                             <button type="submit" class="btn btn-primary">
-                                Mettre à jour
+                                Update
                             </button>
                         </div>
                     </form>

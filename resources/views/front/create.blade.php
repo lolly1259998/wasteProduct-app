@@ -43,10 +43,10 @@
                         <!-- Boutons -->
                         <div class="d-flex justify-content-between">
                             <a href="{{ route('front.waste-categories.index') }}" class="btn btn-secondary">
-                                Annuler
+                                Cancel
                             </a>
                             <button type="submit" class="btn btn-success">
-                                Ajouter
+                                Add
                             </button>
                         </div>
                     </form>

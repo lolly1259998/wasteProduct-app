@@ -27,14 +27,14 @@
                             
                             <div class="mt-auto d-flex justify-content-between">
                                 <a href="{{ route('front.waste-categories.edit', $category->id) }}" class="btn btn-primary btn-sm">
-                                    Modifier
+                                    Edit
                                 </a>
 
                                 <form action="{{ route('front.waste-categories.destroy', $category->id) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette catégorie ?');">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger btn-sm">
-                                        Supprimer
+                                        Delete
                                     </button>
                                 </form>
                             </div>
