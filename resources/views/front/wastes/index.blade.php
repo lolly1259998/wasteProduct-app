@@ -19,13 +19,15 @@
                             
                             <h5 class="card-title text-success">{{ $waste->type }}</h5>
 
-                            <!-- Image sous le type -->
-                            @if($waste->image_path)
-                                <img src="{{ asset('storage/' . $waste->image) }}" alt="waste image" width="150">
+                            
+                           @if($waste->image_path)
+    <div class="text-center mb-3">
+        <img src="{{ asset('storage/' . $waste->image_path) }}" alt="Waste image" class="img-fluid" style="max-width: 150px;">
+    </div>
+@endif
 
-                            @endif
 
-                            <!-- Autres informations -->
+                            
                             <p class="card-text"><strong>Weight:</strong> {{ $waste->weight }} kg</p>
                             <p class="card-text"><strong>Status:</strong> {{ $waste->status }}</p>
                             <p class="card-text"><strong>Category:</strong> {{ $waste->category->name ?? 'N/A' }}</p>
@@ -33,6 +35,7 @@
 
                             <!-- Boutons -->
                             <div class="mt-auto d-flex justify-content-between">
+                                 
                                 <a href="{{ route('front.wastes.edit', $waste->id) }}" class="btn btn-primary btn-sm">Edit</a>
 
                                 <form action="{{ route('front.wastes.destroy', $waste->id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
