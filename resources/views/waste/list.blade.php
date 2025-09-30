@@ -27,15 +27,19 @@
             @foreach($wastes as $waste)
                 <div class="bg-white dark:bg-zinc-800 shadow-md rounded-lg p-4 hover:shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1">
                     <h2 class="text-xl font-semibold mb-2 text-gray-800 dark:text-gray-200">Type: {{ $waste->type }}</h2>
+                                   @if($waste->image_path)
+    <div class="text-center mb-3">
+        <img src="{{ asset('storage/' . $waste->image_path) }}" alt="Waste Image" class="img-fluid" style="max-width: 150px;">
+    </div>
+@endif
                     <p class="text-gray-600 dark:text-gray-400">Weight: {{ $waste->weight }} kg</p>
                     <p class="text-gray-600 dark:text-gray-400">Status: {{ $waste->status }}</p>
                     <p class="text-gray-600 dark:text-gray-400">Description: {{ $waste->description ?? 'No description' }}</p>
                     <p class="text-gray-500 dark:text-gray-500 text-sm mt-1">Category: {{ $waste->category->name ?? 'Unknown' }}</p>
                     <p class="text-gray-500 dark:text-gray-500 text-sm mt-1">User: {{ $waste->user->name ?? 'Unknown User' }}</p>
                     <p class="text-gray-500 dark:text-gray-500 text-sm mt-1">Collection Point: Main Collection Point</p>
-                    @if($waste->image_path)
-                        <p class="text-gray-500 dark:text-gray-500 text-sm mt-1">Image: <a href="{{ asset($waste->image_path) }}" target="_blank">View</a></p>
-                    @endif
+    
+
                     <div class="mt-4 flex space-x-2">
                         <a href="{{ route('wastes.edit', $waste->id) }}" class="bg-blue-400 p-2 rounded-full hover:bg-blue-500 transition duration-150 ease-in-out debug">
                             <x-heroicon-o-pencil class="h-5 w-5 text-white" />
