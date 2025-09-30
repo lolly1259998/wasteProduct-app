@@ -93,6 +93,8 @@ class FrontWasteCategoryController extends Controller
     public function destroy(string $id)
     {
         //
-        return redirect()->route('front.waste-categories.index')->with('error', 'Deleting categories is only available in the backoffice.');
+        $category = WasteCategory::findOrFail($id);
+        $category->delete();
+        return redirect()->route('front.waste-categories.index')->with('success', 'Category deleted successfully');
     }
 }
