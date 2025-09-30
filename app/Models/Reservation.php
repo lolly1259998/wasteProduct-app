@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
+use App\Enums\ReservationStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Order extends Model
+class Reservation extends Model
 {
     use HasFactory;
 
@@ -13,18 +14,13 @@ class Order extends Model
         'user_id',
         'product_id',
         'quantity',
-        'total_amount',
+        'reserved_until',
         'status',
-        'order_date',
-        'shipping_address',
-        'payment_method',
-        'tracking_number',
     ];
 
     protected $casts = [
-        'order_date' => 'datetime',
-        'total_amount' => 'decimal:2',
-        'status' => 'string',
+        'reserved_until' => 'datetime',
+        'status' => ReservationStatus::class, // Use enum class
     ];
 
     public function user()
@@ -35,5 +31,6 @@ class Order extends Model
     public function product()
     {
         return $this->belongsTo(Product::class);
+        
     }
 }
