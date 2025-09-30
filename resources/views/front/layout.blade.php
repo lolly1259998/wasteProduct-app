@@ -32,7 +32,7 @@
                     <li class="nav-item"><a href="{{ url('/recycling') }}" class="nav-link">Recycling</a></li>
                     <li class="nav-item"><a href="{{ url('/donations') }}" class="nav-link">Donations</a></li>
                     <li class="nav-item"><a href="{{ url('/wastes') }}" class="nav-link">Wastes</a></li>
-                    <li class="nav-item"><a href="{{ url('/categories') }}" class="nav-link">Waste Categories</a></li>
+                  <li class="nav-item"><a href="{{ url('/categories') }}" class="nav-link">Waste Categories</a></li>>
                      <li class="nav-item"><a href="{{ url('/contact') }}" class="nav-link">Contact</a></li>
                 </ul>
             </div>
