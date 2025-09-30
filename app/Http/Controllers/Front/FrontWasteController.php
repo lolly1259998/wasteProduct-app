@@ -25,6 +25,7 @@ class FrontWasteController extends Controller
     public function create()
     {
         //
+        return view('front.wastes.create');
     }
 
     /**
@@ -33,6 +34,27 @@ class FrontWasteController extends Controller
     public function store(Request $request)
     {
         //
+        $request->validate([
+            'type' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'weight' => 'required|numeric|min:0.01',
+            'waste_category_id' => 'required|exists:waste_categories,id',
+            'user_id' => 'required|exists:users,id',
+            'collection_point_id' => 'required|exists:collection_points,id',
+            'status' => 'required|string|in:recyclable,reusable,non-recyclable',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        $data = $request->all();
+
+  if ($request->hasFile('image')) {
+        $path = $request->file('image')->store('images', 'public');
+        $data['image_path'] = $path;
+    }
+
+    Waste::create($data);
+
+    return redirect()->route('front.wastes.index')->with('success', 'Waste created successfully');
     }
 
     /**
@@ -41,6 +63,8 @@ class FrontWasteController extends Controller
     public function show(string $id)
     {
         //
+        $wastes = Waste::findOrFail($id);
+        return view('front.wastes.show', compact('wastes'));
     }
 
     /**
@@ -49,6 +73,8 @@ class FrontWasteController extends Controller
     public function edit(string $id)
     {
         //
+        $wastes = Waste::findOrFail($id);
+        return view('front.wastes.edit', compact('wastes'));
     }
 
     /**
@@ -57,6 +83,18 @@ class FrontWasteController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'weight' => 'required|numeric',
+            'waste_category_id' => 'required|exists:waste_categories,id',
+            'user_id' => 'required|exists:users,id',
+            'collection_point_id' => 'required|exists:collection_points,id',
+        ]);
+        $wastes = Waste::findOrFail($id);
+        $wastes->update($request->all());
+
+        return redirect()->route('front.wastes.index')->with('success', 'Waste updated successfully');
     }
 
     /**
@@ -65,5 +103,8 @@ class FrontWasteController extends Controller
     public function destroy(string $id)
     {
         //
+        $wastes = Waste::findOrFail($id);
+        $wastes->delete();
+        return redirect()->route('front.wastes.index')->with('success', 'Waste deleted successfully');
     }
 }

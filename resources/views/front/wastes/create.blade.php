@@ -76,7 +76,7 @@
 
                 <!-- Hidden fields -->
                 <input type="hidden" name="user_id" value="{{ auth()->id() }}">
-                <input type="hidden" name="collection_point_id" value="1"> <!-- ID statique -->
+                <input type="hidden" name="collection_point_id" value="2"> 
 
                 <button type="submit" class="btn btn-success">Add Waste</button>
                 <a href="{{ route('front.wastes.index') }}" class="btn btn-secondary">Cancel</a>

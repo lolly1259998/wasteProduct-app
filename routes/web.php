@@ -72,15 +72,14 @@ Route::put('/categories/{id}', [FrontWasteCategoryController::class, 'update'])-
 Route::delete('/categories/{id}', [FrontWasteCategoryController::class, 'destroy'])->name('front.waste-categories.destroy');
 Route::post('/categories/{id}/acknowledge', [FrontWasteCategoryController::class, 'acknowledge'])->name('front.waste-categories.acknowledge');
 // Frontoffice Waste Routes
-Route::get('/wastes', [FrontWasteController::class, 'index'])->name('front.wastes.index');
-Route::get('/wastes/create', [FrontWasteController::class, 'create'])->name('front.wastes.create');
-Route::post('/wastes', [FrontWasteController::class, 'store'])->name('front.wastes.store');
-Route::get('/wastes/{id}', [FrontWasteController::class, 'show'])->name('front.wastes.show');       
-Route::get('/wastes/{id}/edit', [FrontWasteController::class, 'edit'])->name('front.wastes.edit');
-Route::put('/wastes/{id}', [FrontWasteController::class, 'update'])->
-name('front.wastes.update');
-Route::delete('/wastes/{id}', [FrontWasteController::class, 'destroy'])->name('front.wastes.destroy');
-Route::post('/wastes/{id}/acknowledge', [FrontWasteController::class, 'acknowledge'])->name('front.wastes.acknowledge');    
+Route::get('/wastess', [FrontWasteController::class, 'index'])->name('front.wastes.index');
+Route::get('/wastess/create', [FrontWasteController::class, 'create'])->name('front.wastes.create');
+Route::post('/wastess', [FrontWasteController::class, 'store'])->name('front.wastes.store');
+Route::get('/wastess/{id}', [FrontWasteController::class, 'show'])->name('front.wastes.show');       
+Route::get('/wastess/{id}/edit', [FrontWasteController::class, 'edit'])->name('front.wastes.edit');
+Route::put('/wastess/{id}', [FrontWasteController::class, 'update'])->name('front.wastes.update');
+Route::delete('/wastess/{id}', [FrontWasteController::class, 'destroy'])->name('front.wastes.destroy');
+Route::post('/wastess/{id}/acknowledge', [FrontWasteController::class, 'acknowledge'])->name('front.wastes.acknowledge');
 
 
 

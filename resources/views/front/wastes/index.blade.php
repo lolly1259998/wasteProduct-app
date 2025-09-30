@@ -15,13 +15,23 @@
             @foreach($wastes as $waste)
                 <div class="col-md-4 mb-4">
                     <div class="card h-100 shadow">
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title text-success text-center">{{ $waste->type }}</h5>
+                        <div class="card-body d-flex flex-column text-center">
+                            
+                            <h5 class="card-title text-success">{{ $waste->type }}</h5>
+
+                            <!-- Image sous le type -->
+                            @if($waste->image_path)
+                                <img src="{{ asset('storage/' . $waste->image) }}" alt="waste image" width="150">
+
+                            @endif
+
+                            <!-- Autres informations -->
                             <p class="card-text"><strong>Weight:</strong> {{ $waste->weight }} kg</p>
                             <p class="card-text"><strong>Status:</strong> {{ $waste->status }}</p>
                             <p class="card-text"><strong>Category:</strong> {{ $waste->category->name ?? 'N/A' }}</p>
                             <small class="text-muted mb-3">{{ $waste->description }}</small>
 
+                            <!-- Boutons -->
                             <div class="mt-auto d-flex justify-content-between">
                                 <a href="{{ route('front.wastes.edit', $waste->id) }}" class="btn btn-primary btn-sm">Edit</a>
 
@@ -32,9 +42,6 @@
                                 </form>
                             </div>
                         </div>
-                        @if($waste->image_path)
-                            <img src="{{ asset('storage/'.$waste->image_path) }}" class="card-img-bottom" alt="Waste Image">
-                        @endif
                     </div>
                 </div>
             @endforeach
