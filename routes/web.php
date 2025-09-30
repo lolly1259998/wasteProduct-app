@@ -10,6 +10,7 @@ use App\Models\WasteCategory;
 use APP\Models\Waste;
 use app\Models\CollectionPoint;
 use App\Http\Controllers\Front\FrontWasteCategoryController;
+use App\Http\Controllers\Front\FrontWasteController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -47,8 +48,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('waste-categories/{id}', [WasteCategoryController::class, 'show'])
         ->name('waste_categories.show');
 
+    
+    
     //Dashboard Route
-   
     Route::get('dashboard', function () {
         $categories = WasteCategory::all(); 
         return view('dashboard', compact('categories')); 
@@ -69,6 +71,16 @@ Route::get('/categories/{id}/edit', [FrontWasteCategoryController::class, 'edit'
 Route::put('/categories/{id}', [FrontWasteCategoryController::class, 'update'])->name('front.waste-categories.update');
 Route::delete('/categories/{id}', [FrontWasteCategoryController::class, 'destroy'])->name('front.waste-categories.destroy');
 Route::post('/categories/{id}/acknowledge', [FrontWasteCategoryController::class, 'acknowledge'])->name('front.waste-categories.acknowledge');
+// Frontoffice Waste Routes
+Route::get('/wastes', [FrontWasteController::class, 'index'])->name('front.wastes.index');
+Route::get('/wastes/create', [FrontWasteController::class, 'create'])->name('front.wastes.create');
+Route::post('/wastes', [FrontWasteController::class, 'store'])->name('front.wastes.store');
+Route::get('/wastes/{id}', [FrontWasteController::class, 'show'])->name('front.wastes.show');       
+Route::get('/wastes/{id}/edit', [FrontWasteController::class, 'edit'])->name('front.wastes.edit');
+Route::put('/wastes/{id}', [FrontWasteController::class, 'update'])->
+name('front.wastes.update');
+Route::delete('/wastes/{id}', [FrontWasteController::class, 'destroy'])->name('front.wastes.destroy');
+Route::post('/wastes/{id}/acknowledge', [FrontWasteController::class, 'acknowledge'])->name('front.wastes.acknowledge');    
 
 
 
