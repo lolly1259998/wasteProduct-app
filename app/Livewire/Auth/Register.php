@@ -38,6 +38,7 @@ class Register extends Component
 
         Auth::login($user);
 
-        $this->redirect(route('dashboard', absolute: false), navigate: true);
+        // Redirect to Waste Categories after register
+        $this->redirect(url('waste-categories'), navigate: true);
     }
 }

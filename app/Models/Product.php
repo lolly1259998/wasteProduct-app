@@ -15,6 +15,8 @@ protected $name='Product';
         'price',
         'stock_quantity',
         'waste_category_id',
+        'category_id',
+        'user_id',
         'recycling_process_id',
         'image_path',
         'specifications',
@@ -30,6 +32,11 @@ protected $name='Product';
     // Relations
     public function category()
     {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function wasteCategory()
+    {
         return $this->belongsTo(WasteCategory::class, 'waste_category_id');
     }
 
@@ -41,6 +48,11 @@ protected $name='Product';
     public function orders()
     {
         return $this->hasMany(Order::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
     // Scope pour les produits disponibles

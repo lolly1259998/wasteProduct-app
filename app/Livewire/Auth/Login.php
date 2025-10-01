@@ -43,7 +43,8 @@ class Login extends Component
         RateLimiter::clear($this->throttleKey());
         Session::regenerate();
 
-        $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
+        // Redirect to Waste Categories after login
+        $this->redirectIntended(default: url('waste-categories'), navigate: true);
     }
 
     /**
