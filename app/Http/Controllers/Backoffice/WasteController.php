@@ -38,7 +38,7 @@ class WasteController extends Controller
             'status' => 'required|in:recyclable,reusable',
             'user_id' => 'required|exists:users,id',
             'waste_category_id' => 'required|exists:waste_categories,id',
-            'collection_point_id' => 'required|integer',
+            
             'image_path' => 'nullable|string',
             'description' => 'required|string',
         ]);
@@ -49,7 +49,7 @@ class WasteController extends Controller
         $imagePath = $request->file('image')->store('wastes', 'public');
         $data['image_path'] = $imagePath;
     }
-
+        $data['collection_point_id'] = 2;
         Waste::create($data);
         return redirect()->route('wastes.index')->with('success', 'Waste created successfully');
         

@@ -40,7 +40,7 @@ class FrontWasteController extends Controller
             'weight' => 'required|numeric|min:0.01',
             'waste_category_id' => 'required|exists:waste_categories,id',
             'user_id' => 'required|exists:users,id',
-            'collection_point_id' => 'required|exists:collection_points,id',
+        
             'status' => 'required|string|in:recyclable,reusable,non-recyclable',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
@@ -51,6 +51,7 @@ class FrontWasteController extends Controller
         $path = $request->file('image')->store('images', 'public');
         $data['image_path'] = $path;
     }
+    $data['collection_point_id'] = 2;
 
     Waste::create($data);
 

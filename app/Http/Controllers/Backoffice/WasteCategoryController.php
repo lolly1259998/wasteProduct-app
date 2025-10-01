@@ -38,7 +38,7 @@ class WasteCategoryController extends Controller
             'description' => ['required', 'regex:/^[a-zA-Z\s]+$/'],
             'recycling_instructions' => ['required', 'regex:/^[a-zA-Z\s]+$/'],
         ]);
-        $validated['recycling_instructions'] = $request->input('recycling_instructions', 'No instructions provided');
+        
         WasteCategory::create($validated);
 
         return redirect()->route('waste_categories.index')->with('success', 'Category created successfully');
