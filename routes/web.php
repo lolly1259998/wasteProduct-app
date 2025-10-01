@@ -4,6 +4,7 @@ use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RecyclingProcessController;
 
 
 Route::get('/', function () {
@@ -20,7 +21,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('settings/profile', Profile::class)->name('settings.profile');
     Route::get('settings/password', Password::class)->name('settings.password');
     Route::get('settings/appearance', Appearance::class)->name('settings.appearance');
-    
+
+    // Recycling workflow routes
+    Route::get('recycling/processes', [RecyclingProcessController::class, 'index'])->name('recycling.index');
+    Route::get('recycling/processes/create', [RecyclingProcessController::class, 'create'])->name('recycling.create');
+    Route::post('recycling/processes', [RecyclingProcessController::class, 'store'])->name('recycling.store');
+    Route::get('recycling/processes/{recycling}', [RecyclingProcessController::class, 'show'])->name('recycling.show');
+    Route::get('recycling/processes/{recycling}/complete', [RecyclingProcessController::class, 'complete'])->name('recycling.complete');
+    Route::put('recycling/processes/{recycling}/complete', [RecyclingProcessController::class, 'updateComplete'])->name('recycling.updateComplete');
 });
 Route::get('/waste2product', function () {
     return view('front.home');
