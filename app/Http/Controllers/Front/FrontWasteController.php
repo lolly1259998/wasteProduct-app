@@ -74,8 +74,8 @@ class FrontWasteController extends Controller
     public function edit(string $id)
     {
         //
-        $wastes = Waste::findOrFail($id);
-        return view('front.wastes.edit', compact('wastes'));
+        $waste = Waste::findOrFail($id); 
+    return view('front.wastes.edit', compact('waste'));
     }
 
     /**
@@ -85,15 +85,15 @@ class FrontWasteController extends Controller
     {
         //
         $request->validate([
-            'name' => 'required|string|max:255',
+            'type' => 'required|string|max:255',
             'description' => 'nullable|string',
             'weight' => 'required|numeric',
             'waste_category_id' => 'required|exists:waste_categories,id',
             'user_id' => 'required|exists:users,id',
             'collection_point_id' => 'required|exists:collection_points,id',
         ]);
-        $wastes = Waste::findOrFail($id);
-        $wastes->update($request->all());
+        $waste = Waste::findOrFail($id);
+        $waste->update($request->all());
 
         return redirect()->route('front.wastes.index')->with('success', 'Waste updated successfully');
     }
