@@ -88,6 +88,8 @@ Route::view('/products', 'front.products');
 Route::view('/recycling', 'front.recycling');
 Route::view('/donations', 'front.donations');
 Route::view('/contact', 'front.contact');
-
+Route::get('/back/home', function () {
+    return view('back.home');
+});
 
 require __DIR__.'/auth.php';
