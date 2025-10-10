@@ -51,12 +51,15 @@ Route::middleware(['auth'])->group(function () {
     
     
     //Dashboard Route
-    Route::get('dashboard', function () {
-        $categories = WasteCategory::all(); 
-        return view('dashboard', compact('categories')); 
+    Route::get('/back/home', function () {
+     $categories = \App\Models\WasteCategory::all();
+    $wastes = \App\Models\Waste::all();
 
-    })->middleware(['auth', 'verified'])->name('dashboard');
+        return view('back.home', compact('categories', 'wastes'));
+    })->middleware(['auth', 'verified'])->name('back.home');
 });
+
+
 
 //frontoffice home route
 Route::get('/waste2product', function () {
@@ -88,8 +91,6 @@ Route::view('/products', 'front.products');
 Route::view('/recycling', 'front.recycling');
 Route::view('/donations', 'front.donations');
 Route::view('/contact', 'front.contact');
-Route::get('/back/home', function () {
-    return view('back.home');
-});
+
 
 require __DIR__.'/auth.php';
