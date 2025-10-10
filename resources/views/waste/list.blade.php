@@ -53,6 +53,11 @@
                             <td>Main Collection Point</td>
                             <td>
                                 <div class="d-flex justify-content-center gap-2">
+                                    <a href="{{ route('wastes.show', $waste->id) }}" 
+                                       class="btn btn-info btn-sm p-2 shadow-sm"
+                                       title="Afficher">
+                                        Show
+                                    </a>
                                     <!-- Bouton Modifier -->
                                     <a href="{{ route('wastes.edit', $waste->id) }}" 
                                        class="btn btn-primary btn-sm p-2 shadow-sm"

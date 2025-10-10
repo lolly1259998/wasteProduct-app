@@ -62,7 +62,7 @@ class WasteController extends Controller
     {
         //
         $waste = Waste::findOrFail($id);
-        return view('wastes.show', compact('waste'));
+        return view('waste.show', compact('waste'));
     }
 
     /**
