@@ -31,7 +31,9 @@
                     <li class="nav-item"><a href="{{ url('/products') }}" class="nav-link">Products</a></li>
                     <li class="nav-item"><a href="{{ url('/recycling') }}" class="nav-link">Recycling</a></li>
                     <li class="nav-item"><a href="{{ url('/donations') }}" class="nav-link">Donations</a></li>
-                    
+                    <li class="nav-item"><a href="{{ url('/waste2product/collectionpoints') }}" class="nav-link {{ request()->is('categories*') ? 'active' : '' }}">Points de collecte</a></li>
+
+
                     <li class="nav-item"><a href="{{ route('front.wastes.index') }}" class="nav-link">Wastes</a></li>
                   <li class="nav-item"><a href="{{ url('/categories') }}" class="nav-link">Waste Categories</a></li>>
                      <li class="nav-item"><a href="{{ url('/contact') }}" class="nav-link">Contact</a></li>
