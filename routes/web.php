@@ -11,6 +11,7 @@ use APP\Models\Waste;
 use app\Models\CollectionPoint;
 use App\Http\Controllers\Front\FrontWasteCategoryController;
 use App\Http\Controllers\Front\FrontWasteController;
+use App\Http\Controllers\AI\AIController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -83,7 +84,10 @@ Route::get('/wastess/{id}/edit', [FrontWasteController::class, 'edit'])->name('f
 Route::put('/wastess/{id}', [FrontWasteController::class, 'update'])->name('front.wastes.update');
 Route::delete('/wastess/{id}', [FrontWasteController::class, 'destroy'])->name('front.wastes.destroy');
 
-
+Route::post('/ai/predict', [AIController::class, 'predictWaste'])->name('ai.predict');
+Route::get('/predictwaste', function () {
+    return view('predictwaste');
+})->name('predictwaste');
 
 
 
