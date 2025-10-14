@@ -1,67 +1,75 @@
 @extends('back.layout')
 
 @section('content')
-<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-100 to-teal-100 dark:from-zinc-800 dark:to-zinc-900">
-    <div class="container py-8">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="card shadow-lg">
-                    <div class="card-body">
-                        <h1 class="text-2xl font-bold mb-6 text-green-700 dark:text-green-300 text-center">AI Waste Prediction ♻️</h1>
+<div class="min-vh-100 d-flex justify-content-center align-items-center" style="background-color: #f8f9fa;">
+    <div class="container py-5">
+        <div class="card shadow-lg border-0 mx-auto" style="max-width: 1000px; width: 100%; border-radius: 1rem;">
+            
+            <!-- Header -->
+            <div class="card-header bg-success text-white text-center py-4" style="border-radius: 1rem 1rem 0 0;">
+                <h2 class="fw-bold mb-0">AI Waste Prediction ♻️</h2>
+            </div>
 
-                        <!-- Affichage des erreurs -->
-                        <div id="errorDiv" class="mb-4 p-3 bg-red-100 dark:bg-red-900 border-l-2 border-red-500 dark:border-red-700 text-red-700 dark:text-red-200 rounded" style="display:none;"></div>
+            <div class="card-body p-5">
+                <!-- Error Alert -->
+                <div id="errorDiv" class="alert alert-danger d-none" role="alert"></div>
 
-                        <form id="predictForm" class="space-y-4">
-                            @csrf
+                <!-- Prediction Form -->
+                <form id="predictForm">
+                    @csrf
 
-                            <!-- Type -->
-                            <div class="mb-3">
-                                <label for="type" class="form-label text-lg font-semibold text-gray-800 dark:text-gray-200">Type</label>
-                                <input type="text" name="type" id="type" class="form-control" required>
-                            </div>
-
-                            <!-- Poids -->
-                            <div class="mb-3">
-                                <label for="weight" class="form-label text-lg font-semibold text-gray-800 dark:text-gray-200">Poids (kg)</label>
-                                <input type="number" step="0.01" name="weight" id="weight" class="form-control" required>
-                            </div>
-
-                            <!-- Catégorie -->
-                            <div class="mb-3">
-                                <label for="category" class="form-label text-lg font-semibold text-gray-800 dark:text-gray-200">Catégorie</label>
-                                <input type="text" name="category" id="category" class="form-control" required>
-                            </div>
-
-                            <!-- Description -->
-                            <div class="mb-3">
-                                <label for="description" class="form-label text-lg font-semibold text-gray-800 dark:text-gray-200">Description</label>
-                                <input type="text" name="description" id="description" class="form-control">
-                            </div>
-
-                            <!-- Bouton -->
-                            <div class="d-flex justify-content-end">
-                                <button type="submit" class="btn btn-success btn-md">Envoyer à l'IA</button>
-                            </div>
-                        </form>
-
-                        <!-- Affichage prédiction -->
-                        <div id="predictionDiv" class="mt-6 p-4 bg-green-100 dark:bg-green-900 border-l-4 border-green-500 dark:border-green-700 text-green-700 dark:text-green-200 rounded text-center" style="display:none;">
-                            <h2 class="text-xl font-semibold" id="predictionText"></h2>
+                    <div class="row g-4">
+                        <!-- Type -->
+                        <div class="col-md-6">
+                            <label for="type" class="form-label fw-semibold">Waste Type</label>
+                            <input type="text" name="type" id="type" class="form-control" required>
                         </div>
 
+                        <!-- Weight -->
+                        <div class="col-md-6">
+                            <label for="weight" class="form-label fw-semibold">Weight (kg)</label>
+                            <input type="number" step="0.01" name="weight" id="weight" class="form-control" required>
+                        </div>
+
+                        <!-- Category -->
+                        <div class="col-md-6">
+                            <label for="category" class="form-label fw-semibold">Category</label>
+                            <input type="text" name="category" id="category" class="form-control" required>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="col-md-6">
+                            <label for="description" class="form-label fw-semibold">Description</label>
+                            <input type="text" name="description" id="description" class="form-control">
+                        </div>
                     </div>
+
+                    <!-- Button -->
+                    <div class="text-center mt-5">
+                        <button type="submit" class="btn btn-success px-4">
+                            <i class="bi bi-cpu me-2"></i>Send to AI
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Prediction Result -->
+                <div id="predictionDiv" class="alert alert-success text-center mt-5 d-none" role="alert">
+                    <h5 class="fw-bold mb-0" id="predictionText"></h5>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+<!-- JavaScript -->
 <script>
-document.getElementById('predictForm').addEventListener('submit', function(e){
+document.getElementById('predictForm').addEventListener('submit', function(e) {
     e.preventDefault();
 
     const formData = new FormData(this);
+    const errorDiv = document.getElementById('errorDiv');
+    const predictionDiv = document.getElementById('predictionDiv');
+    const predictionText = document.getElementById('predictionText');
 
     fetch("{{ route('ai.predict') }}", {
         method: "POST",
@@ -72,17 +80,21 @@ document.getElementById('predictForm').addEventListener('submit', function(e){
     })
     .then(response => response.json())
     .then(data => {
-        if(data.prediction){
-            document.getElementById('predictionText').innerText = data.prediction;
-            document.getElementById('predictionDiv').style.display = 'block';
-            document.getElementById('errorDiv').style.display = 'none';
+        if (data.prediction) {
+            predictionText.innerText = "Predicted Result: " + data.prediction;
+            predictionDiv.classList.remove('d-none');
+            errorDiv.classList.add('d-none');
+        } else {
+            errorDiv.innerText = "No prediction received from the AI.";
+            errorDiv.classList.remove('d-none');
+            predictionDiv.classList.add('d-none');
         }
     })
     .catch(error => {
         console.error(error);
-        document.getElementById('errorDiv').innerText = 'Une erreur est survenue.';
-        document.getElementById('errorDiv').style.display = 'block';
-        document.getElementById('predictionDiv').style.display = 'none';
+        errorDiv.innerText = "An error occurred while communicating with the AI.";
+        errorDiv.classList.remove('d-none');
+        predictionDiv.classList.add('d-none');
     });
 });
 </script>
