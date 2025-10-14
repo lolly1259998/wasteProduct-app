@@ -80,11 +80,19 @@
                         </div>
 
                         <!-- Collection Point -->
-                        <div class="col-md-4">
-                            <label for="collection_point_id" class="form-label fw-semibold">Collection Point ID</label>
-                            <input type="number" name="collection_point_id" id="collection_point_id" 
-                                   value="{{ old('collection_point_id', $waste->collection_point_id) }}" class="form-control" required>
-                        </div>
+                     
+<div class="col-md-4">
+    <label for="collection_point_id" class="form-label fw-semibold">Collection Point</label>
+    <select name="collection_point_id" id="collection_point_id" class="form-select" required>
+        <option value="" disabled {{ old('collection_point_id') ? '' : 'selected' }}>Select a Collection Point</option>
+        @foreach($collectionPoints as $point)
+            <option value="{{ $point->id }}" {{ old('collection_point_id') == $point->id ? 'selected' : '' }}>
+                {{ $point->name }} - {{ $point->city }}
+            </option>
+        @endforeach
+    </select>
+</div>
+
 
                         <!-- Image -->
                         <div class="col-md-6">
