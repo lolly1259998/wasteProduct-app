@@ -55,8 +55,16 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/back/home', function () {
      $categories = \App\Models\WasteCategory::all();
     $wastes = \App\Models\Waste::all();
-
-        return view('back.home', compact('categories', 'wastes'));
+$totalWastes = $wastes->count();
+    $wasteStats = $categories->map(function ($category) use ($wastes, $totalWastes) {
+        $count = $wastes->where('waste_category_id', $category->id)->count();
+        $percentage = $totalWastes > 0 ? ($count / $totalWastes) * 100 : 0;
+        return [
+            'name' => $category->name,
+            'percentage' => round($percentage, 1),
+        ];
+    });
+        return view('back.home', compact('categories', 'wastes', 'wasteStats'));
     })->middleware(['auth', 'verified'])->name('back.home');
 });
 
