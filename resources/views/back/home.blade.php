@@ -2,11 +2,15 @@
 
 @section('content')
 <div class="container mx-auto px-4 py-6">
-    <h1 class="text-2xl font-bold mb-6 text-green-500 text-center">Répartition des déchets ♻️</h1>
+    <h1 class="text-2xl font-bold mb-6 text-green-500 text-center">Waste Distribution ♻️</h1>
 
-    <canvas id="wasteChart" width="400" height="200"></canvas>
+    <!-- Conteneur pour centrer le graphique et limiter la taille -->
+    <div style="max-width: 400px; margin: 0 auto;">
+        <canvas id="wasteChart"></canvas>
+    </div>
 </div>
 
+<!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     const ctx = document.getElementById('wasteChart').getContext('2d');
@@ -35,13 +39,14 @@
     };
 
     const config = {
-        type: 'pie', // ou 'bar' pour un histogramme
+        type: 'pie', // graphique circulaire
         data: data,
         options: {
-            responsive: true,
+            responsive: true,           // adapte le graphique à la taille du conteneur
+            maintainAspectRatio: true,  // garde le cercle parfait
             plugins: {
                 legend: {
-                    position: 'bottom',
+                    position: 'bottom', // légende sous le graphique
                 },
                 tooltip: {
                     callbacks: {
@@ -56,4 +61,12 @@
 
     new Chart(ctx, config);
 </script>
+
+<!-- CSS optionnel pour forcer la taille exacte -->
+<style>
+    #wasteChart {
+        width: 100%;
+        height: 400px; /* largeur = hauteur pour cercle parfait */
+    }
+</style>
 @endsection
