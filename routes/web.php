@@ -13,6 +13,9 @@ use App\Http\Controllers\Front\FrontWasteCategoryController;
 use App\Http\Controllers\Front\FrontWasteController;
 use App\Http\Controllers\AI\AIController;
 use App\Http\Controllers\AI\WasteAIController;
+use App\Http\Controllers\Backoffice\CollectionPointController;
+use App\Http\Controllers\Front\CollectionPointFrontController;
+
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
@@ -49,7 +52,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('waste-categories/{id}', [WasteCategoryController::class, 'show'])
         ->name('waste_categories.show');
 
-    
+    Route::view('dashboard', 'back.home')
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
     
     //Dashboard Route
     Route::get('/back/home', function () {
@@ -107,4 +112,9 @@ Route::view('/donations', 'front.donations');
 Route::view('/contact', 'front.contact');
 
 
+Route::get('/dashbored/collectionpoints', action: [CollectionPointController::class, 'index'])->name('back.home');
+Route::resource('collectionpoints', CollectionPointController::class);
+
+Route::get('/waste2product/collectionpoints', [CollectionPointFrontController::class, 'index'])->name('front.collectionpoints.index');
+Route::get('/waste2product/collectionpoints/{id}', [CollectionPointFrontController::class, 'show'])->name('front.collectionpoints.show');
 require __DIR__.'/auth.php';

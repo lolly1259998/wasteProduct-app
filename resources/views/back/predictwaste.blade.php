@@ -1,38 +1,61 @@
 @extends('back.layout')
 
 @section('content')
-<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-100 to-teal-100 dark:from-zinc-800 dark:to-zinc-900">
-    <div class="container mx-auto px-4 py-8">
-        <h1 class="text-3xl font-bold mb-6 text-green-700 dark:text-green-300 text-center">Conseils IA Déchets ♻️</h1>
+<div class="min-vh-100 d-flex justify-content-center align-items-center" style="background-color: #f8f9fa;">
+    <div class="container py-5">
+        <div class="card shadow-lg border-0 mx-auto" style="max-width: 1000px; width: 100%; border-radius: 1rem;">
+            
+            <!-- Header -->
+            <div class="card-header bg-success text-white text-center py-4" style="border-radius: 1rem 1rem 0 0;">
+                <h2 class="fw-bold mb-0">AI Recycling Advice ♻️</h2>
+            </div>
 
-        <div class="max-w-md mx-auto bg-white dark:bg-zinc-800 p-6 rounded shadow-md">
-            <!-- Formulaire IA -->
-            <form action="{{ route('ai.advice.recycling') }}" method="POST">
+            <div class="card-body p-5">
+                <!-- Error Alert -->
+                @if ($errors->any())
+                    <div class="alert alert-danger" role="alert">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
 
-                @csrf
+                <!-- Advice Form -->
+                <form action="{{ route('ai.advice.recycling') }}" method="POST">
+                    @csrf
 
-                <div>
-                    <label class="block font-semibold mb-1 text-gray-700 dark:text-gray-200">Type de déchet</label>
-                    <input type="text" name="type" class="form-control w-full border rounded px-3 py-2" required>
+                    <div class="row g-4">
+                        <!-- Waste Type -->
+                        <div class="col-md-6">
+                            <label for="type" class="form-label fw-semibold">Waste Type</label>
+                            <input type="text" name="type" id="type" class="form-control" placeholder="e.g., Plastic, Paper" required>
+                        </div>
+
+                        <!-- Category -->
+                        <div class="col-md-6">
+                            <label for="category" class="form-label fw-semibold">Category</label>
+                            <input type="text" name="category" id="category" class="form-control" placeholder="e.g., Recyclable, Organic" required>
+                        </div>
+                    </div>
+
+                    <!-- Button -->
+                    <div class="text-center mt-5">
+                        <button type="submit" class="btn btn-success px-4">
+                            <i class="bi bi-lightbulb me-2"></i>Get AI Advice
+                        </button>
+                    </div>
+                </form>
+
+                <!-- AI Advice Result -->
+                @if(isset($advice))
+                <div class="alert alert-success text-center mt-5" role="alert">
+                    <h5 class="fw-bold mb-0">AI Advice:</h5>
+                    <p class="mt-2 mb-0">{{ $advice }}</p>
                 </div>
-
-                <div>
-                    <label class="block font-semibold mb-1 text-gray-700 dark:text-gray-200">Catégorie</label>
-                    <input type="text" name="category" class="form-control w-full border rounded px-3 py-2" required>
-                </div>
-
-                <div class="text-right">
-                    <button type="submit" class="btn btn-success bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Obtenir un conseil</button>
-                </div>
-            </form>
-
-            <!-- Affichage conseil IA -->
-           @if(isset($advice))
-    <div class="mt-6 p-4 bg-green-100 ...">
-        <h2>Conseil IA : {{ $advice }}</h2>
-    </div>
-@endif
-
+                @endif
+            </div>
         </div>
     </div>
 </div>
