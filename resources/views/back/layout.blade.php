@@ -174,6 +174,9 @@
         }
     </style>
 </head>
+<body>
+    <div class="d-flex">
+        
 <body class="h-100">
   <!-- Sidebar Overlay -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
@@ -217,10 +220,53 @@
                         
                     </a>
                 </div>
-            </div>
-            
-            
+                 <!-- Waste Categories -->
+        <div class="nav-item">
+            <a href="{{ route('waste_categories.index') }}" 
+               class="nav-link {{ request()->routeIs('waste_categories.*') ? 'active' : '' }}">
+                <div class="nav-icon">
+                    <i class="bi bi-card-list"></i>
+                </div>
+                <span>Waste Categories</span>
+            </a>
+        </div>
+
+        <!-- Wastes -->
+        <div class="nav-item">
+            <a href="{{ route('wastes.index') }}" 
+               class="nav-link {{ request()->routeIs('wastes.*') ? 'active' : '' }}">
+                <div class="nav-icon">
+                    <i class="bi bi-trash"></i>
+                </div>
+                <span>Wastes</span>
+            </a>
+        </div>
+
+        <!-- AI Waste Prediction -->
+        <div class="nav-item">
+            <a href="{{ url('/predictwaste') }}" 
+               class="nav-link {{ request()->is('predictwaste') ? 'active' : '' }}">
+                <div class="nav-icon">
+                    <i class="bi bi-robot"></i>
+                </div>
+                <span>AI Waste Prediction</span>
+            </a>
+        </div>
+
+        <!-- Smart Waste Tips -->
+        <div class="nav-item">
+            <a href="{{ url('/ai-advice') }}" 
+               class="nav-link {{ request()->is('ai-advice') ? 'active' : '' }}">
+                <div class="nav-icon">
+                    <i class="bi bi-lightbulb"></i>
+                </div>
+                <span>Smart Waste Tips</span>
+            </a>
+        </div>
         
+    </div>
+
+        </nav>
         <!-- Sidebar Footer -->
         <div class="position-absolute bottom-0 start-0 end-0 p-3 border-top border-dark">
             <div class="d-flex align-items-center gap-3">

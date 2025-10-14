@@ -1,106 +1,133 @@
 @extends('back.layout')
 
-@section('content')
-<div class="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-zinc-900">
-    <div class="container mx-auto px-4 py-6">
-        <h1 class="text-2xl font-bold mb-6 text-green-500 dark:text-green-400 text-center">Waste List ♻️</h1>
+@section('title', 'Waste List')
 
-        <!-- Bouton Ajouter -->
-        <div class="text-start mb-6">
-            <a href="{{ route('wastes.create') }}" 
-               class="btn btn-success btn-md d-inline-flex align-items-center gap-2 px-4 py-2 rounded-pill shadow-sm">
-                <x-heroicon-o-plus class="h-5 w-5 text-white" />
-                <span>+</span>
-            </a>
+@section('content')
+<div class="container-fluid px-0">
+    <!-- En-tête -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4">
+                <div class="mb-3 mb-md-0">
+                    <h1 class="page-title text-success mb-2">
+                        <i class="bi bi-recycle me-2"></i> Waste List ♻️
+                    </h1>
+                    <p class="text-muted mb-0">Manage all the wastes on your platform</p>
+                </div>
+                <div class="d-flex flex-wrap gap-2">
+                    <a href="{{ route('wastes.create') }}" class="btn btn-success shadow-sm fw-medium px-4 py-2">
+                        <i class="bi bi-plus-circle me-2"></i> Add Waste
+                    </a>
+                </div>
+            </div>
         </div>
 
-        <!-- Message de succès -->
-        @if (session('success'))
-            <div id="success-message" class="mb-4 p-3 bg-green-100 dark:bg-green-900 border border-green-400 dark:border-green-600 text-green-700 dark:text-green-200 rounded text-center">
-                {{ session('success') }}
-            </div>
-            <script>
-                setTimeout(() => {
-                    document.getElementById('success-message').style.display = 'none';
-                }, 3000);
-            </script>
-        @endif
-
-        <!-- Tableau -->
-        <div class="table-responsive">
-            <table class="table table-hover custom-green-table align-middle">
-                <thead class="table-success text-center">
-                    <tr>
-                        <th>Type</th>
-                        <th>Weight (kg)</th>
-                        <th>Status</th>
-                        <th>Description</th>
-                        <th>Category</th>
-                        <th>User</th>
-                        <th>Collection Point</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($wastes as $waste)
-                        <tr class="text-center">
-                            <td>{{ $waste->type }}</td>
-                            <td>{{ $waste->weight }}</td>
-                            <td>{{ $waste->status }}</td>
-                            <td>{{ $waste->description ?? 'No description' }}</td>
-                            <td>{{ $waste->category->name ?? 'Unknown' }}</td>
-                            <td>{{ $waste->user->name ?? 'Unknown User' }}</td>
-                            <td>Main Collection Point</td>
-                            <td>
-                                <div class="d-flex justify-content-center gap-2">
-                                    <a href="{{ route('wastes.show', $waste->id) }}" 
-                                       class="btn btn-info btn-sm p-2 shadow-sm"
-                                       title="Afficher">
-                                        Show
-                                    </a>
-                                    <!-- Bouton Modifier -->
-                                    <a href="{{ route('wastes.edit', $waste->id) }}" 
-                                       class="btn btn-primary btn-sm p-2 shadow-sm"
-                                       title="Modifier">
-                                        Edit
-                                    </a>
-                                    <!-- Bouton Supprimer -->
-                                    <form action="{{ route('wastes.destroy', $waste->id) }}" 
-                                          method="POST" 
-                                          onsubmit="return confirm('Are you sure you want to delete this waste?')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" 
-                                                class="btn btn-danger btn-sm p-2 shadow-sm"
-                                                title="Supprimer">
-                                            Delete
-                                        </button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+        <!-- Barre de recherche -->
+        <div class="col-12 mb-4">
+            <form action="{{ route('wastes.index') }}" method="GET" class="d-flex gap-2">
+                <input type="text" name="search" placeholder="Search by type or category"
+                       value="{{ request('search') }}"
+                       class="form-control" style="max-width:500px;">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </form>
         </div>
     </div>
+
+    {{-- Messages flash --}}
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show shadow-sm border-0 mb-4 d-flex align-items-center" role="alert">
+            <i class="bi bi-check-circle-fill me-2 fs-5 flex-shrink-0"></i>
+            <div class="flex-grow-1">
+                <span class="fw-medium">{{ session('success') }}</span>
+            </div>
+            <button type="button" class="btn-close flex-shrink-0" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
+    @if ($wastes->isEmpty())
+        <div class="card shadow-sm border-0 rounded-3">
+            <div class="card-body text-center py-5">
+                <i class="bi bi-inbox display-4 text-muted mb-3"></i>
+                <h4 class="text-muted mb-3">No wastes found</h4>
+                <p class="text-muted mb-4">Start by adding your first waste</p>
+                <a href="{{ route('wastes.create') }}" class="btn btn-success px-4">
+                    <i class="bi bi-plus-circle me-2"></i> Create Waste
+                </a>
+            </div>
+        </div>
+    @else
+        <!-- Tableau amélioré -->
+        <div class="card shadow-sm border-0 rounded-3 overflow-hidden">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0 text-center">
+                        <thead class="table-success">
+                            <tr>
+                                <th>Type</th>
+                                <th>Weight (kg)</th>
+                                <th>Status</th>
+                                <th>Description</th>
+                                <th>Category</th>
+                                <th>User</th>
+                                <th>Collection Point</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($wastes as $waste)
+                                <tr>
+                                    <td>{{ $waste->type }}</td>
+                                    <td>{{ $waste->weight }}</td>
+                                    <td>{{ $waste->status }}</td>
+                                    <td>{{ $waste->description ?? 'No description' }}</td>
+                                    <td>{{ $waste->category->name ?? 'Unknown' }}</td>
+                                    <td>{{ $waste->user->name ?? 'Unknown User' }}</td>
+                                    <td>Main Collection Point</td>
+                                    <td>
+                                        <div class="d-flex justify-content-center gap-2">
+                                            <a href="{{ route('wastes.show', $waste->id) }}" class="action-btn action-info" title="Show">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
+                                            <a href="{{ route('wastes.edit', $waste->id) }}" class="action-btn action-edit" title="Edit">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </a>
+                                            <form action="{{ route('wastes.destroy', $waste->id) }}" method="POST" onsubmit="return confirm('Are you sure?')">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="action-btn action-delete" title="Delete">
+                                                    <i class="bi bi-trash3"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <div class="mt-4">
+                    {{ $wastes->appends(request()->query())->links() }}
+                </div>
+            </div>
+        </div>
+    @endif
 </div>
 
-<!-- Style personnalisé -->
+<!-- Styles réutilisables -->
 <style>
-    .custom-green-table {
-        --bs-table-bg: #e8f5e9;
-        --bs-table-striped-bg: #dcedc8;
-        --bs-table-hover-bg: #c8e6c9;
-    }
-    .btn-md {
-        font-size: 0.95rem;
-        padding: 0.45rem 0.9rem;
-        border-radius: 0.5rem;
-        transition: all 0.2s ease-in-out;
-    }
-    .btn-md:hover {
-        transform: scale(1.05);
-    }
+.page-title { font-weight: 600; font-size: 1.75rem; }
+.card { border: none; transition: transform 0.2s ease-in-out; }
+.card:hover { transform: translateY(-1px); }
+.table th { border-bottom: 2px solid #198754; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; padding: 1rem 0.75rem; }
+.table tbody tr:hover { background-color: rgba(25, 135, 84, 0.04); box-shadow: inset 0 0 0 1px rgba(25, 135, 84, 0.1); }
+.action-btn { display:inline-flex; align-items:center; justify-content:center; width:2.5rem; height:2.5rem; border-radius:8px; border:none; text-decoration:none; transition:all 0.3s ease; position:relative; overflow:hidden; color:#fff!important; }
+.action-info { background: linear-gradient(135deg,#0dcaf0,#31d2f2); }
+.action-info:hover { background: linear-gradient(135deg,#31d2f2,#0bb8e0); }
+.action-edit { background: linear-gradient(135deg,#ffc107,#e0a800); }
+.action-edit:hover { background: linear-gradient(135deg,#e0a800,#c69500); }
+.action-delete { background: linear-gradient(135deg,#dc3545,#c82333); }
+.action-delete:hover { background: linear-gradient(135deg,#c82333,#a71e2a); }
 </style>
 @endsection

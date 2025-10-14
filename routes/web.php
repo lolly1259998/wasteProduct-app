@@ -11,6 +11,8 @@ use APP\Models\Waste;
 use app\Models\CollectionPoint;
 use App\Http\Controllers\Front\FrontWasteCategoryController;
 use App\Http\Controllers\Front\FrontWasteController;
+use App\Http\Controllers\AI\AIController;
+use App\Http\Controllers\AI\WasteAIController;
 use App\Http\Controllers\Backoffice\CollectionPointController;
 use App\Http\Controllers\Front\CollectionPointFrontController;
 
@@ -58,8 +60,16 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/back/home', function () {
      $categories = \App\Models\WasteCategory::all();
     $wastes = \App\Models\Waste::all();
-
-        return view('back.home', compact('categories', 'wastes'));
+$totalWastes = $wastes->count();
+    $wasteStats = $categories->map(function ($category) use ($wastes, $totalWastes) {
+        $count = $wastes->where('waste_category_id', $category->id)->count();
+        $percentage = $totalWastes > 0 ? ($count / $totalWastes) * 100 : 0;
+        return [
+            'name' => $category->name,
+            'percentage' => round($percentage, 1),
+        ];
+    });
+        return view('back.home', compact('categories', 'wastes', 'wasteStats'));
     })->middleware(['auth', 'verified'])->name('back.home');
 });
 
@@ -87,7 +97,12 @@ Route::get('/wastess/{id}/edit', [FrontWasteController::class, 'edit'])->name('f
 Route::put('/wastess/{id}', [FrontWasteController::class, 'update'])->name('front.wastes.update');
 Route::delete('/wastess/{id}', [FrontWasteController::class, 'destroy'])->name('front.wastes.destroy');
 
-
+Route::post('/ai/predict', [AIController::class, 'predictWaste'])->name('ai.predict');
+Route::get('/predictwaste', function () {
+    return view('predictwaste');
+})->name('predictwaste');
+Route::get('/ai-advice', [WasteAIController::class, 'showForm'])->name('ai.advice.form');
+Route::post('/ai-advice', [WasteAIController::class, 'recycling'])->name('ai.advice.recycling');
 
 
 

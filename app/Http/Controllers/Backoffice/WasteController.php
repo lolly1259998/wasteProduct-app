@@ -10,12 +10,30 @@ class WasteController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        //
-        $wastes=Waste::all();
-        return view('waste.list',compact('wastes'));
+   /**
+ * Display a listing of the resource.
+ */
+public function index(Request $request)
+{
+    // On crée une query builder pour le modèle Waste
+    $query = Waste::query();
+
+    // Si l'utilisateur a envoyé un terme de recherche
+    if ($request->filled('search')) {
+        $search = $request->input('search');
+
+        $query->where('type', 'like', "%{$search}%")
+              ->orWhereHas('category', function ($q) use ($search) {
+                  $q->where('name', 'like', "%{$search}%");
+              });
     }
+
+    // On récupère les résultats paginés
+    $wastes = $query->paginate(10)->withQueryString();
+
+    return view('waste.list', compact('wastes'));
+}
+
 
     /**
      * Show the form for creating a new resource.
