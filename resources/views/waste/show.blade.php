@@ -28,7 +28,7 @@
                     <div class="col-md-6">
                         <div class="border p-3 rounded bg-light">
                             <p class="fw-semibold text-secondary mb-1">Collection Point</p>
-                            <p class="mb-0">{{ $waste->collection_point->name ?? 'Main Collection Point' }}</p>
+                            <p class="mb-0">{{ $waste->collectionPoint->name ?? 'Unknown Collection Point' }}</p>
                         </div>
                     </div>
 

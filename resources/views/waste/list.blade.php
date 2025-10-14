@@ -82,7 +82,8 @@
                                     <td>{{ $waste->description ?? 'No description' }}</td>
                                     <td>{{ $waste->category->name ?? 'Unknown' }}</td>
                                     <td>{{ $waste->user->name ?? 'Unknown User' }}</td>
-                                    <td>Main Collection Point</td>
+                                    <td>{{ $waste->collectionPoint->name ?? 'Unknown' }}</td>
+
                                     <td>
                                         <div class="d-flex justify-content-center gap-2">
                                             <a href="{{ route('wastes.show', $waste->id) }}" class="action-btn action-info" title="Show">
