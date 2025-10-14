@@ -12,17 +12,25 @@
         <div class="bg-dark text-white p-3" style="width: 250px; min-height: 100vh;">
             <h4 class="mb-4">Admin</h4>
             <ul class="nav flex-column">
-    <li class="nav-item mb-2">
-        <a href="{{ url('back/home') }}" class="nav-link text-white">Dashboard</a>
-    </li>
-    <li class="nav-item mb-2">
-        <a href="#" class="nav-link text-white">Waste Management</a>
-    </li>
-    <li class="nav-item mb-2">
-        <a href="#" class="nav-link text-white">Catégories</a>
-    </li>
-</ul>
-
+                <li class="nav-item mb-2">
+                    <a href="{{ url('back/home') }}" class="nav-link text-white">Dashboard</a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a href="#" class="nav-link text-white">Waste Management</a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a href="#" class="nav-link text-white">Catégories</a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a href="{{ route('back.orders.index') }}" class="nav-link text-white">Orders</a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a href="{{ route('back.donations.index') }}" class="nav-link text-white">Donations</a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a href="{{ route('back.reservations.index') }}" class="nav-link text-white">Reservations</a>
+                </li>
+            </ul>
         </div>
 
         <!-- Main content -->

@@ -1,7 +1,8 @@
 <?php
-
+// app/Models/Order.php
 namespace App\Models;
 
+use App\Enums\OrderStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -22,9 +23,9 @@ class Order extends Model
     ];
 
     protected $casts = [
-        'order_date' => 'datetime',
         'total_amount' => 'decimal:2',
-        'status' => 'string',
+        'order_date' => 'datetime',
+        'status' => OrderStatus::class,
     ];
 
     public function user()
@@ -32,8 +33,24 @@ class Order extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function product()
+    public function calculateTotal()
     {
-        return $this->belongsTo(Product::class);
+        $products = [
+            1 => ['price' => 10.00],
+            2 => ['price' => 15.00],
+            3 => ['price' => 20.00],
+        ];
+        return $this->quantity * ($products[$this->product_id]['price'] ?? 0);
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::saving(function ($order) {
+            if ($order->quantity && isset($order->product_id)) {
+                $order->total_amount = $order->calculateTotal();
+            }
+        });
     }
 }

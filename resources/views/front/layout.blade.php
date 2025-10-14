@@ -30,10 +30,10 @@
                     <li class="nav-item"><a href="{{ url('/') }}" class="nav-link">Home</a></li>
                     <li class="nav-item"><a href="{{ url('/products') }}" class="nav-link">Products</a></li>
                     <li class="nav-item"><a href="{{ url('/recycling') }}" class="nav-link">Recycling</a></li>
-                    <li class="nav-item"><a href="{{ url('/donations') }}" class="nav-link">Donations</a></li>
-                    <li class="nav-item"><a href="{{ url('/wastes') }}" class="nav-link">Wastes</a></li>
-                    <li class="nav-item"><a href="{{ url('/categories') }}" class="nav-link">Waste Categories</a></li>
-                     <li class="nav-item"><a href="{{ url('/contact') }}" class="nav-link">Contact</a></li>
+                    <li class="nav-item"><a href="{{ route('front.donations.index') }}" class="nav-link">Donations</a></li>
+                    <li class="nav-item"><a href="{{ route('front.orders.index') }}" class="nav-link">Orders</a></li>
+                    <li class="nav-item"><a href="{{ route('front.reservations.index') }}" class="nav-link">Reservations</a></li>
+                    <li class="nav-item"><a href="{{ url('/contact') }}" class="nav-link">Contact</a></li>
                 </ul>
             </div>
         </div>

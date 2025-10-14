@@ -20,17 +20,11 @@ class Reservation extends Model
 
     protected $casts = [
         'reserved_until' => 'datetime',
-        'status' => ReservationStatus::class, // Use enum class
+        'status' => ReservationStatus::class,
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function product()
-    {
-        return $this->belongsTo(Product::class);
-        
     }
 }
