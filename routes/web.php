@@ -12,7 +12,7 @@ use app\Models\CollectionPoint;
 use App\Http\Controllers\Front\FrontWasteCategoryController;
 use App\Http\Controllers\Front\FrontWasteController;
 use App\Http\Controllers\AI\AIController;
-
+use App\Http\Controllers\AI\WasteAIController;
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
@@ -88,6 +88,8 @@ Route::post('/ai/predict', [AIController::class, 'predictWaste'])->name('ai.pred
 Route::get('/predictwaste', function () {
     return view('predictwaste');
 })->name('predictwaste');
+Route::get('/ai-advice', [WasteAIController::class, 'showForm'])->name('ai.advice.form');
+Route::post('/ai-advice', [WasteAIController::class, 'recycling'])->name('ai.advice.recycling');
 
 
 

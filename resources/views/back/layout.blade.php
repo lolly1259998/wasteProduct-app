@@ -25,6 +25,9 @@
                 <li class="nav-item mb-2">
             <a href="{{ url('/predictwaste') }}" class="nav-link text-white">AI Waste Prediction</a>
         </li>
+             <li class="nav-item mb-2">
+            <a href="{{ url('/ai-advice') }}" class="nav-link text-white">Smart Waste Tips</a>
+        </li>
             </ul>
         </div>
 
