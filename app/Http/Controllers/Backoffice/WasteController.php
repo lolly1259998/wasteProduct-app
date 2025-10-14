@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backoffice;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Waste; 
+use App\Models\CollectionPoint;
 class WasteController extends Controller
 {
     /**
@@ -41,7 +42,8 @@ public function index(Request $request)
     public function create()
     {
         //
-        return view('waste.create');
+        $collectionPoints = CollectionPoint::all();
+        return view('waste.create', compact('collectionPoints'));
     }
 
     /**
@@ -90,7 +92,8 @@ public function index(Request $request)
     {
         //
          $waste = Waste::findOrFail($id);
-        return view('waste.edit', compact('waste'));
+        $collectionPoints = CollectionPoint::all();
+        return view('waste.edit', compact('waste', 'collectionPoints'));
 
     }
 
