@@ -22,6 +22,9 @@
                 <li class="nav-item mb-2">
                     <a href="{{ route('wastes.index') }}" class="nav-link text-white">wastes</a>
                 </li>
+                <li class="nav-item mb-2">
+            <a href="{{ url('/predictwaste') }}" class="nav-link text-white">AI Waste Prediction</a>
+        </li>
             </ul>
         </div>
 
