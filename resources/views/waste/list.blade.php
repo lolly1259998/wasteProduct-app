@@ -6,12 +6,30 @@
         <h1 class="text-2xl font-bold mb-6 text-green-500 dark:text-green-400 text-center">Waste List ♻️</h1>
 
         <!-- Bouton Ajouter -->
-        <div class="text-start mb-6">
+        <div class="text-start mb-4 flex justify-between items-center">
+            <div class="mb-4 flex justify-between items-center">
             <a href="{{ route('wastes.create') }}" 
                class="btn btn-success btn-md d-inline-flex align-items-center gap-2 px-4 py-2 rounded-pill shadow-sm">
                 <x-heroicon-o-plus class="h-5 w-5 text-white" />
                 <span>+</span>
             </a>
+</div>
+            <!-- Barre de recherche -->
+          <div class="mb-4 flex justify-start items-center gap-2">
+    <form action="{{ route('wastes.index') }}" method="GET" class="flex items-center gap-2">
+        <!-- barre de recherche petite -->
+        <input type="text" name="search" placeholder="Search by type or category"
+               value="{{ request('search') }}"
+               class="border rounded px-3 py-2" 
+               style="width: 500px; height: 38px;"> <!-- même hauteur que le bouton -->
+
+        <!-- bouton juste à côté -->
+        <button type="submit" class="btn btn-primary px-4 py-2 rounded" style="height: 38px;">
+            Search
+        </button>
+    </form>
+</div>
+
         </div>
 
         <!-- Message de succès -->
@@ -58,13 +76,11 @@
                                        title="Afficher">
                                         Show
                                     </a>
-                                    <!-- Bouton Modifier -->
                                     <a href="{{ route('wastes.edit', $waste->id) }}" 
                                        class="btn btn-primary btn-sm p-2 shadow-sm"
                                        title="Modifier">
                                         Edit
                                     </a>
-                                    <!-- Bouton Supprimer -->
                                     <form action="{{ route('wastes.destroy', $waste->id) }}" 
                                           method="POST" 
                                           onsubmit="return confirm('Are you sure you want to delete this waste?')">
@@ -82,6 +98,10 @@
                     @endforeach
                 </tbody>
             </table>
+            <!-- Pagination -->
+            <div class="mt-4">
+                {{ $wastes->appends(request()->query())->links() }}
+            </div>
         </div>
     </div>
 </div>
