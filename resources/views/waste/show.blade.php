@@ -1,27 +1,86 @@
 @extends('back.layout')
 
 @section('content')
-<div class="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-zinc-900">
-    <div class="container mx-auto px-4 py-6">
-        <h1 class="text-2xl font-bold mb-6 text-green-500 dark:text-green-400 text-center">Details For Wastes ♻️</h1>
+<div class="min-vh-100 d-flex justify-content-center align-items-center" style="background-color: #f8f9fa;">
+    <div class="container py-5">
+        <div class="card shadow-lg border-0 mx-auto" style="max-width: 1200px; width: 100%; border-radius: 1rem;">
+            <div class="card-header bg-success text-white text-center py-4" style="border-radius: 1rem 1rem 0 0;">
+                <h2 class="fw-bold mb-0">Waste Details ♻️</h2>
+            </div>
 
-        <div class="bg-white dark:bg-zinc-800 shadow-lg rounded-lg p-6">
-           
-        @if ($waste->image_path)
-                <div class="text-center mb-4">
-                    <img src="{{ asset('storage/' . $waste->image_path) }}" alt="Waste Image" class="max-w-xs rounded-lg shadow-md">
+            <div class="card-body p-5">
+                <!-- Image Section -->
+                @if ($waste->image_path)
+                    <div class="text-center mb-4">
+                        <img src="{{ asset('storage/' . $waste->image_path) }}" 
+                             alt="Waste Image" 
+                             class="img-fluid rounded shadow-sm" 
+                             style="max-height: 250px;">
+                    </div>
+                @else
+                    <div class="text-center mb-4 text-muted fst-italic">
+                        No image available
+                    </div>
+                @endif
+
+                <!-- Waste Information -->
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="border p-3 rounded bg-light">
+                            <p class="fw-semibold text-secondary mb-1">Collection Point</p>
+                            <p class="mb-0">{{ $waste->collection_point->name ?? 'Main Collection Point' }}</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="border p-3 rounded bg-light">
+                            <p class="fw-semibold text-secondary mb-1">Type</p>
+                            <p class="mb-0">{{ $waste->type }}</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="border p-3 rounded bg-light">
+                            <p class="fw-semibold text-secondary mb-1">Weight</p>
+                            <p class="mb-0">{{ $waste->weight }} kg</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="border p-3 rounded bg-light">
+                            <p class="fw-semibold text-secondary mb-1">Status</p>
+                            <p class="mb-0 text-capitalize">{{ $waste->status }}</p>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="border p-3 rounded bg-light">
+                            <p class="fw-semibold text-secondary mb-1">Description</p>
+                            <p class="mb-0">{{ $waste->description ?? 'No description provided.' }}</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="border p-3 rounded bg-light">
+                            <p class="fw-semibold text-secondary mb-1">Category</p>
+                            <p class="mb-0">{{ $waste->category->name ?? 'Unknown' }}</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="border p-3 rounded bg-light">
+                            <p class="fw-semibold text-secondary mb-1">User</p>
+                            <p class="mb-0">{{ $waste->user->name ?? 'Unknown User' }}</p>
+                        </div>
+                    </div>
                 </div>
-            @endif
-             <p><strong>Point de Collecte :</strong> Main Collection Point</p>
-            <p><strong>Type :</strong> {{ $waste->type }}</p>
-            <p><strong>Poids :</strong> {{ $waste->weight }} kg</p>
-            <p><strong>Statut :</strong> {{ $waste->status }}</p>
-            <p><strong>Description :</strong> {{ $waste->description ?? 'No description' }}</p>
-            <p><strong>Catégorie :</strong> {{ $waste->category->name ?? 'Unknown' }}</p>
-            <p><strong>Utilisateur :</strong> {{ $waste->user->name ?? 'Unknown User' }}</p>
-            
-            <div class="mt-4">
-                <a href="{{ route('wastes.index') }}" class="btn btn-secondary btn-md">Cancel</a>
+
+                <!-- Button -->
+                <div class="text-center mt-5">
+                    <a href="{{ route('wastes.index') }}" class="btn btn-success px-4">
+                        <i class="bi bi-arrow-left-circle me-1"></i> Back to Waste List
+                    </a>
+                </div>
             </div>
         </div>
     </div>
