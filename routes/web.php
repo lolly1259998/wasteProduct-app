@@ -4,7 +4,6 @@ use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
 use Illuminate\Support\Facades\Route;
-<<<<<<< Updated upstream
 use App\Http\Controllers\Backoffice\WasteCategoryController;
 use App\Http\Controllers\Backoffice\WasteController;
 use App\Models\WasteCategory;
@@ -16,9 +15,7 @@ use App\Http\Controllers\AI\AIController;
 use App\Http\Controllers\AI\WasteAIController;
 use App\Http\Controllers\Backoffice\CollectionPointController;
 use App\Http\Controllers\Front\CollectionPointFrontController;
-=======
 use App\Http\Controllers\Campaign\CampaignController;
->>>>>>> Stashed changes
 
 Route::get('/', function () {
     return view('welcome');
@@ -116,13 +113,11 @@ Route::view('/donations', 'front.donations');
 Route::view('/contact', 'front.contact');
 
 
-<<<<<<< Updated upstream
 Route::get('/dashbored/collectionpoints', action: [CollectionPointController::class, 'index'])->name('back.home');
 Route::resource('collectionpoints', CollectionPointController::class);
 
 Route::get('/waste2product/collectionpoints', [CollectionPointFrontController::class, 'index'])->name('front.collectionpoints.index');
 Route::get('/waste2product/collectionpoints/{id}', [CollectionPointFrontController::class, 'show'])->name('front.collectionpoints.show');
-=======
 // Route pour la page de gestion des campagnes dans le back-office
 Route::get('/back/campaigns', function () {
     return view('back.campaign.campaigns');
@@ -131,5 +126,4 @@ Route::get('/back/campaigns', function () {
 // Routes RESTful pour l'API des campagnes
 Route::resource('campaigns', CampaignController::class);
 
->>>>>>> Stashed changes
 require __DIR__.'/auth.php';

@@ -4,7 +4,7 @@
 <style>
     /* Advanced Campaign Styles */
     .campaign-stats {
-        background: linear-gradient(135deg, #0d6efd 0%, #198754 100%);
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         border-radius: 15px;
         color: white;
         padding: 2rem;
