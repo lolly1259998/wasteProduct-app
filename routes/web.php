@@ -13,8 +13,12 @@ use App\Http\Controllers\Front\FrontWasteCategoryController;
 use App\Http\Controllers\Front\FrontWasteController;
 use App\Http\Controllers\AI\AIController;
 use App\Http\Controllers\AI\WasteAIController;
+use App\Http\Controllers\AI\RecyclingAIController;
 use App\Http\Controllers\Backoffice\CollectionPointController;
 use App\Http\Controllers\Front\CollectionPointFrontController;
+use App\Http\Controllers\Backoffice\RecyclingProcessController;
+use App\Http\Controllers\Backoffice\ProductController;
+use App\Http\Controllers\Front\ProductFrontController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -51,6 +55,14 @@ Route::middleware(['auth'])->group(function () {
         ->name('waste_categories.destroy');
     Route::get('waste-categories/{id}', [WasteCategoryController::class, 'show'])
         ->name('waste_categories.show');
+
+    // Recycling Process Routes (Back-office)
+    Route::resource('recyclingprocesses', RecyclingProcessController::class);
+
+    // Product Routes (Back-office)
+    Route::resource('products', ProductController::class);
+    Route::post('products/{id}/toggle-availability', [ProductController::class, 'toggleAvailability'])
+        ->name('products.toggle-availability');
 
     Route::view('dashboard', 'back.home')
     ->middleware(['auth', 'verified'])
@@ -104,9 +116,27 @@ Route::get('/predictwaste', function () {
 Route::get('/ai-advice', [WasteAIController::class, 'showForm'])->name('ai.advice.form');
 Route::post('/ai-advice', [WasteAIController::class, 'recycling'])->name('ai.advice.recycling');
 
+// Démo IA pour le module Recyclage
+Route::get('/ai/recycling/demo', function () {
+    return view('ai.recycling-ai-demo');
+})->name('ai.recycling.demo');
+
+// Routes IA pour le module Recyclage
+Route::prefix('ai/recycling')->group(function () {
+    Route::post('/classify-waste', [RecyclingAIController::class, 'classifyWaste'])->name('ai.recycling.classify');
+    Route::post('/predict-quality', [RecyclingAIController::class, 'predictQuality'])->name('ai.recycling.predict-quality');
+    Route::post('/estimate-price', [RecyclingAIController::class, 'estimatePrice'])->name('ai.recycling.estimate-price');
+    Route::post('/generate-description', [RecyclingAIController::class, 'generateDescription'])->name('ai.recycling.generate-description');
+    Route::post('/optimize-process', [RecyclingAIController::class, 'optimizeProcess'])->name('ai.recycling.optimize-process');
+    Route::get('/health', [RecyclingAIController::class, 'healthCheck'])->name('ai.recycling.health');
+});
 
 
-Route::view('/products', 'front.products');
+
+// Product Routes (Front-office) - Utiliser un chemin différent pour éviter les conflits
+Route::get('/shop/products', [ProductFrontController::class, 'index'])->name('front.products.index');
+Route::get('/shop/products/{id}', [ProductFrontController::class, 'show'])->name('front.products.show');
+
 Route::view('/recycling', 'front.recycling');
 Route::view('/donations', 'front.donations');
 Route::view('/contact', 'front.contact');
