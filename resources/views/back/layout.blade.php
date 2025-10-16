@@ -266,6 +266,44 @@
         
     </div>
 
+            <!-- Recycling Section -->
+            <div class="nav-section">
+                <div class="nav-section-title">Recyclage & Produits</div>
+                
+                <!-- Recycling Processes -->
+                <div class="nav-item">
+                    <a href="{{ route('recyclingprocesses.index') }}" 
+                       class="nav-link {{ request()->routeIs('recyclingprocesses.*') ? 'active' : '' }}">
+                        <div class="nav-icon">
+                            <i class="bi bi-arrow-repeat"></i>
+                        </div>
+                        <span>Processus de Recyclage</span>
+                    </a>
+                </div>
+
+                <!-- Products -->
+                <div class="nav-item">
+                    <a href="{{ route('products.index') }}" 
+                       class="nav-link {{ request()->routeIs('products.*') ? 'active' : '' }}">
+                        <div class="nav-icon">
+                            <i class="bi bi-box-seam"></i>
+                        </div>
+                        <span>Produits Recyclés</span>
+                    </a>
+                </div>
+
+                <!-- AI Demo -->
+                <div class="nav-item">
+                    <a href="{{ route('ai.recycling.demo') }}" 
+                       class="nav-link {{ request()->routeIs('ai.recycling.*') ? 'active' : '' }}">
+                        <div class="nav-icon">
+                            <i class="bi bi-robot"></i>
+                        </div>
+                        <span>IA Recyclage</span>
+                    </a>
+                </div>
+            </div>
+
         </nav>
         <!-- Sidebar Footer -->
         <div class="position-absolute bottom-0 start-0 end-0 p-3 border-top border-dark">
