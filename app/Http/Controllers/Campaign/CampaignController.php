@@ -60,4 +60,10 @@ class CampaignController extends Controller
 
         return response()->json(['message' => 'Campaign deleted successfully']);
     }
+    public function frontIndex()
+    {
+    $campaigns = \App\Models\Campaign::where('status', 'active')->get();
+    return view('front.campaign.campaigns', compact('campaigns'));
+    }   
+
 }

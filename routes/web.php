@@ -80,6 +80,12 @@ $totalWastes = $wastes->count();
 Route::get('/waste2product', function () {
     return view('front.home');
 });
+
+//frontoffice campaigns routes
+
+
+Route::get('/campaignsFront', [CampaignController::class, 'frontIndex'])->name('campaigns.front');
+
 // Frontoffice Waste Category Routes
 Route::get('/categories', [FrontWasteCategoryController::class, 'index'])->name('front.waste-categories.index');
 Route::get('/categories/create', [FrontWasteCategoryController::class, 'create'])->name('front.waste-categories.create');
@@ -126,4 +132,7 @@ Route::get('/back/campaigns', function () {
 // Routes RESTful pour l'API des campagnes
 Route::resource('campaigns', CampaignController::class);
 
+
+
+Route::get('/ask', [AIControllerCampaign::class, 'askAI']);
 require __DIR__.'/auth.php';
