@@ -83,33 +83,17 @@ class DonationController extends Controller
                 return $query->where('created_at', '>=', request('date_from'));
             })
             ->when(request('date_to'), function ($query) {
-                return $query->where('created_at', '<=', request('date_to') . ' 23:59:59');
+                return $query->where('created_at', '<=', request('date_to'));
             })
             ->when(request('item_search'), function ($query, $search) {
                 return $query->where('item_name', 'like', '%' . $search . '%');
-            })
-            ->when(request('user_search'), function ($query, $search) {
-                return $query->whereHas('user', function($q) use ($search) {
-                    $q->where('name', 'like', '%' . $search . '%');
-                });
-            })
-            ->when(request('waste_id'), function ($query, $waste_id) {
-                return $query->where('waste_id', $waste_id);
-            })
-            ->when(request('condition'), function ($query, $condition) {
-                return $query->where('condition', $condition);
-            })
-            ->when(request('status'), function ($query, $status) {
-                return $query->where('status', $status);
             });
 
         $donations = $query->paginate(12);  // Paginate with 12 items per page
 
-        $wastes = self::$wasteTypes;
-
         $viewPrefix = $this->getViewPrefix();
         $createRoute = $this->getCreateRoute();
-        return view($viewPrefix . 'donations.index', compact('donations', 'createRoute', 'wastes'));
+        return view($viewPrefix . 'donations.index', compact('donations', 'createRoute'));
     }
     public function create()
     {

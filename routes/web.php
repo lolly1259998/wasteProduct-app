@@ -26,6 +26,7 @@ Route::get('/donations/{donation}', [DonationController::class, 'show'])->name('
 Route::delete('/donations/{donation}', [DonationController::class, 'destroy'])->name('front.donations.destroy');
 Route::get('/donations/{donation}/edit', [DonationController::class, 'edit'])->name('front.donations.edit');
 Route::put('/donations/{donation}', [DonationController::class, 'update'])->name('front.donations.update');
+Route::post('/donations/ai-classify', [DonationController::class, 'aiClassify'])->name('front.donations.ai-classify');
 
 Route::get('/orders', [OrderController::class, 'index'])->name('front.orders.index');
 Route::get('/orders/create', [OrderController::class, 'create'])->name('front.orders.create');
@@ -57,7 +58,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('settings/password', Password::class)->name('settings.password');
     Route::get('settings/appearance', Appearance::class)->name('settings.appearance');
 
-    // Back-end Routes (Admin - Prefixed with /admin to avoid conflicts)
+    // Back-end Routes (Back - Prefixed with /admin to avoid conflicts)
     Route::prefix('back')->name('back.')->group(function () {
         // Donations (Back-end)
         Route::get('donations', [DonationController::class, 'index'])->name('donations.index');
@@ -67,8 +68,6 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('donations/{donation}', [DonationController::class, 'destroy'])->name('donations.destroy');
         Route::put('donations/{donation}', [DonationController::class, 'update'])->name('donations.update');
         Route::get('donations/{donation}/edit', [DonationController::class, 'edit'])->name('donations.edit');
-
-
 
         // Orders (Back-end)
         Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
