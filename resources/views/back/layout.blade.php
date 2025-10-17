@@ -173,25 +173,44 @@
                 </li>
                 <li class="nav-item mb-2">
                     <a href="#wasteSubmenu" class="nav-link" onclick="toggleSubmenu(event)" data-tooltip="Waste Management" aria-label="Waste Management"><i class="bi bi-trash3 me-2"></i> <span class="nav-text">Waste Management</span></a>
-                    <ul class="submenu list-unstyled" id="wasteSubmenu">
+                  <ul class="submenu list-unstyled" id="wasteSubmenu">
+    <li>
+        <a href="{{ route('wastes.index') }}" class="nav-link text-white" data-tooltip="All Waste">
+            <i class="bi bi-recycle me-2"></i> All Waste
+        </a>
+    </li>
+    <li>
+        <a href="{{ route('waste_categories.index') }}" class="nav-link text-white" data-tooltip="Waste Categories">
+            <i class="bi bi-tags me-2"></i> Waste Categories
+        </a>
+    </li>
+    <li>
+        <a href="{{ route('predictwaste') }}" class="nav-link text-white" data-tooltip="AI Waste Prediction">
+                <i class="bi bi-cpu me-2"></i> Predict Waste
+            </a>
+    </li>
+    <li>
+         <a href="{{ route('ai.advice.form') }}" class="nav-link text-white" data-tooltip="AI Recycling Advice">
+                <i class="bi bi-lightbulb me-2"></i> AI Recycling Advice
+            </a>
+    </li>
+</ul>
+               
+</li>
+ <!-- NEW: Collection Points -->
+                <li class="nav-item mb-2">
+                    <a href="#collectionSubmenu" class="nav-link" onclick="toggleSubmenu(event)" data-tooltip="Collection Points" aria-label="Collection Points">
+                        <i class="bi bi-geo-alt me-2"></i> <span class="nav-text">Collection Points</span>
+                    </a>
+                    <ul class="submenu list-unstyled" id="collectionSubmenu">
                         <li>
-                            <a href="{{ route('wastes.index') }}" class="nav-link text-white" data-tooltip="All Waste">
-                                <i class="bi bi-recycle me-2"></i> All Waste
+                            <a href="{{ url('/dashbored/collectionpoints') }}" class="nav-link {{ request()->is('collectionpoints/index') ? 'active' : '' }}">
+                                <i class="bi bi-geo-alt me-2"></i> Collection Points
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('waste_categories.index') }}" class="nav-link text-white" data-tooltip="Waste Categories">
-                                <i class="bi bi-tags me-2"></i> Waste Categories
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('predictwaste') }}" class="nav-link text-white" data-tooltip="AI Waste Prediction">
-                                <i class="bi bi-cpu me-2"></i> Predict Waste
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('ai.advice.form') }}" class="nav-link text-white" data-tooltip="AI Recycling Advice">
-                                <i class="bi bi-lightbulb me-2"></i> AI Recycling Advice
+                            <a href="{{ url('/collectionpoints/predictions') }}" class="nav-link {{ request()->is('collectionpoints/predictions') ? 'active' : '' }}">
+                                <i class="bi bi-cpu me-1"></i> IA Points de Collecte
                             </a>
                         </li>
                     </ul>
