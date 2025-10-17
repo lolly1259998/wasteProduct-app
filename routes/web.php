@@ -103,9 +103,23 @@ $totalWastes = $wastes->count();
 
     // Reservation Routes
     Route::resource('reservations', ReservationController::class);
-});
 
 //frontoffice home route
+    // Product Routes
+    Route::resource('products', ProductController::class);
+
+    // Donation Routes
+    Route::resource('donations', DonationController::class)->except(['edit', 'update']);
+
+    // Order Routes
+    Route::resource('orders', OrderController::class)->except(['edit', 'update']);
+
+    // Reservation Routes
+    Route::resource('reservations', ReservationController::class);
+
+    Route::view('dashboard', 'dashboard')->name('dashboard');
+});
+
 Route::get('/waste2product', function () {
     return view('front.home');
 });
