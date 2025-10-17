@@ -169,10 +169,29 @@ background: linear-gradient(180deg, #003d39ff 0%, #000b0aff 100%);
                 </li>
                 <li class="nav-item mb-2">
                     <a href="#wasteSubmenu" class="nav-link" onclick="toggleSubmenu(event)" data-tooltip="Waste Management" aria-label="Waste Management"><i class="bi bi-trash3 me-2"></i> <span class="nav-text">Waste Management</span></a>
-                    <ul class="submenu list-unstyled" id="wasteSubmenu">
-                        <li><a href="#" class="nav-link text-white" data-tooltip="All Waste">All Waste</a></li>
-                        <li><a href="#" class="nav-link text-white" data-tooltip="Add Waste">Add Waste</a></li>
-                    </ul>
+                  <ul class="submenu list-unstyled" id="wasteSubmenu">
+    <li>
+        <a href="{{ route('wastes.index') }}" class="nav-link text-white" data-tooltip="All Waste">
+            <i class="bi bi-recycle me-2"></i> All Waste
+        </a>
+    </li>
+    <li>
+        <a href="{{ route('waste_categories.index') }}" class="nav-link text-white" data-tooltip="Waste Categories">
+            <i class="bi bi-tags me-2"></i> Waste Categories
+        </a>
+    </li>
+    <li>
+        <a href="{{ route('predictwaste') }}" class="nav-link text-white" data-tooltip="AI Waste Prediction">
+                <i class="bi bi-cpu me-2"></i> Predict Waste
+            </a>
+    </li>
+    <li>
+         <a href="{{ route('ai.advice.form') }}" class="nav-link text-white" data-tooltip="AI Recycling Advice">
+                <i class="bi bi-lightbulb me-2"></i> AI Recycling Advice
+            </a>
+    </li>
+    
+</ul>
                 </li>
                 <li class="nav-item mb-2">
                     <a href="#" class="nav-link" data-tooltip="Catégories" aria-label="Catégories"><i class="bi bi-tags me-2"></i> <span class="nav-text">Catégories</span></a>
