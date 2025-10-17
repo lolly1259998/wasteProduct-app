@@ -1,3 +1,5 @@
+
+@extends('back.layout')
 <!DOCTYPE html>
 <html lang="fr" class="h-100">
 <head>
@@ -230,121 +232,8 @@
     <button class="mobile-menu-btn" id="mobileMenuBtn">
         <i class="bi bi-list"></i>
     </button>
-    
-    <!-- Sidebar -->
-    <div class="sidebar" id="sidebar">
-        <!-- Sidebar Header -->
-        <div class="sidebar-header">
-            <a href="{{ route('back.home') }}" class="brand">
-                <div class="brand-logo">
-                    <i class="bi bi-recycle"></i>
-                </div>
-                <div>
-                    <div class="brand-text">Waste2Product</div>
-                    <small class="text-muted">Administration</small>
-                </div>
-            </a>
-        </div>
-        
-        <!-- Navigation -->
-        <nav class="sidebar-nav">
-            <!-- Main Section -->
-            <div class="nav-section">
-                <div class="nav-section-title">Navigation Principale</div>
-                <div class="nav-item">
-                    <a href="{{ route('back.home') }}" 
-                       class="nav-link {{ request()->routeIs('back.home') ? 'active' : '' }}">
-                        <div class="nav-icon">
-                            <i class="bi bi-speedometer2"></i>
-                        </div>
-                        <span>Tableau de Bord</span>
-                    </a>
-                </div>
-                <div class="nav-item">
-                    <a href="{{ route('collectionpoints.index') }}" 
-                       class="nav-link {{ request()->routeIs('collectionpoints.*') ? 'active' : '' }}">
-                        <div class="nav-icon">
-                            <i class="bi bi-pin-map"></i>
-                        </div>
-                        <span>Points de Collecte</span>
-                    </a>
-                </div>
-                <!-- Waste Categories -->
-                <div class="nav-item">
-                    <a href="{{ route('waste_categories.index') }}" 
-                       class="nav-link {{ request()->routeIs('waste_categories.*') ? 'active' : '' }}">
-                        <div class="nav-icon">
-                            <i class="bi bi-card-list"></i>
-                        </div>
-                        <span>Waste Categories</span>
-                    </a>
-                </div>
-
-                <!-- Wastes -->
-                <div class="nav-item">
-                    <a href="{{ route('wastes.index') }}" 
-                       class="nav-link {{ request()->routeIs('wastes.*') ? 'active' : '' }}">
-                        <div class="nav-icon">
-                            <i class="bi bi-trash"></i>
-                        </div>
-                        <span>Wastes</span>
-                    </a>
-                </div>
-
-                <!-- AI Waste Prediction -->
-                <div class="nav-item">
-                    <a href="{{ url('/predictwaste') }}" 
-                       class="nav-link {{ request()->is('predictwaste') ? 'active' : '' }}">
-                        <div class="nav-icon">
-                            <i class="bi bi-robot"></i>
-                        </div>
-                        <span>AI Waste Prediction</span>
-                    </a>
-                </div>
-
-                <!-- Smart Waste Tips -->
-                <div class="nav-item">
-                    <a href="{{ url('/ai-advice') }}" 
-                       class="nav-link {{ request()->is('ai-advice') ? 'active' : '' }}">
-                        <div class="nav-icon">
-                            <i class="bi bi-lightbulb"></i>
-                        </div>
-                        <span>Smart Waste Tips</span>
-                    </a>
-                </div>
-                
-                <!-- AI Collection Points -->
-                <div class="nav-item">
-                    <a href="{{ url('/collectionpoints/predictions') }}" 
-                       class="nav-link active">
-                        <div class="nav-icon">
-                            <i class="bi bi-geo-alt"></i>
-                        </div>
-                        <span>IA Points de Collecte</span>
-                    </a>
-                </div>
-            </div>
-        </nav>
-        
-        <!-- Sidebar Footer -->
-        <div class="position-absolute bottom-0 start-0 end-0 p-3 border-top border-dark">
-            <div class="d-flex align-items-center gap-3">
-                <div class="flex-shrink-0">
-                    <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center" 
-                         style="width: 40px; height: 40px;">
-                        <i class="bi bi-person-fill text-white"></i>
-                    </div>
-                </div>
-                <div class="flex-grow-1">
-                    <div class="text-white fw-medium">Admin User</div>
-                    <small class="text-muted">Administrateur</small>
-                </div>
-                <a href="#" class="text-muted">
-                    <i class="bi bi-box-arrow-right"></i>
-                </a>
-            </div>
-        </div>
-    </div>
+ 
+   
     
     <!-- Main Content -->
     <div class="main-content" id="mainContent">
