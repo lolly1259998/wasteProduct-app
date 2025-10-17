@@ -1,5 +1,4 @@
 <?php
-
 use App\Http\Controllers\DonationController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\OrderController;
@@ -19,6 +18,9 @@ use App\Http\Controllers\AI\WasteAIController;
 use App\Http\Controllers\AI\RecyclingAIController;
 use App\Http\Controllers\Backoffice\CollectionPointController;
 use App\Http\Controllers\Front\CollectionPointFrontController;
+use App\Http\Controllers\Backoffice\RecyclingProcessController;
+use App\Http\Controllers\Backoffice\ProductController;
+use App\Http\Controllers\Front\ProductFrontController;
 use App\Http\Controllers\AI\CollectionAIController;
 use App\Http\Controllers\Campaign\CampaignController;
 
@@ -120,10 +122,9 @@ Route::get('/collectionpoints/predictions', [CollectionPointController::class, '
 
     // Reservation Routes
     Route::resource('reservations', ReservationController::class);
-
-    Route::view('dashboard', 'dashboard')->name('dashboard');
 });
 
+//frontoffice home route
 Route::get('/waste2product', function () {
     return view('front.home');
 });
