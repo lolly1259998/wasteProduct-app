@@ -77,7 +77,7 @@ $totalWastes = $wastes->count();
 Route::get('/collection-ai/train/{id}', [CollectionAIController::class, 'train']);
 Route::get('/collection-ai/predict/{id}', [CollectionAIController::class, 'predict']);
 
-Route::get('/collectionpoints/predictions', [CollectionPointController::class, 'predictions'])
+Route::get('/collectionpoints/predictionss', [CollectionPointController::class, 'predictions'])
     ->name('collectionpoints.predictions');
 
 //frontoffice home route
