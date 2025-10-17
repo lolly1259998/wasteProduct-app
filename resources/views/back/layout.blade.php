@@ -264,6 +264,17 @@
             </a>
         </div>
         
+        <!-- AI Collection Points -->
+<div class="nav-item">
+    <a href="{{ url('/collectionpoints/predictions') }}" 
+       class="nav-link {{ request()->is('collectionpoints/predictions') ? 'active' : '' }}">
+        <div class="nav-icon">
+            <i class="bi bi-geo-alt"></i>
+        </div>
+        <span>IA Points de Collecte</span>
+    </a>
+</div>
+
     </div>
 
         </nav>

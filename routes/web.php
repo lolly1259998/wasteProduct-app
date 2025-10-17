@@ -15,6 +15,7 @@ use App\Http\Controllers\AI\AIController;
 use App\Http\Controllers\AI\WasteAIController;
 use App\Http\Controllers\Backoffice\CollectionPointController;
 use App\Http\Controllers\Front\CollectionPointFrontController;
+use App\Http\Controllers\AI\CollectionAIController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -73,7 +74,11 @@ $totalWastes = $wastes->count();
     })->middleware(['auth', 'verified'])->name('back.home');
 });
 
+Route::get('/collection-ai/train/{id}', [CollectionAIController::class, 'train']);
+Route::get('/collection-ai/predict/{id}', [CollectionAIController::class, 'predict']);
 
+Route::get('/collectionpoints/predictions', [CollectionPointController::class, 'predictions'])
+    ->name('collectionpoints.predictions');
 
 //frontoffice home route
 Route::get('/waste2product', function () {
