@@ -19,6 +19,7 @@ use App\Http\Controllers\AI\AIController;
 use App\Http\Controllers\AI\WasteAIController;
 use App\Http\Controllers\Backoffice\CollectionPointController;
 use App\Http\Controllers\Front\CollectionPointFrontController;
+use App\Http\Controllers\AI\CollectionAIController;
 use App\Http\Controllers\Campaign\CampaignController;
 
 Route::get('/', function () {
@@ -78,7 +79,11 @@ $totalWastes = $wastes->count();
     })->middleware(['auth', 'verified'])->name('back.home');
 
 
+Route::get('/collection-ai/train/{id}', [CollectionAIController::class, 'train']);
+Route::get('/collection-ai/predict/{id}', [CollectionAIController::class, 'predict']);
 
+Route::get('/collectionpoints/predictions', [CollectionPointController::class, 'predictions'])
+    ->name('collectionpoints.predictions');
 
 //frontoffice home route
     // Product Routes
@@ -101,6 +106,8 @@ Route::get('/waste2product', function () {
 });
 
 //frontoffice campaigns routes
+
+
 Route::get('/campaignsFront', [CampaignController::class, 'frontIndex'])->name('campaigns.front');
 
 // Frontoffice Waste Category Routes
