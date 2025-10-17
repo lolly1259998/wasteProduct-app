@@ -1,5 +1,4 @@
 <?php
-
 use App\Http\Controllers\DonationController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\OrderController;
@@ -92,15 +91,8 @@ $totalWastes = $wastes->count();
     Route::get('/collection-ai/train/{id}', [CollectionAIController::class, 'train']);
     Route::get('/collection-ai/predict/{id}', [CollectionAIController::class, 'predict']);
 
-Route::get('/collection-ai/train/{id}', [CollectionAIController::class, 'train']);
-Route::get('/collection-ai/predict/{id}', [CollectionAIController::class, 'predict']);
-
-Route::get('/collectionpoints/predictions', [CollectionPointController::class, 'predictions'])
-    ->name('collectionpoints.predictions');
-
-//frontoffice home route
-    // Product Routes
-    Route::resource('products', ProductController::class);
+    Route::get('/collectionpoints/predictions', [CollectionPointController::class, 'predictions'])
+        ->name('collectionpoints.predictions');
 
     // Donation Routes
     Route::resource('donations', DonationController::class)->except(['edit', 'update']);
