@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\DonationController;
+use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProductController;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
@@ -72,18 +76,31 @@ $totalWastes = $wastes->count();
     });
         return view('back.home', compact('categories', 'wastes', 'wasteStats'));
     })->middleware(['auth', 'verified'])->name('back.home');
-});
+
 
 
 
 //frontoffice home route
+    // Product Routes
+    Route::resource('products', ProductController::class);
+
+    // Donation Routes
+    Route::resource('donations', DonationController::class)->except(['edit', 'update']);
+
+    // Order Routes
+    Route::resource('orders', OrderController::class)->except(['edit', 'update']);
+
+    // Reservation Routes
+    Route::resource('reservations', ReservationController::class);
+
+    Route::view('dashboard', 'dashboard')->name('dashboard');
+});
+
 Route::get('/waste2product', function () {
     return view('front.home');
 });
 
 //frontoffice campaigns routes
-
-
 Route::get('/campaignsFront', [CampaignController::class, 'frontIndex'])->name('campaigns.front');
 
 // Frontoffice Waste Category Routes
@@ -114,8 +131,11 @@ Route::post('/ai-advice', [WasteAIController::class, 'recycling'])->name('ai.adv
 
 
 Route::view('/products', 'front.products');
+Route::get('/shop', function () {
+    return view('front.products');
+})->name('front.products');
+
 Route::view('/recycling', 'front.recycling');
-Route::view('/donations', 'front.donations');
 Route::view('/contact', 'front.contact');
 
 
