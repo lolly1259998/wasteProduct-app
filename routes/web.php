@@ -77,13 +77,19 @@ $totalWastes = $wastes->count();
 Route::get('/collection-ai/train/{id}', [CollectionAIController::class, 'train']);
 Route::get('/collection-ai/predict/{id}', [CollectionAIController::class, 'predict']);
 
-Route::get('/collectionpoints/predictionss', [CollectionPointController::class, 'predictions'])
+Route::get('/collectionpoints/predictions', [CollectionPointController::class, 'predictions'])
     ->name('collectionpoints.predictions');
 
 //frontoffice home route
 Route::get('/waste2product', function () {
     return view('front.home');
 });
+
+//frontoffice campaigns routes
+
+
+Route::get('/campaignsFront', [CampaignController::class, 'frontIndex'])->name('campaigns.front');
+
 // Frontoffice Waste Category Routes
 Route::get('/categories', [FrontWasteCategoryController::class, 'index'])->name('front.waste-categories.index');
 Route::get('/categories/create', [FrontWasteCategoryController::class, 'create'])->name('front.waste-categories.create');
@@ -122,4 +128,15 @@ Route::resource('collectionpoints', CollectionPointController::class);
 
 Route::get('/waste2product/collectionpoints', [CollectionPointFrontController::class, 'index'])->name('front.collectionpoints.index');
 Route::get('/waste2product/collectionpoints/{id}', [CollectionPointFrontController::class, 'show'])->name('front.collectionpoints.show');
+// Route pour la page de gestion des campagnes dans le back-office
+Route::get('/back/campaigns', function () {
+    return view('back.campaign.campaigns');
+})->name('back.campaigns');
+
+// Routes RESTful pour l'API des campagnes
+Route::resource('campaigns', CampaignController::class);
+
+
+
+Route::get('/ask', [AIControllerCampaign::class, 'askAI']);
 require __DIR__.'/auth.php';

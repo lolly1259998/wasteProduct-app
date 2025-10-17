@@ -1,420 +1,420 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modifier le Point de Collecte</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-    <style>
-        :root {
-            --primary-green: #198754;
-            --light-green: #d1e7dd;
-            --dark-green: #0f5132;
-            --success-gradient: linear-gradient(135deg, #198754 0%, #20c997 100%);
+@extends('back.layout')
+
+@section('title', 'Modifier le Point de Collecte')
+
+@section('content')
+<style>
+    :root {
+        --primary-green: #198754;
+        --light-green: #d1e7dd;
+        --dark-green: #0f5132;
+        --success-gradient: linear-gradient(135deg, #198754 0%, #20c997 100%);
+    }
+    
+    .card {
+        border: none;
+        box-shadow: 0 1rem 3rem rgba(25, 135, 84, 0.15);
+        border-radius: 20px;
+        overflow: hidden;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+    }
+    
+    .card-header {
+        background: var(--success-gradient) !important;
+        border-bottom: none;
+        padding: 1.5rem 2rem;
+    }
+    
+    .section-title {
+        position: relative;
+        padding-left: 1rem;
+        margin-bottom: 1.5rem;
+        font-weight: 700;
+        color: var(--dark-green);
+    }
+    
+    .section-title::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background: var(--success-gradient);
+        border-radius: 4px;
+    }
+    
+    .info-badge {
+        font-size: 0.85rem;
+        background: rgba(255, 255, 255, 0.2) !important;
+        backdrop-filter: blur(10px);
+    }
+    
+    .current-data-section {
+        background: linear-gradient(135deg, #f8fff8 0%, #e8f5e8 100%);
+        border-radius: 16px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        border: 1px solid var(--light-green);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .current-data-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: var(--success-gradient);
+    }
+    
+    .data-card {
+        border: 1px solid #e9ecef;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        background: white;
+        overflow: hidden;
+    }
+    
+    .data-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0.5rem 1rem rgba(25, 135, 84, 0.15);
+        border-color: var(--light-green);
+    }
+    
+    .data-card .card-header {
+        background: var(--light-green) !important;
+        border-bottom: 1px solid #dee2e6;
+        padding: 1rem 1.25rem;
+    }
+    
+    .data-card .card-header h6 {
+        color: var(--dark-green);
+        font-weight: 600;
+        margin: 0;
+    }
+    
+    .table-borderless td {
+        padding: 0.5rem 0.25rem;
+        border: none;
+    }
+    
+    .form-section {
+        background: white;
+        border-radius: 16px;
+        padding: 2rem;
+        margin-bottom: 1.5rem;
+        border: 1px solid #e9ecef;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+    
+    .form-section:hover {
+        box-shadow: 0 0.5rem 1rem rgba(25, 135, 84, 0.1);
+        border-color: var(--light-green);
+    }
+    
+    .form-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: var(--success-gradient);
+        border-radius: 16px 16px 0 0;
+    }
+    
+    .json-field {
+        font-family: 'JetBrains Mono', 'Courier New', monospace;
+        font-size: 0.85rem;
+        border-radius: 12px;
+        background: #f8f9fa;
+    }
+    
+    .status-active {
+        color: var(--primary-green);
+        font-weight: 600;
+        background: var(--light-green);
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .status-inactive {
+        color: #dc3545;
+        font-weight: 600;
+        background: #f8d7da;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .btn-action {
+        min-width: 140px;
+        padding: 0.75rem 1.5rem;
+        border-radius: 12px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        border: none;
+    }
+    
+    .btn-success {
+        background: var(--success-gradient);
+    }
+    
+    .btn-success:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 0.5rem 1rem rgba(25, 135, 84, 0.3);
+    }
+    
+    .btn-outline-success {
+        border: 2px solid var(--primary-green);
+        color: var(--primary-green);
+    }
+    
+    .btn-outline-success:hover {
+        background: var(--primary-green);
+        transform: translateY(-2px);
+    }
+    
+    .form-control, .form-select {
+        border-radius: 12px;
+        padding: 0.75rem 1rem;
+        border: 2px solid #e9ecef;
+        transition: all 0.3s ease;
+    }
+    
+    .form-control:focus, .form-select:focus {
+        border-color: var(--primary-green);
+        box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.25);
+    }
+    
+    .input-group-text {
+        background: var(--light-green);
+        border: 2px solid #e9ecef;
+        border-right: none;
+        border-radius: 12px 0 0 12px;
+    }
+    
+    .json-format-btn {
+        border-radius: 0 12px 12px 0;
+        border: 2px solid #e9ecef;
+        border-left: none;
+        background: white;
+        transition: all 0.3s ease;
+    }
+    
+    .json-format-btn:hover {
+        background: var(--light-green);
+        color: var(--dark-green);
+    }
+    
+    .alert {
+        border-radius: 12px;
+        border: none;
+        backdrop-filter: blur(10px);
+    }
+    
+    .alert-danger {
+        background: rgba(220, 53, 69, 0.1);
+        border-left: 4px solid #dc3545;
+    }
+    
+    .floating-label {
+        position: relative;
+        margin-bottom: 1.5rem;
+    }
+    
+    .floating-label .form-control {
+        padding-top: 1.5rem;
+    }
+    
+    .floating-label label {
+        position: absolute;
+        top: 0.5rem;
+        left: 1rem;
+        font-size: 0.8rem;
+        color: #6c757d;
+        transition: all 0.3s ease;
+        pointer-events: none;
+    }
+    
+    .floating-label .form-control:focus + label,
+    .floating-label .form-control:not(:placeholder-shown) + label {
+        top: 0.25rem;
+        font-size: 0.7rem;
+        color: var(--primary-green);
+    }
+    
+    .progress-indicator {
+        display: flex;
+        justify-content: space-between;
+        position: relative;
+        margin-bottom: 3rem;
+        padding: 0 2rem;
+    }
+    
+    .progress-step {
+        text-align: center;
+        position: relative;
+        z-index: 2;
+    }
+    
+    .step-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: var(--light-green);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 0.5rem;
+        color: var(--dark-green);
+        font-size: 1.25rem;
+        transition: all 0.3s ease;
+    }
+    
+    .step-active .step-icon {
+        background: var(--success-gradient);
+        color: white;
+        box-shadow: 0 0.25rem 0.5rem rgba(25, 135, 84, 0.3);
+    }
+    
+    .step-label {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--dark-green);
+    }
+    
+    .progress-bar {
+        position: absolute;
+        top: 25px;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: #e9ecef;
+        z-index: 1;
+    }
+    
+    .progress-fill {
+        height: 100%;
+        background: var(--success-gradient);
+        width: 50%;
+        transition: width 0.5s ease;
+    }
+    
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
         }
-        
-        body {
-            background: linear-gradient(135deg, #f8fff8 0%, #e8f5e8 100%);
-            min-height: 100vh;
+        to {
+            opacity: 1;
+            transform: translateY(0);
         }
-        
-        .card {
-            border: none;
-            box-shadow: 0 1rem 3rem rgba(25, 135, 84, 0.15);
-            border-radius: 20px;
-            overflow: hidden;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-        }
-        
-        .card-header {
-            background: var(--success-gradient) !important;
-            border-bottom: none;
-            padding: 1.5rem 2rem;
-        }
-        
-        .section-title {
-            position: relative;
-            padding-left: 1rem;
-            margin-bottom: 1.5rem;
-            font-weight: 700;
-            color: var(--dark-green);
-        }
-        
-        .section-title::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 4px;
-            background: var(--success-gradient);
-            border-radius: 4px;
-        }
-        
-        .info-badge {
-            font-size: 0.85rem;
-            background: rgba(255, 255, 255, 0.2) !important;
-            backdrop-filter: blur(10px);
-        }
-        
-        .current-data-section {
-            background: linear-gradient(135deg, #f8fff8 0%, #e8f5e8 100%);
-            border-radius: 16px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            border: 1px solid var(--light-green);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .current-data-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: var(--success-gradient);
-        }
-        
-        .data-card {
-            border: 1px solid #e9ecef;
-            border-radius: 12px;
-            transition: all 0.3s ease;
-            background: white;
-            overflow: hidden;
-        }
-        
-        .data-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 0.5rem 1rem rgba(25, 135, 84, 0.15);
-            border-color: var(--light-green);
-        }
-        
-        .data-card .card-header {
-            background: var(--light-green) !important;
-            border-bottom: 1px solid #dee2e6;
-            padding: 1rem 1.25rem;
-        }
-        
-        .data-card .card-header h6 {
-            color: var(--dark-green);
-            font-weight: 600;
-            margin: 0;
-        }
-        
-        .table-borderless td {
-            padding: 0.5rem 0.25rem;
-            border: none;
-        }
-        
-        .form-section {
-            background: white;
-            border-radius: 16px;
-            padding: 2rem;
-            margin-bottom: 1.5rem;
-            border: 1px solid #e9ecef;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-        
-        .form-section:hover {
-            box-shadow: 0 0.5rem 1rem rgba(25, 135, 84, 0.1);
-            border-color: var(--light-green);
-        }
-        
-        .form-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: var(--success-gradient);
-            border-radius: 16px 16px 0 0;
-        }
-        
-        .json-field {
-            font-family: 'JetBrains Mono', 'Courier New', monospace;
-            font-size: 0.85rem;
-            border-radius: 12px;
-            background: #f8f9fa;
-        }
-        
-        .status-active {
-            color: var(--primary-green);
-            font-weight: 600;
-            background: var(--light-green);
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .status-inactive {
-            color: #dc3545;
-            font-weight: 600;
-            background: #f8d7da;
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .btn-action {
-            min-width: 140px;
-            padding: 0.75rem 1.5rem;
-            border-radius: 12px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            border: none;
-        }
-        
-        .btn-success {
-            background: var(--success-gradient);
-        }
-        
-        .btn-success:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 0.5rem 1rem rgba(25, 135, 84, 0.3);
-        }
-        
-        .btn-outline-success {
-            border: 2px solid var(--primary-green);
-            color: var(--primary-green);
-        }
-        
-        .btn-outline-success:hover {
-            background: var(--primary-green);
-            transform: translateY(-2px);
-        }
-        
-        .form-control, .form-select {
-            border-radius: 12px;
-            padding: 0.75rem 1rem;
-            border: 2px solid #e9ecef;
-            transition: all 0.3s ease;
-        }
-        
-        .form-control:focus, .form-select:focus {
-            border-color: var(--primary-green);
-            box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.25);
-        }
-        
-        .input-group-text {
-            background: var(--light-green);
-            border: 2px solid #e9ecef;
-            border-right: none;
-            border-radius: 12px 0 0 12px;
-        }
-        
-        .json-format-btn {
-            border-radius: 0 12px 12px 0;
-            border: 2px solid #e9ecef;
-            border-left: none;
-            background: white;
-            transition: all 0.3s ease;
-        }
-        
-        .json-format-btn:hover {
-            background: var(--light-green);
-            color: var(--dark-green);
-        }
-        
-        .alert {
-            border-radius: 12px;
-            border: none;
-            backdrop-filter: blur(10px);
-        }
-        
-        .alert-danger {
-            background: rgba(220, 53, 69, 0.1);
-            border-left: 4px solid #dc3545;
-        }
-        
-        .floating-label {
-            position: relative;
-            margin-bottom: 1.5rem;
-        }
-        
-        .floating-label .form-control {
-            padding-top: 1.5rem;
-        }
-        
-        .floating-label label {
-            position: absolute;
-            top: 0.5rem;
-            left: 1rem;
-            font-size: 0.8rem;
-            color: #6c757d;
-            transition: all 0.3s ease;
-            pointer-events: none;
-        }
-        
-        .floating-label .form-control:focus + label,
-        .floating-label .form-control:not(:placeholder-shown) + label {
-            top: 0.25rem;
-            font-size: 0.7rem;
-            color: var(--primary-green);
-        }
-        
-        .progress-indicator {
-            display: flex;
-            justify-content: space-between;
-            position: relative;
-            margin-bottom: 3rem;
-            padding: 0 2rem;
-        }
-        
-        .progress-step {
-            text-align: center;
-            position: relative;
-            z-index: 2;
-        }
-        
-        .step-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: var(--light-green);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 0.5rem;
-            color: var(--dark-green);
-            font-size: 1.25rem;
-            transition: all 0.3s ease;
-        }
-        
-        .step-active .step-icon {
-            background: var(--success-gradient);
-            color: white;
-            box-shadow: 0 0.25rem 0.5rem rgba(25, 135, 84, 0.3);
-        }
-        
-        .step-label {
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--dark-green);
-        }
-        
-        .progress-bar {
-            position: absolute;
-            top: 25px;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: #e9ecef;
-            z-index: 1;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: var(--success-gradient);
-            width: 50%;
-            transition: width 0.5s ease;
-        }
-        
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .fade-in {
-            animation: fadeInUp 0.6s ease-out;
-        }
-        
-        .icon-wrapper {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            background: var(--light-green);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--dark-green);
-            margin-right: 1rem;
-        }
-    </style>
-</head>
-<body>
-    <div class="container-fluid py-4">
-        <div class="row justify-content-center">
-            <div class="col-12 col-xxl-10">
-                <div class="card fade-in">
-                    <div class="card-header text-white">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="d-flex align-items-center">
-                                <div class="icon-wrapper bg-white bg-opacity-20 me-3">
-                                    <i class="bi bi-pencil-square fs-5"></i>
-                                </div>
-                                <div>
-                                    <h4 class="mb-1 fw-bold">Modifier le Point de Collecte</h4>
-                                    <p class="mb-0 opacity-90">Mettez à jour les informations de votre point de collecte</p>
-                                </div>
+    }
+    
+    .fade-in {
+        animation: fadeInUp 0.6s ease-out;
+    }
+    
+    .icon-wrapper {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        background: var(--light-green);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--dark-green);
+        margin-right: 1rem;
+    }
+</style>
+
+<div class="container-fluid py-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-xxl-10">
+            <div class="card fade-in">
+                <div class="card-header text-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center">
+                            <div class="icon-wrapper bg-white bg-opacity-20 me-3">
+                                <i class="bi bi-pencil-square fs-5"></i>
                             </div>
+                            <div>
+                                <h4 class="mb-1 fw-bold">Modifier le Point de Collecte</h4>
+                                <p class="mb-0 opacity-90">Mettez à jour les informations de votre point de collecte</p>
+                            </div>
+                        </div>
                           
+                        <a href="{{ route('collectionpoints.index') }}" class="btn btn-light btn-sm">
+                            <i class="bi bi-arrow-left me-2"></i>Retour
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="card-body p-4 p-md-5">
+                    <!-- Indicateur de progression -->
+                    <div class="progress-indicator">
+                        <div class="progress-step step-active">
+                            <div class="step-icon">
+                                <i class="bi bi-eye"></i>
+                            </div>
+                            <span class="step-label">Consultation</span>
+                        </div>
+                        <div class="progress-step">
+                            <div class="step-icon">
+                                <i class="bi bi-pencil"></i>
+                            </div>
+                            <span class="step-label">Modification</span>
+                        </div>
+                        <div class="progress-step">
+                            <div class="step-icon">
+                                <i class="bi bi-check-lg"></i>
+                            </div>
+                            <span class="step-label">Validation</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill"></div>
                         </div>
                     </div>
-                    
-                    <div class="card-body p-4 p-md-5">
-                        <!-- Indicateur de progression -->
-                        <div class="progress-indicator">
-                            <div class="progress-step step-active">
-                                <div class="step-icon">
-                                    <i class="bi bi-eye"></i>
+
+                    @if ($errors->any())
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-exclamation-triangle-fill me-3 fs-4"></i>
+                                <div class="flex-grow-1">
+                                    <h6 class="alert-heading mb-2 fw-bold">Données invalides</h6>
+                                    <ul class="mb-0 ps-3">
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
                                 </div>
-                                <span class="step-label">Consultation</span>
                             </div>
-                            <div class="progress-step">
-                                <div class="step-icon">
-                                    <i class="bi bi-pencil"></i>
-                                </div>
-                                <span class="step-label">Modification</span>
-                            </div>
-                            <div class="progress-step">
-                                <div class="step-icon">
-                                    <i class="bi bi-check-lg"></i>
-                                </div>
-                                <span class="step-label">Validation</span>
-                            </div>
-                            <div class="progress-bar">
-                                <div class="progress-fill"></div>
-                            </div>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
+                    @endif
 
-                        @if ($errors->any())
-                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                <div class="d-flex align-items-center">
-                                    <i class="bi bi-exclamation-triangle-fill me-3 fs-4"></i>
-                                    <div class="flex-grow-1">
-                                        <h6 class="alert-heading mb-2 fw-bold">Données invalides</h6>
-                                        <ul class="mb-0 ps-3">
-                                            @foreach ($errors->all() as $error)
-                                                <li>{{ $error }}</li>
-                                            @endforeach
-                                        </ul>
-                                    </div>
-                                </div>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    @if ($collectionPoint)
+                        <!-- Section d'affichage des données actuelles -->
+                        <div class="current-data-section fade-in">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h4 class="section-title mb-0">Détails Actuels du Point de Collecte</h4>
+                                <span class="badge bg-success info-badge">
+                                    <i class="bi bi-clock me-1"></i>Dernière mise à jour: {{ $collectionPoint->updated_at }}
+                                </span>
                             </div>
-                        @endif
-
-                        @if ($collectionPoint)
-                            <!-- Section d'affichage des données actuelles -->
-                            <div class="current-data-section fade-in">
-                                <div class="d-flex justify-content-between align-items-center mb-4">
-                                    <h4 class="section-title mb-0">Détails Actuels du Point de Collecte</h4>
+                            
+                            <div class="row g-4">
                                     <span class="badge bg-success info-badge">
                                         <i class="bi bi-clock me-1"></i>Dernière mise à jour: {{ $collectionPoint->updated_at }}
                                     </span>
