@@ -4,9 +4,9 @@
 @section('content')
 <div class="container py-4">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-12 col-md-8">
             <div class="card shadow">
-                <div class="card-body">
+                <div class="card-body p-3 p-md-4">
                     <h1 class="h3 font-weight-bold mb-4 text-success text-center">
                         <i class="fas fa-recycle me-2"></i>Donation #{{ $donation->id }}
                     </h1>
@@ -19,34 +19,35 @@
                     @endif
 
                     <div class="row g-3">
-                        <div class="col-md-6">
+                        <div class="col-12 col-md-6">
                             <label class="form-label fw-bold">
                                 <i class="fas fa-user me-1 text-muted"></i>User
                             </label>
                             <p class="form-control">{{ $donation->user->name ?? 'Guest' }}</p>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-12 col-md-6">
                             <label class="form-label fw-bold">
                                 <i class="fas fa-trash-alt me-1 text-muted"></i>Waste Type
                             </label>
                             <p class="form-control">{{ \App\Http\Controllers\DonationController::getWasteTypeName($donation->waste_id) }}</p>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-12 col-md-6">
                             <label class="form-label fw-bold">
                                 <i class="fas fa-tag me-1 text-muted"></i>Item Name
                             </label>
                             <p class="form-control fw-bold">{{ $donation->item_name }}</p>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-12 col-md-6">
                             <label class="form-label fw-bold">
                                 <i class="fas fa-info-circle me-1 text-muted"></i>Condition
                             </label>
                             <p class="form-control">{{ ucfirst($donation->condition) }}</p>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-12 col-md-6">
                             <label class="form-label fw-bold">
-                                <i class="fas fa-exclamation-circle me-1 text-muted"></i>Status :
+                                <i class="fas fa-exclamation-circle me-1 text-muted"></i>Status
                             </label>
+                            <p class="form-control">
                                 <span class="badge @switch($donation->status->value)
                                     @case('available') bg-success @break
                                     @case('claimed') bg-primary @break
@@ -56,6 +57,7 @@
                                 @endswitch">
                                     {{ $donation->status->value }}
                                 </span>
+                            </p>
                         </div>
                         <div class="col-12">
                             <label class="form-label fw-bold">
@@ -63,7 +65,7 @@
                             </label>
                             <p class="form-control">{{ $donation->description ?? 'N/A' }}</p>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-12 col-md-6">
                             <label class="form-label fw-bold">
                                 <i class="fas fa-truck me-1 text-muted"></i>Pickup
                             </label>
@@ -85,15 +87,13 @@
                         @endif
                     </div>
 
-                    <div class="d-flex justify-content-between align-items-center mt-4 gap-2">
-                        <div class="d-flex gap-2">
-                            <a href="{{ route($indexRoute) }}" class="btn btn-secondary">
-                                <i class="fas fa-arrow-left me-1"></i>Back to List
-                            </a>
-                        </div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between gap-2 mt-4">
+                        <a href="{{ route($indexRoute) }}" class="btn btn-secondary w-100 w-md-auto">
+                            <i class="fas fa-arrow-left me-1"></i>Back to List
+                        </a>
                         @auth
                             @if($donation->user_id == auth()->id())
-                                <a href="{{ route('front.donations.edit', $donation) }}" class="btn btn-warning">
+                                <a href="{{ route('front.donations.edit', $donation) }}" class="btn btn-warning w-100 w-md-auto">
                                     <i class="fas fa-edit me-1"></i>Edit
                                 </a>
                             @endif

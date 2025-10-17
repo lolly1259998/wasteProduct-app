@@ -3,12 +3,12 @@
 
 @section('content')
 <div class="min-vh-100 d-flex align-items-center justify-content-center bg-gradient text-dark" style="background: linear-gradient(to bottom right, #d4edda, #c3e6cb);">
-    <div class="container py-5">
+    <div class="container py-3 py-md-5">
         <div class="row justify-content-center">
-            <div class="col-md-6">
+            <div class="col-12 col-md-6">
                 <div class="card shadow-lg border-0">
-                    <div class="card-body p-4">
-                        <h1 class="text-2xl fw-bold mb-4 text-success text-center">Edit Donation ♻️</h1>
+                    <div class="card-body p-3 p-md-4">
+                        <h1 class="h3 fw-bold mb-4 text-success text-center">Edit Donation ♻️</h1>
                         
                         @if ($errors->any())
                             <div class="alert alert-danger mb-4">
@@ -94,7 +94,7 @@
                                     <label class="form-label fw-semibold">Current Images</label>
                                     <div class="row mb-2">
                                         @foreach($donation->images as $image)
-                                            <div class="col-md-4 mb-2">
+                                            <div class="col-6 col-md-4 mb-2">
                                                 <img src="{{ Storage::url($image) }}" alt="Current Image" class="img-thumbnail w-100" style="max-height: 100px;">
                                             </div>
                                         @endforeach
@@ -126,9 +126,9 @@
                                 @enderror
                             </div>
 
-                            <div class="d-grid gap-2 d-md-flex justify-content-md-between">
-                                <a href="{{ route($indexRoute) }}" class="btn btn-secondary">Back to List</a>
-                                <button type="submit" class="btn btn-success">Update Donation</button>
+                            <div class="d-flex flex-column flex-md-row justify-content-between gap-2">
+                                <a href="{{ route($indexRoute) }}" class="btn btn-secondary w-100 w-md-auto">Back to List</a>
+                                <button type="submit" class="btn btn-success w-100 w-md-auto">Update Donation</button>
                             </div>
                         </form>
                     </div>

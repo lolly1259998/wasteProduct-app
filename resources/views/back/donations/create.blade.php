@@ -3,9 +3,9 @@
 @section('content')
 <div class="container py-4">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-12 col-md-8">
             <div class="card shadow">
-                <div class="card-body">
+                <div class="card-body p-3 p-md-4">
                     <h1 class="h3 font-weight-bold mb-4 text-success text-center">Create Donation</h1>
                     @if ($errors->any())
                         <div class="alert alert-danger mb-4" role="alert">
@@ -26,7 +26,7 @@
                         <!-- User -->
                         <div class="mb-3">
                             <label for="user_id" class="form-label fw-bold">User</label>
-                            <select name="user_id" id="user_id" class="form-control" required>
+                            <select name="user_id" id="user_id" class="form-select" required>
                                 @foreach(\App\Models\User::all() as $user)
                                     <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>{{ $user->name }}</option>
                                 @endforeach
@@ -38,7 +38,7 @@
                         <!-- Waste Type -->
                         <div class="mb-3">
                             <label for="waste_id" class="form-label fw-bold">Waste Type</label>
-                            <select name="waste_id" id="waste_id" class="form-control" required>
+                            <select name="waste_id" id="waste_id" class="form-select" required>
                                 @if(isset($wastes) && !empty($wastes))
                                     @foreach($wastes as $id => $waste)
                                         <option value="{{ $id }}" {{ old('waste_id') == $id ? 'selected' : '' }}>{{ $waste['name'] }}</option>
@@ -62,7 +62,7 @@
                         <!-- Condition -->
                         <div class="mb-3">
                             <label for="condition" class="form-label fw-bold">Condition</label>
-                            <select name="condition" id="condition" class="form-control" required>
+                            <select name="condition" id="condition" class="form-select" required>
                                 <option value="new" {{ old('condition') == 'new' ? 'selected' : '' }}>New</option>
                                 <option value="used" {{ old('condition') == 'used' ? 'selected' : '' }}>Used</option>
                                 <option value="damaged" {{ old('condition') == 'damaged' ? 'selected' : '' }}>Damaged</option>
@@ -111,9 +111,9 @@
                             @enderror
                         </div>
                         <!-- Buttons -->
-                        <div class="d-flex justify-content-between">
-                            <a href="{{ route('back.donations.index') }}" class="btn btn-secondary">Cancel</a>
-                            <button type="submit" class="btn btn-success">Create</button>
+                        <div class="d-flex flex-column flex-md-row justify-content-between gap-2">
+                            <a href="{{ route('back.donations.index') }}" class="btn btn-secondary w-100 w-md-auto">Cancel</a>
+                            <button type="submit" class="btn btn-success w-100 w-md-auto">Create</button>
                         </div>
                     </form>
                 </div>

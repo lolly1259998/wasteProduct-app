@@ -4,9 +4,9 @@
 @section('content')
 <div class="container py-4">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-12 col-md-8">
             <div class="card shadow">
-                <div class="card-body">
+                <div class="card-body p-3 p-md-4">
                     <h1 class="h3 font-weight-bold mb-4 text-success text-center">
                         <i class="fas fa-shopping-cart me-2"></i>Place New Order
                     </h1>
@@ -118,11 +118,11 @@
                             @enderror
                         </div>
 
-                        <div class="d-flex justify-content-between">
-                            <a href="{{ route('front.orders.index') }}" class="btn btn-secondary">
+                        <div class="d-flex flex-column flex-md-row justify-content-between gap-2">
+                            <a href="{{ route('front.orders.index') }}" class="btn btn-secondary w-100 w-md-auto">
                                 <i class="fas fa-arrow-left me-1"></i>Cancel
                             </a>
-                            <button type="submit" class="btn btn-success">
+                            <button type="submit" class="btn btn-success w-100 w-md-auto">
                                 <i class="fas fa-paper-plane me-1"></i>Place Order
                             </button>
                         </div>

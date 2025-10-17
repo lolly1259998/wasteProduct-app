@@ -1,16 +1,17 @@
+{{-- resources/views/front/reservations/edit.blade.php --}}
 @extends('front.layout')
 
 @section('content')
 <div class="min-vh-100 d-flex align-items-center justify-content-center bg-gradient text-dark" style="background: linear-gradient(to bottom right, #d4edda, #c3e6cb);">
-    <div class="container py-5">
+    <div class="container py-3 py-md-5">
         <div class="row justify-content-center">
-            <div class="col-md-6">
+            <div class="col-12 col-md-6">
                 <div class="card shadow-lg border-0">
-                    <div class="card-body p-4">
-                        <h1 class="text-2xl fw-bold mb-4 text-success text-center">Edit Reservation #{{ $reservation->id }} 📅</h1>
+                    <div class="card-body p-3 p-md-4">
+                        <h1 class="h3 fw-bold mb-4 text-success text-center">Edit Reservation #{{ $reservation->id }} 📅</h1>
                         
                         @if ($errors->any())
-                            <div class="alert alert-danger mb-4">
+                            <div class="alert alert-danger mb-4" role="alert">
                                 <ul class="mb-0">
                                     @foreach ($errors->all() as $error)
                                         <li>{{ $error }}</li>
@@ -20,7 +21,7 @@
                         @endif
 
                         @if (session('success'))
-                            <div class="alert alert-success mb-4">
+                            <div class="alert alert-success mb-4" role="alert">
                                 {{ session('success') }}
                             </div>
                         @endif
@@ -88,9 +89,9 @@
                                 @enderror
                             </div>
 
-                            <div class="d-grid gap-2 d-md-flex justify-content-md-between">
-                                <a href="{{ $showRoute ?? route('front.reservations.show', $reservation) }}" class="btn btn-secondary">Cancel</a>
-                                <button type="submit" class="btn btn-success">Update Reservation</button>
+                            <div class="d-flex flex-column flex-md-row justify-content-between gap-2">
+                                <a href="{{ $showRoute ?? route('front.reservations.show', $reservation) }}" class="btn btn-secondary w-100 w-md-auto">Cancel</a>
+                                <button type="submit" class="btn btn-success w-100 w-md-auto">Update Reservation</button>
                             </div>
                         </form>
                     </div>

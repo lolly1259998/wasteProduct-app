@@ -5,8 +5,8 @@
     <div class="row justify-content-center">
         <div class="col-12">
             <div class="card shadow">
-                <div class="card-body">
-                    <h1 class="h3 font-weight-bold mb-4 text-success text-center">Manage Reservations <i class="bi bi-calendar3"></i></h1>
+                <div class="card-body p-3 p-md-4">
+                    <h1 class="h3 fw-bold mb-4 text-success text-center">Manage Reservations <i class="bi bi-calendar3"></i></h1>
                     @if (session('success'))
                         <div id="success-message" class="alert alert-success mb-4" role="alert">
                             {{ session('success') }}
@@ -47,9 +47,11 @@
                                 <label class="form-label">Date To</label>
                                 <input type="date" name="date_to" value="{{ request('date_to') }}" class="form-control">
                             </div>
-                            <div class="col-md-4 d-flex align-items-end gap-2">
-                                <button type="submit" class="btn btn-success me-2">Filter</button>
-                                <a href="{{ route('back.reservations.index') }}" class="btn btn-outline-secondary">Reset</a>
+                            <div class="col-md-4">
+                                <div class="d-flex flex-column flex-md-row gap-2 h-100 align-items-start align-items-md-end justify-content-md-end">
+                                    <button type="submit" class="btn btn-success w-100 w-md-auto">Filter</button>
+                                    <a href="{{ route('back.reservations.index') }}" class="btn btn-outline-secondary w-100 w-md-auto">Reset</a>
+                                </div>
                             </div>
                         </div>
                     </form>

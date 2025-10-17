@@ -3,12 +3,12 @@
 
 @section('content')
 <div class="min-vh-100 d-flex align-items-center justify-content-center bg-gradient text-dark" style="background: linear-gradient(to bottom right, #d4edda, #c3e6cb);">
-    <div class="container py-5">
+    <div class="container py-3 py-md-5">
         <div class="row justify-content-center">
-            <div class="col-md-10 col-lg-8">
+            <div class="col-12 col-md-8 col-lg-6">
                 <div class="card shadow-lg border-0">
-                    <div class="card-body p-4">
-                        <h1 class="text-2xl fw-bold mb-4 text-success text-center">
+                    <div class="card-body p-3 p-md-4">
+                        <h1 class="h3 fw-bold mb-4 text-success text-center">
                             <i class="fas fa-shopping-cart me-2"></i>Order Details #{{ $order->id }}
                         </h1>
                         
@@ -20,7 +20,7 @@
                         @endif
 
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-12 col-md-6">
                                 <h6 class="fw-bold text-success mb-3">
                                     <i class="fas fa-info-circle me-1 text-muted"></i>Overview
                                 </h6>
@@ -50,7 +50,9 @@
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label fw-semibold">
-                                        <i class="fas fa-exclamation-circle me-1 text-muted"></i>Status :
+                                        <i class="fas fa-exclamation-circle me-1 text-muted"></i>Status
+                                    </label>
+                                    <p class="form-control">
                                         <span class="badge @switch($order->status->value)
                                             @case('completed') bg-success @break
                                             @case('processing') bg-primary @break
@@ -60,6 +62,7 @@
                                         @endswitch">
                                             {{ $order->status->value }}
                                         </span>
+                                    </p>
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label fw-semibold">
@@ -68,7 +71,7 @@
                                     <p class="form-control">{{ $order->order_date->format('M d, Y H:i') }}</p>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-12 col-md-6">
                                 <h6 class="fw-bold text-success mb-3">
                                     <i class="fas fa-truck me-1 text-muted"></i>Shipping & Payment
                                 </h6>
@@ -93,8 +96,8 @@
                             </div>
                         </div>
 
-                        <div class="text-center mt-4">
-                            <a href="{{ route('front.orders.index') }}" class="btn btn-secondary">
+                        <div class="d-flex justify-content-center mt-4">
+                            <a href="{{ route('front.orders.index') }}" class="btn btn-secondary w-100 w-md-auto">
                                 <i class="fas fa-arrow-left me-2"></i>Back to Orders
                             </a>
                         </div>

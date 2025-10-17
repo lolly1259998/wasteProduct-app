@@ -1,13 +1,14 @@
+{{-- resources/views/front/reservations/show.blade.php --}}
 @extends('front.layout')
 
 @section('content')
 <div class="min-vh-100 d-flex align-items-center justify-content-center bg-gradient text-dark" style="background: linear-gradient(to bottom right, #d4edda, #c3e6cb);">
-    <div class="container py-5">
+    <div class="container py-3 py-md-5">
         <div class="row justify-content-center">
-            <div class="col-md-8 col-lg-10">
+            <div class="col-12 col-md-8 col-lg-10">
                 <div class="card shadow-lg border-0">
-                    <div class="card-body p-4">
-                        <h1 class="text-2xl fw-bold mb-4 text-success text-center">
+                    <div class="card-body p-3 p-md-4">
+                        <h1 class="h3 fw-bold mb-4 text-success text-center">
                             <i class="fas fa-calendar-check me-2"></i>Reservation Details #{{ $reservation->id }}
                         </h1>
                         
@@ -19,7 +20,7 @@
                         @endif
 
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-12 col-md-6">
                                 <h6 class="fw-bold text-success mb-3">
                                     <i class="fas fa-info-circle me-1 text-muted"></i>Overview
                                 </h6>
@@ -43,8 +44,9 @@
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label fw-semibold">
-                                        <i class="fas fa-exclamation-circle me-1 text-muted"></i>Status :
+                                        <i class="fas fa-exclamation-circle me-1 text-muted"></i>Status
                                     </label>
+                                    <p class="form-control">
                                         <span class="badge @switch($reservation->status->value)
                                             @case('active') bg-success @break
                                             @case('expired') bg-warning @break
@@ -53,9 +55,10 @@
                                         @endswitch">
                                             {{ $reservation->status->value }}
                                         </span>
+                                    </p>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-12 col-md-6">
                                 <h6 class="fw-bold text-success mb-3">
                                     <i class="fas fa-clock me-1 text-muted"></i>Timeline
                                 </h6>
@@ -74,15 +77,15 @@
                             </div>
                         </div>
 
-                        <div class="d-flex justify-content-between align-items-center mt-4 gap-2">
-                            <a href="{{ route($indexRoute) }}" class="btn btn-secondary">
+                        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mt-4">
+                            <a href="{{ route($indexRoute) }}" class="btn btn-secondary w-100 w-md-auto">
                                 <i class="fas fa-arrow-left me-2"></i>Back to Reservations
                             </a>
-                            <div class="d-flex gap-2">
-                                <form action="{{ $destroyRoute }}" method="POST" class="d-inline">
+                            <div class="d-flex gap-2 w-100 w-md-auto">
+                                <form action="{{ $destroyRoute }}" method="POST" class="d-inline w-100">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?')">
+                                    <button type="submit" class="btn btn-danger w-100" onclick="return confirm('Are you sure?')">
                                         <i class="fas fa-trash me-1"></i>Delete
                                     </button>
                                 </form>
