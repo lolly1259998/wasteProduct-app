@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\DonationStatus;
 use App\Models\Donation;
 use App\Models\User;
+use App\Services\SentimentService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
@@ -87,14 +88,35 @@ class DonationController extends Controller
             })
             ->when(request('item_search'), function ($query, $search) {
                 return $query->where('item_name', 'like', '%' . $search . '%');
+            })
+            ->when(request('user_search'), function ($query, $search) {
+                return $query->whereHas('user', function($q) use ($search) {
+                    $q->where('name', 'like', '%' . $search . '%');
+                });
+            })
+            ->when(request('waste_id'), function ($query, $waste_id) {
+                return $query->where('waste_id', $waste_id);
+            })
+            ->when(request('condition'), function ($query, $condition) {
+                return $query->where('condition', $condition);
+            })
+            ->when(request('status'), function ($query, $status) {
+                return $query->where('status', $status);
             });
 
-        $donations = $query->paginate(12);  // Paginate with 12 items per page
+        $donations = $query->paginate(4);  // Paginate with 12 items per page
+
+        // AI Sentiment Analysis for batch display
+        $service = new SentimentService();
+        $sentiments = $service->getSentimentsForDonations($donations->items());  // Only current page
+
+        $wastes = self::$wasteTypes;
 
         $viewPrefix = $this->getViewPrefix();
         $createRoute = $this->getCreateRoute();
-        return view($viewPrefix . 'donations.index', compact('donations', 'createRoute'));
+        return view($viewPrefix . 'donations.index', compact('donations', 'createRoute', 'wastes', 'sentiments'));
     }
+
     public function create()
     {
         $wastes = self::$wasteTypes;
@@ -128,8 +150,23 @@ class DonationController extends Controller
 
         $donation = Donation::create($validated + ['status' => DonationStatus::Available]);
 
+        // AI Sentiment Analysis
+        $service = new SentimentService();
+        $sentiment = $service->analyzeSentiment($validated['description'] ?? '');
+
+        // Optional: Log or update model (e.g., add 'sentiment' column via migration)
+        // $donation->update(['sentiment' => $sentiment]);
+
         $indexRoute = $this->getIndexRoute();
-        return redirect()->route($indexRoute)->with('success', 'Donation created successfully!');
+        return redirect()->route($indexRoute)->with('success', 'Donation created successfully! Sentiment: ' . ucfirst($sentiment));
+    }
+
+    public function analyzeSentiment(Request $request)
+    {
+        $request->validate(['description' => 'required|string']);
+        $service = new SentimentService();
+        $sentiment = $service->analyzeSentiment($request->description);
+        return response()->json(['sentiment' => $sentiment]);
     }
 
     public function show(Donation $donation)
@@ -196,8 +233,12 @@ class DonationController extends Controller
 
         $donation->update($validated);
 
+        // AI Sentiment Analysis on update
+        $service = new SentimentService();
+        $sentiment = $service->analyzeSentiment($validated['description'] ?? '');
+
         $indexRoute = $this->getIndexRoute();
-        return redirect()->route($indexRoute)->with('success', 'Donation updated!');
+        return redirect()->route($indexRoute)->with('success', 'Donation updated! Sentiment: ' . ucfirst($sentiment));
     }
 
     public function destroy(Donation $donation)

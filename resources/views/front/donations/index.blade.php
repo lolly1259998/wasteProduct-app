@@ -94,10 +94,10 @@
                     </div>
 
                     {{-- Donation Image/Icon --}}
-                    <div class="card-img-top d-flex align-items-center justify-content-center bg-light text-success" 
+                    <div class="card-img-top bg-light text-success d-flex align-items-center justify-content-center overflow-hidden" 
                          style="height: 140px; border-bottom: 1px solid #e9ecef;">
                         @if($donation->images && is_array($donation->images) && count($donation->images) > 0)
-                            <img src="{{ Storage::url($donation->images[0]) }}" alt="Donation Image" class="img-fluid rounded" style="max-height: 120px; max-width: 120px;">
+                            <img src="{{ Storage::url($donation->images[0]) }}" alt="Donation Image" class="img-fluid rounded object-fit-cover w-100 h-100" style="object-fit: cover;">
                         @else
                             <i class="fas fa-recycle fa-3x"></i>
                         @endif
@@ -142,9 +142,61 @@
 {{-- Pagination --}}
 @if($donations->hasPages())
 <div class="row justify-content-center mt-5">
-    <div class="col-md-8">
+    <div class="col-12">
         <div class="d-flex justify-content-center">
-            {{ $donations->appends(request()->query())->links('pagination::bootstrap-5') }}
+            <nav aria-label="Page navigation">
+                <ul class="pagination shadow-sm">
+                    {{-- Previous Page Link --}}
+                    @if ($donations->onFirstPage())
+                        <li class="page-item disabled">
+                            <span class="page-link" style="background-color: #f8f9fa; border-color: #dee2e6; color: #6c757d; padding: 10px 20px;">
+                                <i class="fas fa-chevron-left me-1"></i>Previous
+                            </span>
+                        </li>
+                    @else
+                        <li class="page-item">
+                            <a class="page-link" href="{{ $donations->previousPageUrl() }}" 
+                               style="background-color: #10b981; border-color: #10b981; color: white; font-weight: bold; padding: 10px 20px; transition: all 0.3s ease;">
+                                <i class="fas fa-chevron-left me-1"></i>Previous
+                            </a>
+                        </li>
+                    @endif
+
+                    {{-- Pagination Elements --}}
+                    @foreach ($donations->getUrlRange(1, $donations->lastPage()) as $page => $url)
+                        @if ($page == $donations->currentPage())
+                            <li class="page-item active">
+                                <span class="page-link" style="background-color: #10b981; border-color: #10b981; font-weight: bold; padding: 10px 15px;">
+                                    {{ $page }}
+                                </span>
+                            </li>
+                        @else
+                            <li class="page-item">
+                                <a class="page-link" href="{{ $url }}" 
+                                   style="background-color: white; border-color: #10b981; color: #10b981; font-weight: bold; padding: 10px 15px; transition: all 0.3s ease;">
+                                    {{ $page }}
+                                </a>
+                            </li>
+                        @endif
+                    @endforeach
+
+                    {{-- Next Page Link --}}
+                    @if ($donations->hasMorePages())
+                        <li class="page-item">
+                            <a class="page-link" href="{{ $donations->nextPageUrl() }}" 
+                               style="background-color: #10b981; border-color: #10b981; color: white; font-weight: bold; padding: 10px 20px; transition: all 0.3s ease;">
+                                Next<i class="fas fa-chevron-right ms-1"></i>
+                            </a>
+                        </li>
+                    @else
+                        <li class="page-item disabled">
+                            <span class="page-link" style="background-color: #f8f9fa; border-color: #dee2e6; color: #6c757d; padding: 10px 20px;">
+                                Next<i class="fas fa-chevron-right ms-1"></i>
+                            </span>
+                        </li>
+                    @endif
+                </ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -182,6 +234,12 @@
         transform: translateY(-5px);
         box-shadow: 0 8px 25px rgba(16, 185, 129, 0.15) !important;
         border-color: #10b981 !important;
+    }
+
+    /* Pagination Hover Effects */
+    .page-link:hover:not(.disabled):not(.active) {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
     }
 
     /* Base Animations */
@@ -249,6 +307,14 @@
             padding: 0.5rem 1rem;
             font-size: 0.875rem;
         }
+        .pagination {
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .page-link {
+            padding: 8px 15px !important;
+            font-size: 0.875rem;
+        }
     }
     
     @media (max-width: 768px) {
@@ -267,6 +333,11 @@
     .badge {
         font-size: 0.7rem;
         padding: 0.35em 0.65em;
+    }
+
+    /* Image fill styles */
+    .object-fit-cover {
+        object-fit: cover !important;
     }
 </style>
 @endsection

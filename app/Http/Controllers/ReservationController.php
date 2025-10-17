@@ -1,10 +1,15 @@
 <?php
 
+// Updated: app/Http/Controllers/ReservationController.php
+// Added: use Illuminate\Support\Facades\Auth;
+
 namespace App\Http\Controllers;
 
 use App\Enums\ReservationStatus;
 use App\Models\Reservation;
+use App\Services\RecommendationService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class ReservationController extends Controller
@@ -96,7 +101,7 @@ class ReservationController extends Controller
                 return $query->whereIn('product_id', $matchingProductIds);
             });
 
-        $reservations = $query->paginate(12);  // Paginate with 12 items per page
+        $reservations = $query->paginate(4);  // Paginate with 12 items per page
 
         $viewPrefix = $this->getViewPrefix();
         $createRoute = $this->getCreateRoute();
@@ -109,7 +114,15 @@ class ReservationController extends Controller
         $viewPrefix = $this->getViewPrefix();
         $storeRoute = $this->getStoreRoute();
         $indexRoute = $this->getIndexRoute();
-        return view($viewPrefix . 'reservations.create', compact('products', 'storeRoute', 'indexRoute'));
+
+        // AI Recommendations
+        $recommendations = [];
+        if (Auth::check()) {
+            $service = new RecommendationService();
+            $recommendations = $service->suggestForUser(Auth::user());
+        }
+
+        return view($viewPrefix . 'reservations.create', compact('products', 'storeRoute', 'indexRoute', 'recommendations'));
     }
 
     public function store(Request $request)

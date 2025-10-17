@@ -50,8 +50,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label fw-semibold">
-                                        <i class="fas fa-exclamation-circle me-1 text-muted"></i>Status
-                                    </label>
+                                        <i class="fas fa-exclamation-circle me-1 text-muted"></i>Status :
                                         <span class="badge @switch($order->status->value)
                                             @case('completed') bg-success @break
                                             @case('processing') bg-primary @break

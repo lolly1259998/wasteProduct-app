@@ -26,7 +26,7 @@ Route::get('/donations/{donation}', [DonationController::class, 'show'])->name('
 Route::delete('/donations/{donation}', [DonationController::class, 'destroy'])->name('front.donations.destroy');
 Route::get('/donations/{donation}/edit', [DonationController::class, 'edit'])->name('front.donations.edit');
 Route::put('/donations/{donation}', [DonationController::class, 'update'])->name('front.donations.update');
-Route::post('/donations/ai-classify', [DonationController::class, 'aiClassify'])->name('front.donations.ai-classify');
+Route::post('/analyze-sentiment', [DonationController::class, 'analyzeSentiment'])->name('analyze.sentiment');
 
 Route::get('/orders', [OrderController::class, 'index'])->name('front.orders.index');
 Route::get('/orders/create', [OrderController::class, 'create'])->name('front.orders.create');
@@ -68,6 +68,7 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('donations/{donation}', [DonationController::class, 'destroy'])->name('donations.destroy');
         Route::put('donations/{donation}', [DonationController::class, 'update'])->name('donations.update');
         Route::get('donations/{donation}/edit', [DonationController::class, 'edit'])->name('donations.edit');
+        Route::post('donations/analyze-sentiment', [DonationController::class, 'analyzeSentiment'])->name('donations.analyze-sentiment');
 
         // Orders (Back-end)
         Route::get('orders', [OrderController::class, 'index'])->name('orders.index');

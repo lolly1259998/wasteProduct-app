@@ -56,6 +56,11 @@ class User extends Authenticatable
         return $this->hasMany(Donation::class);
     }
 
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class);
+    }
+
     public function bookings()
     {
         return $this->hasMany(Booking::class);
@@ -71,7 +76,8 @@ class User extends Authenticatable
     {
         return $this->role->name === $roleName;
     }
-     public function initials(): string
+
+    public function initials(): string
     {
         if (empty($this->name)) {
             return 'U'; // U pour "User" si pas de nom

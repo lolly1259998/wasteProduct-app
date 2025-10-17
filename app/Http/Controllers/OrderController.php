@@ -1,10 +1,15 @@
 <?php
 
+// Updated: app/Http/Controllers/OrderController.php
+// Added: use Illuminate\Support\Facades\Auth;
+
 namespace App\Http\Controllers;
 
 use App\Enums\OrderStatus;
 use App\Models\Order;
+use App\Services\RecommendationService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class OrderController extends Controller
@@ -102,13 +107,22 @@ class OrderController extends Controller
         $createRoute = $this->getCreateRoute();
         return view($viewPrefix . 'orders.index', compact('orders', 'createRoute'));
     }
+
     public function create()
     {
         $products = self::$products;
         $viewPrefix = $this->getViewPrefix();
         $storeRoute = $this->getStoreRoute();
         $indexRoute = $this->getIndexRoute();
-        return view($viewPrefix . 'orders.create', compact('products', 'storeRoute', 'indexRoute'));
+
+        // AI Recommendations
+        $recommendations = [];
+        if (Auth::check()) {
+            $service = new RecommendationService();
+            $recommendations = $service->suggestForUser(Auth::user());
+        }
+
+        return view($viewPrefix . 'orders.create', compact('products', 'storeRoute', 'indexRoute', 'recommendations'));
     }
 
     public function store(Request $request)

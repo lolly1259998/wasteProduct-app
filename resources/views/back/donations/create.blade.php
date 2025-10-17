@@ -1,118 +1,153 @@
+{{-- resources/views/back/donations/create.blade.php --}}
 @extends('back.layout')
 @section('content')
-<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-100 to-teal-100 dark:from-zinc-800 dark:to-zinc-900">
-    <div class="container py-8">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="card shadow-lg">
-                    <div class="card-body">
-                        <h1 class="text-2xl font-bold mb-6 text-green-700 dark:text-green-300 text-center">Create Donation</h1>
-                        @if ($errors->any())
-                            <div class="mb-4 p-3 bg-red-100 dark:bg-red-900 border-l-2 border-red-500 dark:border-red-700 text-red-700 dark:text-red-200 rounded">
-                                <ul class="list-disc pl-5 space-y-1">
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h1 class="h3 font-weight-bold mb-4 text-success text-center">Create Donation</h1>
+                    @if ($errors->any())
+                        <div class="alert alert-danger mb-4" role="alert">
+                            <ul class="list-unstyled mb-0">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+                    @if (session('success'))
+                        <div class="alert alert-success mb-4" role="alert">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+                    <form action="{{ route('back.donations.store') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <!-- User -->
+                        <div class="mb-3">
+                            <label for="user_id" class="form-label fw-bold">User</label>
+                            <select name="user_id" id="user_id" class="form-control" required>
+                                @foreach(\App\Models\User::all() as $user)
+                                    <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>{{ $user->name }}</option>
+                                @endforeach
+                            </select>
+                            @error('user_id')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                        <!-- Waste Type -->
+                        <div class="mb-3">
+                            <label for="waste_id" class="form-label fw-bold">Waste Type</label>
+                            <select name="waste_id" id="waste_id" class="form-control" required>
+                                @if(isset($wastes) && !empty($wastes))
+                                    @foreach($wastes as $id => $waste)
+                                        <option value="{{ $id }}" {{ old('waste_id') == $id ? 'selected' : '' }}>{{ $waste['name'] }}</option>
                                     @endforeach
-                                </ul>
+                                @else
+                                    <option value="" disabled selected>No waste types available</option>
+                                @endif
+                            </select>
+                            @error('waste_id')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                        <!-- Item Name -->
+                        <div class="mb-3">
+                            <label for="item_name" class="form-label fw-bold">Item Name</label>
+                            <input type="text" name="item_name" id="item_name" value="{{ old('item_name') }}" class="form-control" required>
+                            @error('item_name')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                        <!-- Condition -->
+                        <div class="mb-3">
+                            <label for="condition" class="form-label fw-bold">Condition</label>
+                            <select name="condition" id="condition" class="form-control" required>
+                                <option value="new" {{ old('condition') == 'new' ? 'selected' : '' }}>New</option>
+                                <option value="used" {{ old('condition') == 'used' ? 'selected' : '' }}>Used</option>
+                                <option value="damaged" {{ old('condition') == 'damaged' ? 'selected' : '' }}>Damaged</option>
+                            </select>
+                            @error('condition')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                        <!-- Description -->
+                        <div class="mb-3">
+                            <label for="description" class="form-label fw-bold">Description</label>
+                            <textarea name="description" id="description" rows="3" class="form-control">{{ old('description') }}</textarea>
+                            @error('description')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                        <!-- AI Sentiment Preview -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">AI Sentiment Preview</label>
+                            <div id="sentiment-preview" class="alert alert-info">
+                                Enter description to analyze sentiment...
                             </div>
-                        @endif
-                        @if (session('success'))
-                            <div class="mb-4 p-3 bg-green-100 dark:bg-green-900 border-l-2 border-green-500 dark:border-green-700 text-green-700 dark:text-green-200 rounded">
-                                {{ session('success') }}
-                            </div>
-                        @endif
-                        <form action="{{ route('back.donations.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
-                            @csrf
-                            <!-- User -->
-                            <div class="mb-3">
-                                <label for="user_id" class="form-label text-lg font-semibold text-gray-800 dark:text-gray-200">User</label>
-                                <select name="user_id" id="user_id" class="form-control bg-white dark:bg-zinc-700 text-gray-900 dark:text-gray-100 border-teal-300 dark:border-teal-600 focus:ring-teal-500 dark:focus:ring-teal-400 focus:border-teal-500 dark:focus:border-teal-400" required>
-                                    @foreach(\App\Models\User::all() as $user)
-                                        <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>{{ $user->name }}</option>
-                                    @endforeach
-                                </select>
-                                @error('user_id')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
-                            <!-- Waste Type -->
-                            <div class="mb-3">
-                                <label for="waste_id" class="form-label text-lg font-semibold text-gray-800 dark:text-gray-200">Waste Type</label>
-                                <select name="waste_id" id="waste_id" class="form-control bg-white dark:bg-zinc-700 text-gray-900 dark:text-gray-100 border-teal-300 dark:border-teal-600 focus:ring-teal-500 dark:focus:ring-teal-400 focus:border-teal-500 dark:focus:border-teal-400" required>
-                                    @if(isset($wastes) && !empty($wastes))
-                                        @foreach($wastes as $id => $waste)
-                                            <option value="{{ $id }}" {{ old('waste_id') == $id ? 'selected' : '' }}>{{ $waste['name'] }}</option>
-                                        @endforeach
-                                    @else
-                                        <option value="" disabled selected>No waste types available</option>
-                                    @endif
-                                </select>
-                                @error('waste_id')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
-                            <!-- Item Name -->
-                            <div class="mb-3">
-                                <label for="item_name" class="form-label text-lg font-semibold text-gray-800 dark:text-gray-200">Item Name</label>
-                                <input type="text" name="item_name" id="item_name" value="{{ old('item_name') }}" class="form-control bg-white dark:bg-zinc-700 text-gray-900 dark:text-gray-100 border-teal-300 dark:border-teal-600 focus:ring-teal-500 dark:focus:ring-teal-400 focus:border-teal-500 dark:focus:border-teal-400" required>
-                                @error('item_name')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
-                            <!-- Condition -->
-                            <div class="mb-3">
-                                <label for="condition" class="form-label text-lg font-semibold text-gray-800 dark:text-gray-200">Condition</label>
-                                <select name="condition" id="condition" class="form-control bg-white dark:bg-zinc-700 text-gray-900 dark:text-gray-100 border-teal-300 dark:border-teal-600 focus:ring-teal-500 dark:focus:ring-teal-400 focus:border-teal-500 dark:focus:border-teal-400" required>
-                                    <option value="new" {{ old('condition') == 'new' ? 'selected' : '' }}>New</option>
-                                    <option value="used" {{ old('condition') == 'used' ? 'selected' : '' }}>Used</option>
-                                    <option value="damaged" {{ old('condition') == 'damaged' ? 'selected' : '' }}>Damaged</option>
-                                </select>
-                                @error('condition')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
-                            <!-- Description -->
-                            <div class="mb-3">
-                                <label for="description" class="form-label text-lg font-semibold text-gray-800 dark:text-gray-200">Description</label>
-                                <textarea name="description" id="description" rows="3" class="form-control bg-white dark:bg-zinc-700 text-gray-900 dark:text-gray-100 border-teal-300 dark:border-teal-600 focus:ring-teal-500 dark:focus:ring-teal-400 focus:border-teal-500 dark:focus:border-teal-400">{{ old('description') }}</textarea>
-                                @error('description')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
-                            <!-- Images -->
-                            <div class="mb-3">
-                                <label for="images" class="form-label text-lg font-semibold text-gray-800 dark:text-gray-200">Images</label>
-                                <input type="file" name="images[]" id="images" multiple class="form-control bg-white dark:bg-zinc-700 text-gray-900 dark:text-gray-100 border-teal-300 dark:border-teal-600 focus:ring-teal-500 dark:focus:ring-teal-400 focus:border-teal-500 dark:focus:border-teal-400">
-                                @error('images.*')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
-                            <!-- Pickup Required -->
-                            <div class="mb-3 form-check">
-                                <input type="checkbox" name="pickup_required" id="pickup_required" class="form-check-input" value="1" {{ old('pickup_required') ? 'checked' : '' }}>
-                                <label class="form-check-label text-lg font-semibold text-gray-800 dark:text-gray-200" for="pickup_required">Pickup Required</label>
-                                @error('pickup_required')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
-                            <!-- Pickup Address -->
-                            <div class="mb-3">
-                                <label for="pickup_address" class="form-label text-lg font-semibold text-gray-800 dark:text-gray-200">Pickup Address</label>
-                                <input type="text" name="pickup_address" id="pickup_address" value="{{ old('pickup_address') }}" class="form-control bg-white dark:bg-zinc-700 text-gray-900 dark:text-gray-100 border-teal-300 dark:border-teal-600 focus:ring-teal-500 dark:focus:ring-teal-400 focus:border-teal-500 dark:focus:border-teal-400">
-                                @error('pickup_address')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
-                            <!-- Buttons -->
-                            <div class="d-flex justify-content-between">
-                                <a href="{{ route('back.donations.index') }}" class="btn btn-secondary btn-md">Cancel</a>
-                                <button type="submit" class="btn btn-success btn-md">Create</button>
-                            </div>
-                        </form>
-                    </div>
+                        </div>
+                        <!-- Images -->
+                        <div class="mb-3">
+                            <label for="images" class="form-label fw-bold">Images</label>
+                            <input type="file" name="images[]" id="images" multiple class="form-control">
+                            @error('images.*')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                        <!-- Pickup Required -->
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" name="pickup_required" id="pickup_required" class="form-check-input" value="1" {{ old('pickup_required') ? 'checked' : '' }}>
+                            <label class="form-check-label fw-bold" for="pickup_required">Pickup Required</label>
+                            @error('pickup_required')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                        <!-- Pickup Address -->
+                        <div class="mb-3">
+                            <label for="pickup_address" class="form-label fw-bold">Pickup Address</label>
+                            <input type="text" name="pickup_address" id="pickup_address" value="{{ old('pickup_address') }}" class="form-control">
+                            @error('pickup_address')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                        <!-- Buttons -->
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ route('back.donations.index') }}" class="btn btn-secondary">Cancel</a>
+                            <button type="submit" class="btn btn-success">Create</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    // AI Sentiment Preview on Description Input
+    document.getElementById('description').addEventListener('input', function() {
+        const desc = this.value;
+        const preview = document.getElementById('sentiment-preview');
+        if (desc.length > 10) {  // Trigger after 10 chars
+            fetch('{{ route('back.donations.analyze-sentiment') }}', {  // Use back route
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({description: desc})
+            })
+            .then(res => res.json())
+            .then(data => {
+                const badgeClass = data.sentiment === 'positive' ? 'badge bg-success' : data.sentiment === 'negative' ? 'badge bg-danger' : 'badge bg-warning';
+                preview.innerHTML = `<span class="${badgeClass}">${data.sentiment.charAt(0).toUpperCase() + data.sentiment.slice(1)}</span>`;
+            })
+            .catch(err => {
+                preview.innerHTML = 'Error analyzing sentiment.';
+                console.error(err);
+            });
+        } else {
+            preview.innerHTML = 'Enter description to analyze sentiment...';
+        }
+    });
+</script>
 @endsection
