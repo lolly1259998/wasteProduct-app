@@ -69,7 +69,7 @@ public function index(Request $request)
         $imagePath = $request->file('image')->store('wastes', 'public');
         $data['image_path'] = $imagePath;
     }
-        $data['collection_point_id'] = 2;
+        $data['collection_point_id'] = $request->input('collection_point_id');
         Waste::create($data);
         return redirect()->route('wastes.index')->with('success', 'Waste created successfully');
         
