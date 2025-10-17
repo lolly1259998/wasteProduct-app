@@ -16,40 +16,40 @@ Route::get('/', function () {
 // Frontoffice home route (public first)
 Route::get('/waste2product', function () {
     return view('front.home');
+})->name('front.home');
+
+// Frontoffice Routes (Public - Prefixed with /waste2product)
+Route::prefix('waste2product')->name('front.')->group(function () {
+    // Donations (Frontoffice)
+    Route::get('donations', [DonationController::class, 'index'])->name('donations.index');
+    Route::get('donations/create', [DonationController::class, 'create'])->name('donations.create');
+    Route::post('donations', [DonationController::class, 'store'])->name('donations.store');
+    Route::get('donations/{donation}', [DonationController::class, 'show'])->name('donations.show');
+    Route::delete('donations/{donation}', [DonationController::class, 'destroy'])->name('donations.destroy');
+    Route::get('donations/{donation}/edit', [DonationController::class, 'edit'])->name('donations.edit');
+    Route::put('donations/{donation}', [DonationController::class, 'update'])->name('donations.update');
+    Route::post('analyze-sentiment', [DonationController::class, 'analyzeSentiment'])->name('donations.analyze-sentiment');
+
+    // Orders (Frontoffice)
+    Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('orders/create', [OrderController::class, 'create'])->name('orders.create');
+    Route::post('orders', [OrderController::class, 'store'])->name('orders.store');
+    Route::get('orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+    Route::get('orders/{order}/edit', [OrderController::class, 'edit'])->name('orders.edit');
+    Route::put('orders/{order}', [OrderController::class, 'update'])->name('orders.update');
+    Route::delete('orders/{order}', [OrderController::class, 'destroy'])->name('orders.destroy');
+
+    // Reservations (Frontoffice)
+    Route::get('reservations', [ReservationController::class, 'index'])->name('reservations.index');
+    Route::get('reservations/create', [ReservationController::class, 'create'])->name('reservations.create');
+    Route::post('reservations', [ReservationController::class, 'store'])->name('reservations.store');
+    Route::get('reservations/{reservation}', [ReservationController::class, 'show'])->name('reservations.show');
+    Route::get('reservations/{reservation}/edit', [ReservationController::class, 'edit'])->name('reservations.edit');
+    Route::put('reservations/{reservation}', [ReservationController::class, 'update'])->name('reservations.update');
+    Route::delete('reservations/{reservation}', [ReservationController::class, 'destroy'])->name('reservations.destroy');
+
+   
 });
-
-// Frontoffice Routes (Public - Defined BEFORE auth to avoid conflicts)
-Route::get('/donations', [DonationController::class, 'index'])->name('front.donations.index');
-Route::get('/donations/create', [DonationController::class, 'create'])->name('front.donations.create');
-Route::post('/donations', [DonationController::class, 'store'])->name('front.donations.store');
-Route::get('/donations/{donation}', [DonationController::class, 'show'])->name('front.donations.show');
-Route::delete('/donations/{donation}', [DonationController::class, 'destroy'])->name('front.donations.destroy');
-Route::get('/donations/{donation}/edit', [DonationController::class, 'edit'])->name('front.donations.edit');
-Route::put('/donations/{donation}', [DonationController::class, 'update'])->name('front.donations.update');
-Route::post('/analyze-sentiment', [DonationController::class, 'analyzeSentiment'])->name('analyze.sentiment');
-
-Route::get('/orders', [OrderController::class, 'index'])->name('front.orders.index');
-Route::get('/orders/create', [OrderController::class, 'create'])->name('front.orders.create');
-Route::post('/orders', [OrderController::class, 'store'])->name('front.orders.store');
-Route::get('/orders/{order}', [OrderController::class, 'show'])->name('front.orders.show');
-Route::get('/orders/{order}/edit', [OrderController::class, 'edit'])->name('front.orders.edit');
-Route::put('/orders/{order}', [OrderController::class, 'update'])->name('front.orders.update');
-Route::delete('/orders/{order}', [OrderController::class, 'destroy'])->name('front.orders.destroy');
-
-Route::get('/reservations', [ReservationController::class, 'index'])->name('front.reservations.index');
-Route::get('/reservations/create', [ReservationController::class, 'create'])->name('front.reservations.create');
-Route::post('/reservations', [ReservationController::class, 'store'])->name('front.reservations.store');
-Route::get('/reservations/{reservation}', [ReservationController::class, 'show'])->name('front.reservations.show');
-Route::get('/reservations/{reservation}/edit', [ReservationController::class, 'edit'])->name('front.reservations.edit');
-Route::put('/reservations/{reservation}', [ReservationController::class, 'update'])->name('front.reservations.update');
-Route::delete('/reservations/{reservation}', [ReservationController::class, 'destroy'])->name('front.reservations.destroy');
-
-Route::get('/shop', function () {
-    return view('front.products');
-})->name('front.products');
-
-Route::view('/recycling', 'front.recycling');
-Route::view('/contact', 'front.contact');
 
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');
@@ -58,41 +58,51 @@ Route::middleware(['auth'])->group(function () {
     Route::get('settings/password', Password::class)->name('settings.password');
     Route::get('settings/appearance', Appearance::class)->name('settings.appearance');
 
-    // Back-end Routes (Back - Prefixed with /admin to avoid conflicts)
+    // Back-end Routes (Back - Prefixed with /back)
     Route::prefix('back')->name('back.')->group(function () {
-        // Donations (Back-end)
-        Route::get('donations', [DonationController::class, 'index'])->name('donations.index');
-        Route::get('donations/create', [DonationController::class, 'create'])->name('donations.create');
-        Route::post('donations', [DonationController::class, 'store'])->name('donations.store');
-        Route::get('donations/{donation}', [DonationController::class, 'show'])->name('donations.show');
-        Route::delete('donations/{donation}', [DonationController::class, 'destroy'])->name('donations.destroy');
-        Route::put('donations/{donation}', [DonationController::class, 'update'])->name('donations.update');
-        Route::get('donations/{donation}/edit', [DonationController::class, 'edit'])->name('donations.edit');
-        Route::post('donations/analyze-sentiment', [DonationController::class, 'analyzeSentiment'])->name('donations.analyze-sentiment');
+        Route::get('home', function () {
+            $totalDonations = \App\Models\Donation::count();
+            $totalOrders = \App\Models\Order::count();
+            $totalReservations = \App\Models\Reservation::count();
+            return view('back.home', compact('totalDonations', 'totalOrders', 'totalReservations'));
+        })->name('home');
 
-        // Orders (Back-end)
-        Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
-        Route::get('orders/create', [OrderController::class, 'create'])->name('orders.create');
-        Route::post('orders', [OrderController::class, 'store'])->name('orders.store');
-        Route::get('orders/{order}', [OrderController::class, 'show'])->name('orders.show');
-        Route::get('orders/{order}/edit', [OrderController::class, 'edit'])->name('orders.edit');
-        Route::put('orders/{order}', [OrderController::class, 'update'])->name('orders.update');
-        Route::delete('orders/{order}', [OrderController::class, 'destroy'])->name('orders.destroy');
+        Route::prefix('home')->group(function () {
+            // Donations (Back-end)
+            Route::get('donations', [DonationController::class, 'index'])->name('donations.index');
+            Route::get('donations/create', [DonationController::class, 'create'])->name('donations.create');
+            Route::post('donations', [DonationController::class, 'store'])->name('donations.store');
+            Route::get('donations/{donation}', [DonationController::class, 'show'])->name('donations.show');
+            Route::delete('donations/{donation}', [DonationController::class, 'destroy'])->name('donations.destroy');
+            Route::put('donations/{donation}', [DonationController::class, 'update'])->name('donations.update');
+            Route::get('donations/{donation}/edit', [DonationController::class, 'edit'])->name('donations.edit');
+            Route::post('donations/analyze-sentiment', [DonationController::class, 'analyzeSentiment'])->name('donations.analyze-sentiment');
 
-        // Reservations (Back-end)
-        Route::get('reservations', [ReservationController::class, 'index'])->name('reservations.index');
-        Route::get('reservations/create', [ReservationController::class, 'create'])->name('reservations.create');
-        Route::post('reservations', [ReservationController::class, 'store'])->name('reservations.store');
-        Route::get('reservations/{reservation}', [ReservationController::class, 'show'])->name('reservations.show');
-        Route::get('reservations/{reservation}/edit', [ReservationController::class, 'edit'])->name('reservations.edit');
-        Route::put('reservations/{reservation}', [ReservationController::class, 'update'])->name('reservations.update');
-        Route::delete('reservations/{reservation}', [ReservationController::class, 'destroy'])->name('reservations.destroy');
+            // Orders (Back-end)
+            Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
+            Route::get('orders/create', [OrderController::class, 'create'])->name('orders.create');
+            Route::post('orders', [OrderController::class, 'store'])->name('orders.store');
+            Route::get('orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+            Route::get('orders/{order}/edit', [OrderController::class, 'edit'])->name('orders.edit');
+            Route::put('orders/{order}', [OrderController::class, 'update'])->name('orders.update');
+            Route::delete('orders/{order}', [OrderController::class, 'destroy'])->name('orders.destroy');
 
-        // Products (Back-end)
-        Route::resource('products', ProductController::class)->names('products');
+            // Reservations (Back-end)
+            Route::get('reservations', [ReservationController::class, 'index'])->name('reservations.index');
+            Route::get('reservations/create', [ReservationController::class, 'create'])->name('reservations.create');
+            Route::post('reservations', [ReservationController::class, 'store'])->name('reservations.store');
+            Route::get('reservations/{reservation}', [ReservationController::class, 'show'])->name('reservations.show');
+            Route::get('reservations/{reservation}/edit', [ReservationController::class, 'edit'])->name('reservations.edit');
+            Route::put('reservations/{reservation}', [ReservationController::class, 'update'])->name('reservations.update');
+            Route::delete('reservations/{reservation}', [ReservationController::class, 'destroy'])->name('reservations.destroy');
+
+        
+        });
     });
 
-    Route::view('dashboard', 'dashboard')->name('dashboard');
+    Route::get('dashboard', function () {
+        return redirect()->route('back.home');
+    })->name('dashboard');
 });
 
 require __DIR__.'/auth.php';

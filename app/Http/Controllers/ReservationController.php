@@ -101,7 +101,7 @@ class ReservationController extends Controller
                 return $query->whereIn('product_id', $matchingProductIds);
             });
 
-        $reservations = $query->paginate(4);  // Paginate with 12 items per page
+        $reservations = $query->paginate(4);  // Paginate with 4 items per page
 
         $viewPrefix = $this->getViewPrefix();
         $createRoute = $this->getCreateRoute();
@@ -127,14 +127,31 @@ class ReservationController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        // Base rules without user_id for front
+        $rules = [
             'product_id' => ['required', Rule::in(array_keys(self::$products))],
             'quantity' => 'required|integer|min:1',
             'reserved_until' => 'required|date|after:now',
-            'user_id' => 'required|exists:users,id',
-        ]);
+        ];
 
-        $reservation = Reservation::create($validated);
+        // Add user_id rule only for back-end (admin) routes
+        if (!$this->isFrontRoute()) {
+            $rules['user_id'] = 'required|exists:users,id';
+        }
+
+        $validated = $request->validate($rules);
+
+        // For front-end, auto-set user_id if not provided
+        if ($this->isFrontRoute() && !isset($validated['user_id'])) {
+            if (!Auth::check()) {
+                return redirect()->back()->withErrors(['user' => 'Authentication required to create a reservation.']);
+            }
+            $validated['user_id'] = Auth::id();
+        }
+
+        $reservation = Reservation::create(array_merge($validated, [
+            'status' => ReservationStatus::Pending,
+        ]));
 
         $indexRoute = $this->getIndexRoute();
         return redirect()->route($indexRoute)->with('success', 'Reservation created successfully!');
@@ -157,17 +174,30 @@ class ReservationController extends Controller
         $viewPrefix = $this->getViewPrefix();
         $updateRoute = $this->getUpdateRoute($reservation);
         $showRoute = $this->getShowRoute($reservation);
-        return view($viewPrefix . 'reservations.edit', compact('reservation', 'products', 'updateRoute', 'showRoute'));
+        $indexRoute = $this->getIndexRoute();  // Add this line
+        return view($viewPrefix . 'reservations.edit', compact('reservation', 'products', 'updateRoute', 'showRoute', 'indexRoute'));  // Add 'indexRoute' to compact
     }
 
     public function update(Request $request, Reservation $reservation)
     {
-        $validated = $request->validate([
+        // Base rules without status
+        $rules = [
             'product_id' => ['required', Rule::in(array_keys(self::$products))],
             'quantity' => 'required|integer|min:1',
             'reserved_until' => 'required|date|after:now',
-            'status' => ['required', Rule::enum(ReservationStatus::class)],
-        ]);
+        ];
+
+        // Add status rule only for back-end (admin) routes
+        if (!$this->isFrontRoute()) {
+            $rules['status'] = ['required', Rule::enum(ReservationStatus::class)];
+        }
+
+        $validated = $request->validate($rules);
+
+        // For front-end, preserve existing status if not provided
+        if ($this->isFrontRoute() && !isset($validated['status'])) {
+            $validated['status'] = $reservation->status;
+        }
 
         $reservation->update($validated);
 

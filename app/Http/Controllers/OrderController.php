@@ -101,7 +101,7 @@ class OrderController extends Controller
                 return $query->whereIn('product_id', $matchingProductIds);
             });
 
-        $orders = $query->paginate(4);  // Paginate with 12 items per page
+        $orders = $query->paginate(4);  // Paginate with 4 items per page
 
         $viewPrefix = $this->getViewPrefix();
         $createRoute = $this->getCreateRoute();
@@ -127,13 +127,28 @@ class OrderController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        // Base rules without user_id for front
+        $rules = [
             'product_id' => ['required', Rule::in(array_keys(self::$products))],
             'quantity' => 'required|integer|min:1',
             'shipping_address' => 'required|string|max:255',
             'payment_method' => 'required|string|in:cash,card,transfer',
-            'user_id' => 'required|exists:users,id',
-        ]);
+        ];
+
+        // Add user_id rule only for back-end (admin) routes
+        if (!$this->isFrontRoute()) {
+            $rules['user_id'] = 'required|exists:users,id';
+        }
+
+        $validated = $request->validate($rules);
+
+        // For front-end, auto-set user_id if not provided
+        if ($this->isFrontRoute() && !isset($validated['user_id'])) {
+            if (!Auth::check()) {
+                return redirect()->back()->withErrors(['user' => 'Authentication required to create an order.']);
+            }
+            $validated['user_id'] = Auth::id();
+        }
 
         $order = Order::create(array_merge($validated, [
             'status' => OrderStatus::Pending,
@@ -162,19 +177,32 @@ class OrderController extends Controller
         $viewPrefix = $this->getViewPrefix();
         $updateRoute = $this->getUpdateRoute($order);
         $showRoute = $this->getShowRoute($order);
-        return view($viewPrefix . 'orders.edit', compact('order', 'products', 'updateRoute', 'showRoute'));
+        $indexRoute = $this->getIndexRoute();  // Add this line
+        return view($viewPrefix . 'orders.edit', compact('order', 'products', 'updateRoute', 'showRoute', 'indexRoute'));  // Add 'indexRoute' to compact
     }
 
     public function update(Request $request, Order $order)
     {
-        $validated = $request->validate([
+        // Base rules without status
+        $rules = [
             'product_id' => ['required', Rule::in(array_keys(self::$products))],
             'quantity' => 'required|integer|min:1',
             'shipping_address' => 'required|string|max:255',
             'payment_method' => 'required|string|in:cash,card,transfer',
-            'status' => ['required', Rule::enum(OrderStatus::class)],
             'tracking_number' => 'nullable|string|max:100',
-        ]);
+        ];
+
+        // Add status rule only for back-end (admin) routes
+        if (!$this->isFrontRoute()) {
+            $rules['status'] = ['required', Rule::enum(OrderStatus::class)];
+        }
+
+        $validated = $request->validate($rules);
+
+        // For front-end, preserve existing status if not provided
+        if ($this->isFrontRoute() && !isset($validated['status'])) {
+            $validated['status'] = $order->status;
+        }
 
         $validated['total_amount'] = $validated['quantity'] * self::$products[$validated['product_id']]['price'];
         $order->update($validated);

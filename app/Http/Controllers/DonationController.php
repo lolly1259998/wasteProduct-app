@@ -104,7 +104,7 @@ class DonationController extends Controller
                 return $query->where('status', $status);
             });
 
-        $donations = $query->paginate(4);  // Paginate with 12 items per page
+        $donations = $query->paginate(4);  // Paginate with 4 items per page
 
         // AI Sentiment Analysis for batch display
         $service = new SentimentService();
