@@ -1,5 +1,3 @@
-
-
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
     <div class="container-fluid px-4">
         <a class="navbar-brand" href="{{ url('/') }}">🌿 Waste2Product</a>
@@ -24,6 +22,20 @@
                 <li class="nav-item">
                     <a href="{{ url('/campaigns') }}" class="nav-link {{ request()->is('campaigns*') ? 'active' : '' }}">
                         <i class="bi bi-megaphone me-1"></i>Campaigns
+                    </a>
+                </li>
+
+                <!-- Nouveau lien Waste Categories -->
+                <li class="nav-item">
+                    <a href="{{ route('front.waste-categories.index') }}" class="nav-link {{ request()->is('categories*') ? 'active' : '' }}">
+                        <i class="bi bi-grid-3x3-gap me-1"></i>Waste Categories
+                    </a>
+                </li>
+
+                <!-- Nouveau lien Wastes -->
+                <li class="nav-item">
+                    <a href="{{ route('front.wastes.index') }}" class="nav-link {{ request()->is('wastess*') ? 'active' : '' }}">
+                        <i class="bi bi-trash me-1"></i>Waste
                     </a>
                 </li>
 
