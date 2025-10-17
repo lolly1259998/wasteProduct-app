@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\DonationController;
+use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProductController;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
@@ -15,6 +19,7 @@ use App\Http\Controllers\AI\AIController;
 use App\Http\Controllers\AI\WasteAIController;
 use App\Http\Controllers\Backoffice\CollectionPointController;
 use App\Http\Controllers\Front\CollectionPointFrontController;
+use App\Http\Controllers\AI\CollectionAIController;
 use App\Http\Controllers\Campaign\CampaignController;
 
 Route::get('/', function () {
@@ -72,11 +77,30 @@ $totalWastes = $wastes->count();
     });
         return view('back.home', compact('categories', 'wastes', 'wasteStats'));
     })->middleware(['auth', 'verified'])->name('back.home');
-});
 
 
+Route::get('/collection-ai/train/{id}', [CollectionAIController::class, 'train']);
+Route::get('/collection-ai/predict/{id}', [CollectionAIController::class, 'predict']);
+
+Route::get('/collectionpoints/predictions', [CollectionPointController::class, 'predictions'])
+    ->name('collectionpoints.predictions');
 
 //frontoffice home route
+    // Product Routes
+    Route::resource('products', ProductController::class);
+
+    // Donation Routes
+    Route::resource('donations', DonationController::class)->except(['edit', 'update']);
+
+    // Order Routes
+    Route::resource('orders', OrderController::class)->except(['edit', 'update']);
+
+    // Reservation Routes
+    Route::resource('reservations', ReservationController::class);
+
+    Route::view('dashboard', 'dashboard')->name('dashboard');
+});
+
 Route::get('/waste2product', function () {
     return view('front.home');
 });
@@ -114,8 +138,11 @@ Route::post('/ai-advice', [WasteAIController::class, 'recycling'])->name('ai.adv
 
 
 Route::view('/products', 'front.products');
+Route::get('/shop', function () {
+    return view('front.products');
+})->name('front.products');
+
 Route::view('/recycling', 'front.recycling');
-Route::view('/donations', 'front.donations');
 Route::view('/contact', 'front.contact');
 
 
