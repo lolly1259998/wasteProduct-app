@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\DonationController;
+use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\OrderController;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
@@ -19,6 +22,8 @@ use App\Http\Controllers\Front\CollectionPointFrontController;
 use App\Http\Controllers\Backoffice\RecyclingProcessController;
 use App\Http\Controllers\Backoffice\ProductController;
 use App\Http\Controllers\Front\ProductFrontController;
+use App\Http\Controllers\AI\CollectionAIController;
+use App\Http\Controllers\Campaign\CampaignController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -83,14 +88,31 @@ $totalWastes = $wastes->count();
     });
         return view('back.home', compact('categories', 'wastes', 'wasteStats'));
     })->middleware(['auth', 'verified'])->name('back.home');
+
+    Route::get('/collection-ai/train/{id}', [CollectionAIController::class, 'train']);
+    Route::get('/collection-ai/predict/{id}', [CollectionAIController::class, 'predict']);
+
+    Route::get('/collectionpoints/predictions', [CollectionPointController::class, 'predictions'])
+        ->name('collectionpoints.predictions');
+
+    // Donation Routes
+    Route::resource('donations', DonationController::class)->except(['edit', 'update']);
+
+    // Order Routes
+    Route::resource('orders', OrderController::class)->except(['edit', 'update']);
+
+    // Reservation Routes
+    Route::resource('reservations', ReservationController::class);
 });
-
-
 
 //frontoffice home route
 Route::get('/waste2product', function () {
     return view('front.home');
 });
+
+//frontoffice campaigns routes
+Route::get('/campaignsFront', [CampaignController::class, 'frontIndex'])->name('campaigns.front');
+
 // Frontoffice Waste Category Routes
 Route::get('/categories', [FrontWasteCategoryController::class, 'index'])->name('front.waste-categories.index');
 Route::get('/categories/create', [FrontWasteCategoryController::class, 'create'])->name('front.waste-categories.create');
@@ -131,20 +153,25 @@ Route::prefix('ai/recycling')->group(function () {
     Route::get('/health', [RecyclingAIController::class, 'healthCheck'])->name('ai.recycling.health');
 });
 
-
-
 // Product Routes (Front-office) - Utiliser un chemin différent pour éviter les conflits
 Route::get('/shop/products', [ProductFrontController::class, 'index'])->name('front.products.index');
 Route::get('/shop/products/{id}', [ProductFrontController::class, 'show'])->name('front.products.show');
 
 Route::view('/recycling', 'front.recycling');
-Route::view('/donations', 'front.donations');
 Route::view('/contact', 'front.contact');
-
 
 Route::get('/dashbored/collectionpoints', action: [CollectionPointController::class, 'index'])->name('back.home');
 Route::resource('collectionpoints', CollectionPointController::class);
 
 Route::get('/waste2product/collectionpoints', [CollectionPointFrontController::class, 'index'])->name('front.collectionpoints.index');
 Route::get('/waste2product/collectionpoints/{id}', [CollectionPointFrontController::class, 'show'])->name('front.collectionpoints.show');
+
+// Route pour la page de gestion des campagnes dans le back-office
+Route::get('/back/campaigns', function () {
+    return view('back.campaign.campaigns');
+})->name('back.campaigns');
+
+// Routes RESTful pour l'API des campagnes
+Route::resource('campaigns', CampaignController::class);
+
 require __DIR__.'/auth.php';
