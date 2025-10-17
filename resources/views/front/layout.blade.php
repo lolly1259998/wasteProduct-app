@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Waste2Product - {{ $title ?? 'Home' }}</title>
+    <title>Waste2Product Dashboard - {{ $title ?? 'Admin' }}</title>
 
     <!-- Bootstrap + Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -47,6 +46,7 @@
         }
 
         .nav-link:hover, .nav-link.active {
+        .nav-link:hover {
             text-decoration: underline;
             color: #a7f3d0 !important;
         }
@@ -121,6 +121,11 @@
                     <li class="nav-item"><a href="{{ route('front.donations.index') }}" class="nav-link {{ request()->routeIs('front.donations.*') ? 'active' : '' }}">Donations</a></li>
                     <li class="nav-item"><a href="{{ route('front.orders.index') }}" class="nav-link {{ request()->routeIs('front.orders.*') ? 'active' : '' }}">Orders</a></li>
                     <li class="nav-item"><a href="{{ route('front.reservations.index') }}" class="nav-link {{ request()->routeIs('front.reservations.*') ? 'active' : '' }}">Reservations</a></li>
+                    <li class="nav-item"><a href="{{ url('/') }}" class="nav-link {{ request()->is('/') ? 'active' : '' }}">Home</a></li>
+                    <li class="nav-item"><a href="{{ route('front.products.index') }}" class="nav-link {{ request()->routeIs('front.products.*') || request()->is('shop/products*') ? 'active' : '' }}">Products</a></li>
+                    <li class="nav-item"><a href="{{ url('/waste2product/collectionpoints') }}" class="nav-link {{ request()->is('waste2product/collectionpoints*') ? 'active' : '' }}">Points de collecte</a></li>
+                    <li class="nav-item"><a href="{{ route('front.wastes.index') }}" class="nav-link {{ request()->routeIs('front.wastes.*') ? 'active' : '' }}">Wastes</a></li>
+                    <li class="nav-item"><a href="{{ url('/categories') }}" class="nav-link {{ request()->is('categories*') ? 'active' : '' }}">Waste Categories</a></li>
                     <li class="nav-item"><a href="{{ url('/contact') }}" class="nav-link {{ request()->is('contact') ? 'active' : '' }}">Contact</a></li>
                 </ul>
             </div>
@@ -135,6 +140,7 @@
                 for people, planet, and progress 🌍.
             </p>
             <a href="{{ url('/register') }}" class="btn btn-success me-2">Join Now</a>
+            <a href="{{ url('/products') }}" class="btn btn-outline-light">Explore Products</a>
         </div>
     </section>
 

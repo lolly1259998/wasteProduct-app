@@ -12,7 +12,11 @@ return new class extends Migration
         Schema::create('reservations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+<<<<<<< HEAD
             $table->integer('product_id');
+=======
+            $table->foreignId('product_id')->constrained()->onDelete('cascade');
+>>>>>>> main
             $table->integer('quantity');
             $table->dateTime('reserved_until');
             $table->enum('status', array_column(ReservationStatus::cases(), 'value'))->default(ReservationStatus::Pending->value);

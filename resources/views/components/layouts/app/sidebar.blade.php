@@ -10,10 +10,32 @@
             <a href="{{ route('dashboard') }}" class="me-5 flex items-center space-x-2 rtl:space-x-reverse" wire:navigate>
                 <x-app-logo />
             </a>
+           
 
             <flux:navlist variant="outline">
                 <flux:navlist.group :heading="__('Platform')" class="grid">
                     <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
+                    <flux:navlist.item icon="folder" :href="route('waste_categories.index')" :current="request()->routeIs('waste_categories.*')" wire:navigate>{{ __('Waste Categories') }}</flux:navlist.item>
+                    <flux:navlist.item icon="trash" :href="route('wastes.index')" :current="request()->routeIs('wastes.*')" wire:navigate>{{ __('Wastes') }}</flux:navlist.item>
+                </flux:navlist.group>
+                <flux:navlist.group :heading="__('Management')" class="grid">
+                    <flux:navlist.item icon="cube" :current="request()->routeIs('products.*', 'donations.*', 'orders.*', 'reservations.*')">
+                        <div class="flex items-center w-full">
+                            <span class="flex-1" onclick="window.location.href='{{ route('products.index') }}'">{{ __('Products') }}</span>
+                            <x-heroicon-o-chevron-down class="h-3 w-3 ml-auto transition-transform cursor-pointer" id="products-chevron" onclick="event.stopPropagation(); toggleSubMenu('products-submenu')" />
+                        </div>
+                    </flux:navlist.item>
+                    <div id="products-submenu" class="pl-4 space-y-1 {{ request()->routeIs('donations.*', 'orders.*', 'reservations.*') ? 'block' : 'hidden' }}">
+                        <flux:navlist.item icon="gift" :href="route('donations.index')" :current="request()->routeIs('donations.*')" wire:navigate class="text-gray-600 dark:text-gray-300 hover:bg-green-400 dark:hover:bg-green-600 hover:text-white dark:hover:text-white" style="{{ request()->routeIs('donations.*') ? 'background-color: #34D399;' : '' }}">
+                            {{ __('Donations') }}
+                        </flux:navlist.item>
+                        <flux:navlist.item icon="shopping-cart" :href="route('orders.index')" :current="request()->routeIs('orders.*')" wire:navigate class="text-gray-600 dark:text-gray-300 hover:bg-green-400 dark:hover:bg-green-600 hover:text-white dark:hover:text-white" style="{{ request()->routeIs('orders.*') ? 'background-color: #34D399;' : '' }}">
+                            {{ __('Orders') }}
+                        </flux:navlist.item>
+                        <flux:navlist.item icon="calendar" :href="route('reservations.index')" :current="request()->routeIs('reservations.*')" wire:navigate class="text-gray-600 dark:text-gray-300 hover:bg-green-400 dark:hover:bg-green-600 hover:text-white dark:hover:text-white" style="{{ request()->routeIs('reservations.*') ? 'background-color: #34D399;' : '' }}">
+                            {{ __('Reservations') }}
+                        </flux:navlist.item>
+                    </div>
                 </flux:navlist.group>
 
                 <flux:navlist.group :heading="__('Management')" class="grid">
@@ -129,3 +151,13 @@
         @fluxScripts
     </body>
 </html>
+</html>
+
+<script>
+    function toggleSubMenu(submenuId) {
+        const submenu = document.getElementById(submenuId);
+        const chevron = document.getElementById(submenuId.replace('submenu', 'chevron'));
+        submenu.classList.toggle('hidden');
+        chevron.classList.toggle('rotate-180');
+    }
+</script>
