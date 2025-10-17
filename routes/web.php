@@ -1,5 +1,4 @@
 <?php
-
 use App\Http\Controllers\DonationController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\OrderController;
@@ -103,28 +102,16 @@ $totalWastes = $wastes->count();
 
     // Reservation Routes
     Route::resource('reservations', ReservationController::class);
-
-//frontoffice home route
-    // Product Routes
-    Route::resource('products', ProductController::class);
-
-    // Donation Routes
-    Route::resource('donations', DonationController::class)->except(['edit', 'update']);
-
-    // Order Routes
-    Route::resource('orders', OrderController::class)->except(['edit', 'update']);
-
-    // Reservation Routes
-    Route::resource('reservations', ReservationController::class);
-
-    Route::view('dashboard', 'dashboard')->name('dashboard');
 });
 
+//frontoffice home route
 Route::get('/waste2product', function () {
     return view('front.home');
 });
 
 //frontoffice campaigns routes
+
+
 Route::get('/campaignsFront', [CampaignController::class, 'frontIndex'])->name('campaigns.front');
 
 // Frontoffice Waste Category Routes
