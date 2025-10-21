@@ -66,31 +66,4 @@ class CampaignController extends Controller
     return view('front.campaign.campaigns', compact('campaigns'));
     }   
 
-    // ✅ Toggle participation (join/quit)
-public function toggleParticipation($id)
-{
-    $user = auth()->user();
-    $campaign = Campaign::findOrFail($id);
-
-    if ($campaign->participants()->where('user_id', $user->id)->exists()) {
-        $campaign->participants()->detach($user->id);
-        $campaign->decrement('participants_count');
-        return response()->json(['joined' => false, 'participants' => $campaign->participants_count]);
-    } else {
-        $campaign->participants()->attach($user->id);
-        $campaign->increment('participants_count');
-        return response()->json(['joined' => true, 'participants' => $campaign->participants_count]);
-    }
-}
-
-// ✅ Check participation status
-public function checkParticipation($id)
-{
-    $user = auth()->user();
-    $campaign = Campaign::findOrFail($id);
-    $joined = $campaign->participants()->where('user_id', $user->id)->exists();
-    return response()->json(['joined' => $joined]);
-}
-
-
 }

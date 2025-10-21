@@ -15,8 +15,13 @@ use App\Http\Controllers\Front\FrontWasteCategoryController;
 use App\Http\Controllers\Front\FrontWasteController;
 use App\Http\Controllers\AI\AIController;
 use App\Http\Controllers\AI\WasteAIController;
+use App\Http\Controllers\AI\RecyclingAIController;
 use App\Http\Controllers\Backoffice\CollectionPointController;
 use App\Http\Controllers\Front\CollectionPointFrontController;
+use App\Http\Controllers\Backoffice\RecyclingProcessController;
+use App\Http\Controllers\Backoffice\ProductController;
+use App\Http\Controllers\Front\ProductFrontController;
+use App\Http\Controllers\AI\CollectionAIController;
 use App\Http\Controllers\Campaign\CampaignController;
 use App\Http\Controllers\Participants\ParticipationController;
 use App\Http\Controllers\AI\RecyclingAIController;
@@ -107,8 +112,6 @@ Route::get('/waste2product', function () {
 });
 
 //frontoffice campaigns routes
-
-
 Route::get('/campaignsFront', [CampaignController::class, 'frontIndex'])->name('campaigns.front');
 
 // Frontoffice Waste Category Routes
@@ -136,17 +139,34 @@ Route::get('/predictwaste', function () {
 Route::get('/ai-advice', [WasteAIController::class, 'showForm'])->name('ai.advice.form');
 Route::post('/ai-advice', [WasteAIController::class, 'recycling'])->name('ai.advice.recycling');
 
+// Démo IA pour le module Recyclage
+Route::get('/ai/recycling/demo', function () {
+    return view('ai.recycling-ai-demo');
+})->name('ai.recycling.demo');
 
+// Routes IA pour le module Recyclage
+Route::prefix('ai/recycling')->group(function () {
+    Route::post('/classify-waste', [RecyclingAIController::class, 'classifyWaste'])->name('ai.recycling.classify');
+    Route::post('/predict-quality', [RecyclingAIController::class, 'predictQuality'])->name('ai.recycling.predict-quality');
+    Route::post('/estimate-price', [RecyclingAIController::class, 'estimatePrice'])->name('ai.recycling.estimate-price');
+    Route::post('/generate-description', [RecyclingAIController::class, 'generateDescription'])->name('ai.recycling.generate-description');
+    Route::post('/optimize-process', [RecyclingAIController::class, 'optimizeProcess'])->name('ai.recycling.optimize-process');
+    Route::get('/health', [RecyclingAIController::class, 'healthCheck'])->name('ai.recycling.health');
+});
+
+// Product Routes (Front-office) - Utiliser un chemin différent pour éviter les conflits
+Route::get('/shop/products', [ProductFrontController::class, 'index'])->name('front.products.index');
+Route::get('/shop/products/{id}', [ProductFrontController::class, 'show'])->name('front.products.show');
 
 
 Route::view('/contact', 'front.contact');
-
 
 Route::get('/dashbored/collectionpoints', action: [CollectionPointController::class, 'index'])->name('back.home');
 Route::resource('collectionpoints', CollectionPointController::class);
 
 Route::get('/waste2product/collectionpoints', [CollectionPointFrontController::class, 'index'])->name('front.collectionpoints.index');
 Route::get('/waste2product/collectionpoints/{id}', [CollectionPointFrontController::class, 'show'])->name('front.collectionpoints.show');
+
 // Route pour la page de gestion des campagnes dans le back-office
 Route::get('/back/campaigns', function () {
     return view('back.campaign.campaigns');
@@ -155,20 +175,11 @@ Route::get('/back/campaigns', function () {
 // Routes RESTful pour l'API des campagnes
 Route::resource('campaigns', CampaignController::class);
 
-
-
-//Participants
-Route::middleware(['auth'])->group(function () {
-    Route::post('/campaigns/{campaign}/toggle', [ParticipationController::class, 'toggle'])
-        ->name('campaigns.toggle');
-});
 //Profil
 Route::get('/profile', function () {
     $user = Auth::user();
     return view('front.profil.profile', compact('user'));
 })->middleware('auth')->name('profile.view');
-
-
 
 //Users Routes
 Route::prefix('users')->group(function () {
@@ -200,6 +211,7 @@ Route::get('/shop/products/{id}', [ProductFrontController::class, 'show'])->name
 
 
 
+// Auth Routes
 Route::get('/register', [AuthentifController::class, 'showRegisterForm'])->name('register.form');
 Route::post('/register', [AuthentifController::class, 'register'])->name('register');
 
