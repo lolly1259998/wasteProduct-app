@@ -66,6 +66,7 @@ class CampaignController extends Controller
     return view('front.campaign.campaigns', compact('campaigns'));
     }   
 
+<<<<<<< HEAD
     // ✅ Toggle participation (join/quit)
 public function toggleParticipation($id)
 {
@@ -93,4 +94,6 @@ public function checkParticipation($id)
 }
 
 
+=======
+>>>>>>> 36e93289263cd535f1fe8f26034c38bed54fcd40
 }

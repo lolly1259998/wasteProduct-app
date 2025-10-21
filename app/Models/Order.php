@@ -18,15 +18,15 @@ class Order extends Model
         'order_date',
         'shipping_address',
         'payment_method',
-        'tracking_number'
+        'tracking_number',
     ];
 
     protected $casts = [
-        'total_amount' => 'decimal:2',
         'order_date' => 'datetime',
+        'total_amount' => 'decimal:2',
+        'status' => 'string',
     ];
 
-    // Relations
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -35,23 +35,5 @@ class Order extends Model
     public function product()
     {
         return $this->belongsTo(Product::class);
-    }
-
-    // Méthode pour calculer le total
-    public function calculateTotal()
-    {
-        return $this->quantity * $this->product->price;
-    }
-
-    // Événement model pour calculer automatiquement le total
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::saving(function ($order) {
-            if ($order->product && $order->quantity) {
-                $order->total_amount = $order->calculateTotal();
-            }
-        });
     }
 }

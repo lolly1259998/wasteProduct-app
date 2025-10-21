@@ -6,7 +6,12 @@
     <title>Waste2Product Dashboard - {{ $title ?? 'Admin' }}</title>
 
     <!-- Bootstrap + Icons -->
+    <title>Waste2Product Dashboard - {{ $title ?? 'Admin' }}</title>
+
+    <!-- Bootstrap + Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
     <style>
@@ -100,6 +105,21 @@
             border: none;
             border-radius: 10px;
             box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            background: linear-gradient(120deg, #f8fff8, #f5fff2);
+            padding-top: 80px; /* espace sous navbar */
+        }
+
+        footer {
+            background-color: #198754;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
         }
     </style>
 </head>
@@ -121,6 +141,7 @@
     </section>
 
     <!-- Main content -->
+    <main class="container-fluid py-5">
     <main class="container-fluid py-5">
         @yield('content')
     </main>

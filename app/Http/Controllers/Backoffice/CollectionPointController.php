@@ -85,4 +85,14 @@ class CollectionPointController extends Controller
         $collectionPoint->delete();
         return redirect()->route('collectionpoints.index')->with('success', 'Point de collecte supprimé.');
     }
+<<<<<<< HEAD
+=======
+
+
+    public function predictions()
+{
+    $collectionPoints = \App\Models\CollectionPoint::all();
+    return view('back.collectionpoints.predictions', compact('collectionPoints'));
+}
+>>>>>>> 36e93289263cd535f1fe8f26034c38bed54fcd40
 }

@@ -53,7 +53,6 @@ body {
 }
 
 /* Campaign Cards */
-
 .campaign-card {
     border: none;
     border-radius: 20px;

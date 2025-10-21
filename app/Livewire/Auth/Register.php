@@ -33,7 +33,7 @@ class Register extends Component
         ]);
 
         $validated['password'] = Hash::make($validated['password']);
-
+        $validated['role_id'] = 1; // Default role ID for 'user'
         event(new Registered(($user = User::create($validated))));
 
         Auth::login($user);
