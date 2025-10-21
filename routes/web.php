@@ -23,6 +23,10 @@ use App\Http\Controllers\Backoffice\ProductController;
 use App\Http\Controllers\Front\ProductFrontController;
 use App\Http\Controllers\AI\CollectionAIController;
 use App\Http\Controllers\Campaign\CampaignController;
+use App\Http\Controllers\Backoffice\RecyclingProcessController;
+use App\Http\Controllers\Backoffice\ProductController;
+
+
 
 Route::get('/', function () {
     return view('welcome');
