@@ -1,5 +1,3 @@
-
-
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
     <div class="container-fluid px-4">
         <a class="navbar-brand" href="{{ url('/') }}">🌿 Waste2Product</a>
@@ -10,7 +8,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a href="{{ url('/') }}" class="nav-link {{ request()->is('/') ? 'active' : '' }}">
+                    <a href="{{ url('/waste2product') }}" class="nav-link {{ request()->is('/') ? 'active' : '' }}">
                         <i class="bi bi-house-door me-1"></i>Home
                     </a>
                 </li>
@@ -20,14 +18,9 @@
                         <i class="bi bi-bag-check me-1"></i>Products
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="{{ url('/waste2product/collectionpoints') }}" class="nav-link {{ request()->is('front.collectionpoints.index') ? 'active' : '' }}">
-                        <i class="bi bi-geo-alt me-1"></i>collectionpoints
-                    </a>
-                </li>
 
                 <li class="nav-item">
-                    <a href="{{ url('/campaigns') }}" class="nav-link {{ request()->is('campaigns*') ? 'active' : '' }}">
+                    <a href="{{ url('/campaignsFront') }}" class="nav-link {{ request()->is('campaigns*') ? 'active' : '' }}">
                         <i class="bi bi-megaphone me-1"></i>Campaigns
                     </a>
                 </li>
@@ -58,11 +51,32 @@
                     </a>
                 </li>
 
-                <li class="nav-item">
-                    <a href="{{ url('/login') }}" class="nav-link text-light">
-                        <i class="bi bi-box-arrow-in-right me-1"></i>Login
-                    </a>
-                </li>
+               @auth
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-light" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+            <i class="bi bi-person-circle me-1"></i> {{ Auth::user()->name }}
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+            <li><a class="dropdown-item" href="{{ route('profile.view') }}"><i class="bi bi-person me-1"></i> Profile</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li>
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="dropdown-item text-danger">
+                        <i class="bi bi-box-arrow-right me-1"></i> Logout
+                    </button>
+                </form>
+            </li>
+        </ul>
+    </li>
+@else
+    <li class="nav-item">
+        <a href="{{ url('/login') }}" class="nav-link text-light">
+            <i class="bi bi-box-arrow-in-right me-1"></i>Login
+        </a>
+    </li>
+@endauth
+
             </ul>
         </div>
     </div>
