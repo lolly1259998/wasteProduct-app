@@ -24,11 +24,6 @@ use App\Http\Controllers\Front\ProductFrontController;
 use App\Http\Controllers\AI\CollectionAIController;
 use App\Http\Controllers\Campaign\CampaignController;
 use App\Http\Controllers\Participants\ParticipationController;
-use App\Http\Controllers\AI\RecyclingAIController;
-use App\Http\Controllers\Backoffice\RecyclingProcessController;
-use App\Http\Controllers\Backoffice\ProductController;
-use App\Http\Controllers\Front\ProductFrontController;
-use App\Http\Controllers\AI\CollectionAIController;
 use App\Http\Controllers\Auth\AuthentifController;
 use App\Http\Controllers\User\UserController;
 
