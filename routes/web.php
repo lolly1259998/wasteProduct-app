@@ -27,6 +27,8 @@ use App\Http\Controllers\Participants\ParticipationController;
 use App\Http\Controllers\Auth\AuthentifController;
 use App\Http\Controllers\User\UserController;
 
+
+
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
@@ -107,6 +109,8 @@ Route::get('/waste2product', function () {
 });
 
 //frontoffice campaigns routes
+
+
 Route::get('/campaignsFront', [CampaignController::class, 'frontIndex'])->name('campaigns.front');
 
 // Frontoffice Waste Category Routes
