@@ -47,39 +47,42 @@
             color: #a7f3d0 !important;
         }
 
+
         .hero-header {
-            height: 80vh;
-            background: url("{{ asset('images/Earth.png') }}") no-repeat center center/cover;
-            position: relative;
-            display: flex;
-            align-items: center;
-            /* ↓ On aligne le contenu à gauche */
-            justify-content: flex-start;
-            color: white;
-            padding-left: 100px; /* décale le texte à peu près au niveau du logo */
-        }
+    height: 80vh;
+    background: url("{{ asset('images/Earth.png') }}") no-repeat center center/cover;
+    position: relative;
+    display: flex;
+    align-items: center;
+    /* ↓ On aligne le contenu à gauche */
+    justify-content: flex-start;
+    color: white;
+    padding-left: 100px; /* décale le texte à peu près au niveau du logo */
+}
 
-        .hero-header::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.45);
-        }
+.hero-header::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+}
 
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            max-width: 600px; /* limite la largeur pour une belle mise en page */
-        }
+.hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 600px; /* limite la largeur pour une belle mise en page */
+}
 
-        .hero-content h1 {
-            font-size: 2.8rem;
-            font-weight: bold;
-        }
+.hero-content h1 {
+    font-size: 2.8rem;
+    font-weight: bold;
+}
 
-        .hero-content span {
-            color: #a7f3d0; /* vert clair accentué */
-        }
+.hero-content span {
+    color: #a7f3d0; /* vert clair accentué */
+}
+       
+     
 
         main {
             background: linear-gradient(120deg, #f8fff8, #f5fff2);
@@ -101,14 +104,21 @@
     </style>
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-success">
-        <div class="container">
-            <a class="navbar-brand fw-bold" href="{{ url('/') }}">Waste2Product</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
 
+@extends('front.navbar')
+
+
+    <section class="hero-header">
+    <div class="hero-content text-start">
+        <h1>The <span>Waste2Product</span> Platform for a Cleaner Future</h1>
+        <p>
+            Waste2Product connects citizens, recyclers, and companies to turn waste into new opportunities — 
+            for people, planet, and progress 🌍.
+        </p>
+        <a href="{{ url('/register') }}" class="btn btn-success me-2">Join Now</a>
+        <a href="{{ url('/products') }}" class="btn btn-outline-light">Explore Products</a>
+    </div>
+    </section>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a href="{{ url('/') }}" class="nav-link {{ request()->is('/') ? 'active' : '' }}">Home</a></li>
@@ -116,24 +126,13 @@
                     <li class="nav-item"><a href="{{ url('/waste2product/collectionpoints') }}" class="nav-link {{ request()->is('waste2product/collectionpoints*') ? 'active' : '' }}">Points de collecte</a></li>
                     <li class="nav-item"><a href="{{ route('front.wastes.index') }}" class="nav-link {{ request()->routeIs('front.wastes.*') ? 'active' : '' }}">Wastes</a></li>
                     <li class="nav-item"><a href="{{ url('/categories') }}" class="nav-link {{ request()->is('categories*') ? 'active' : '' }}">Waste Categories</a></li>
-                    <li class="nav-item"><a href="{{ url('/donations') }}" class="nav-link {{ request()->is('donations') ? 'active' : '' }}">Donations</a></li>
                     <li class="nav-item"><a href="{{ url('/contact') }}" class="nav-link {{ request()->is('contact') ? 'active' : '' }}">Contact</a></li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <section class="hero-header">
-        <div class="hero-content text-start">
-            <h1>The <span>Waste2Product</span> Platform for a Cleaner Future</h1>
-            <p>
-                Waste2Product connects citizens, recyclers, and companies to turn waste into new opportunities — 
-                for people, planet, and progress 🌍.
-            </p>
-            <a href="{{ url('/register') }}" class="btn btn-success me-2">Join Now</a>
-            <a href="{{ url('/products') }}" class="btn btn-outline-light">Explore Products</a>
-        </div>
-    </section>
+
 
     <!-- Main content -->
     <main class="container-fluid py-5">
@@ -145,9 +144,10 @@
         © {{ date('Y') }} Waste2Product — Together for a Cleaner Future 🌱
     </footer>
 
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-    <script>
+<script>
         // Navbar Scroll Effect
         document.addEventListener('scroll', function () {
             const navbar = document.querySelector('.navbar');
@@ -156,7 +156,10 @@
             } else {
                 navbar.classList.remove('scrolled');
             }
-        });
-    </script>
+        });</script>
+
+
+
 </body>
+
 </html>

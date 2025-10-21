@@ -23,6 +23,11 @@ use App\Http\Controllers\Backoffice\ProductController;
 use App\Http\Controllers\Front\ProductFrontController;
 use App\Http\Controllers\AI\CollectionAIController;
 use App\Http\Controllers\Campaign\CampaignController;
+use App\Http\Controllers\Participants\ParticipationController;
+use App\Http\Controllers\Auth\AuthentifController;
+use App\Http\Controllers\User\UserController;
+
+
 
 
 
@@ -65,7 +70,7 @@ Route::middleware(['auth'])->group(function () {
     // Recycling Process Routes (Back-office)
     Route::resource('recyclingprocesses', RecyclingProcessController::class);
 
-    // Product Routes (Back-office)
+    // zied Product Routes (Back-office)
     Route::resource('products', ProductController::class);
     Route::post('products/{id}/toggle-availability', [ProductController::class, 'toggleAvailability'])
         ->name('products.toggle-availability');
@@ -76,9 +81,9 @@ Route::middleware(['auth'])->group(function () {
     
     //Dashboard Route
     Route::get('/back/home', function () {
-     $categories = \App\Models\WasteCategory::all();
+    $categories = \App\Models\WasteCategory::all();
     $wastes = \App\Models\Waste::all();
-$totalWastes = $wastes->count();
+    $totalWastes = $wastes->count();
     $wasteStats = $categories->map(function ($category) use ($wastes, $totalWastes) {
         $count = $wastes->where('waste_category_id', $category->id)->count();
         $percentage = $totalWastes > 0 ? ($count / $totalWastes) * 100 : 0;
@@ -96,27 +101,7 @@ $totalWastes = $wastes->count();
     Route::get('/collectionpoints/predictions', [CollectionPointController::class, 'predictions'])
         ->name('collectionpoints.predictions');
 
-    // Donation Routes
-    Route::resource('donations', DonationController::class)->except(['edit', 'update']);
-
-    // Order Routes
-    Route::resource('orders', OrderController::class)->except(['edit', 'update']);
-
-    // Reservation Routes
-    Route::resource('reservations', ReservationController::class);
-
-//frontoffice home route
-    // Product Routes
-    Route::resource('products', ProductController::class);
-
-    // Donation Routes
-    Route::resource('donations', DonationController::class)->except(['edit', 'update']);
-
-    // Order Routes
-    Route::resource('orders', OrderController::class)->except(['edit', 'update']);
-
-    // Reservation Routes
-    Route::resource('reservations', ReservationController::class);
+    
 
     Route::view('dashboard', 'dashboard')->name('dashboard');
 });
@@ -173,6 +158,73 @@ Route::prefix('ai/recycling')->group(function () {
 // Product Routes (Front-office) - Utiliser un chemin différent pour éviter les conflits
 Route::get('/shop/products', [ProductFrontController::class, 'index'])->name('front.products.index');
 Route::get('/shop/products/{id}', [ProductFrontController::class, 'show'])->name('front.products.show');
+
+
+Route::view('/contact', 'front.contact');
+
+Route::get('/dashbored/collectionpoints', action: [CollectionPointController::class, 'index'])->name('back.home');
+Route::resource('collectionpoints', CollectionPointController::class);
+
+Route::get('/waste2product/collectionpoints', [CollectionPointFrontController::class, 'index'])->name('front.collectionpoints.index');
+Route::get('/waste2product/collectionpoints/{id}', [CollectionPointFrontController::class, 'show'])->name('front.collectionpoints.show');
+
+// Route pour la page de gestion des campagnes dans le back-office
+Route::get('/back/campaigns', function () {
+    return view('back.campaign.campaigns');
+})->name('back.campaigns');
+
+// Routes RESTful pour l'API des campagnes
+Route::resource('campaigns', CampaignController::class);
+
+//Profil
+Route::get('/profile', function () {
+    $user = Auth::user();
+    return view('front.profil.profile', compact('user'));
+})->middleware('auth')->name('profile.view');
+
+//Users Routes
+Route::prefix('users')->group(function () {
+    Route::get('/', [UserController::class, 'index']);
+    Route::post('/', [UserController::class, 'store']);
+    Route::get('/{id}', [UserController::class, 'show']);
+    Route::put('/{id}', [UserController::class, 'update']);
+    Route::delete('/{id}', [UserController::class, 'destroy']);
+});    
+// Démo IA pour le module Recyclage
+Route::get('/ai/recycling/demo', function () {
+    return view('ai.recycling-ai-demo');
+})->name('ai.recycling.demo');
+
+// Routes IA pour le module Recyclage
+Route::prefix('ai/recycling')->group(function () {
+    Route::post('/classify-waste', [RecyclingAIController::class, 'classifyWaste'])->name('ai.recycling.classify');
+    Route::post('/predict-quality', [RecyclingAIController::class, 'predictQuality'])->name('ai.recycling.predict-quality');
+    Route::post('/estimate-price', [RecyclingAIController::class, 'estimatePrice'])->name('ai.recycling.estimate-price');
+    Route::post('/generate-description', [RecyclingAIController::class, 'generateDescription'])->name('ai.recycling.generate-description');
+    Route::post('/optimize-process', [RecyclingAIController::class, 'optimizeProcess'])->name('ai.recycling.optimize-process');
+    Route::get('/health', [RecyclingAIController::class, 'healthCheck'])->name('ai.recycling.health');
+});
+
+// Product Routes (Front-office) - Utiliser un chemin différent pour éviter les conflits
+Route::get('/shop/products', [ProductFrontController::class, 'index'])->name('front.products.index');
+Route::get('/shop/products/{id}', [ProductFrontController::class, 'show'])->name('front.products.show');
+
+
+
+
+// Auth Routes
+Route::get('/register', [AuthentifController::class, 'showRegisterForm'])->name('register.form');
+Route::post('/register', [AuthentifController::class, 'register'])->name('register');
+
+Route::get('/login', [AuthentifController::class, 'showLoginForm'])->name('login.form');
+Route::post('/login', [AuthentifController::class, 'login'])->name('login');
+
+Route::post('/logout', [AuthentifController::class, 'logout'])->name('logout');
+
+Route::get('/dashboard', function() {
+    return view('dashboard');
+})->middleware('auth');
+
 
 Route::view('/recycling', 'front.recycling');
 Route::view('/contact', 'front.contact');
