@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\WasteCategory;
+use Illuminate\Support\Facades\DB;
 
 class WasteCategorySeeder extends Seeder
 {
@@ -13,13 +12,31 @@ class WasteCategorySeeder extends Seeder
      */
     public function run(): void
     {
-        //
-        WasteCategory::create([
-            "name"=>"Plastic",
-            "description"=>"Waste made from plastic materials.",
-            "recycling_instructions"=>"Clean and sort plastics before recycling."
+        DB::table('waste_categories')->insert([
+            [
+                'id' => 20,
+                'name' => 'plastique',
+                'description' => 'hjkm',
+                'recycling_instructions' => 'jjj',
+                'created_at' => '2025-10-02 15:11:04',
+                'updated_at' => '2025-10-14 14:42:02',
+            ],
+            [
+                'id' => 23,
+                'name' => 'Glass',
+                'description' => 'glases',
+                'recycling_instructions' => 'non',
+                'created_at' => '2025-10-14 13:14:49',
+                'updated_at' => '2025-10-14 13:14:49',
+            ],
+            [
+                'id' => 25,
+                'name' => 'Metal',
+                'description' => 'metal',
+                'recycling_instructions' => 'hdid',
+                'created_at' => '2025-10-17 10:24:39',
+                'updated_at' => '2025-10-17 10:24:39',
+            ],
         ]);
-        WasteCategory::factory(5)->create();
-
     }
 }

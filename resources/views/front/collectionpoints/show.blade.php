@@ -146,11 +146,8 @@
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 1rem;
-            flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            margin-right: 1rem; flex-shrink: 0;
         }
 
         .info-content { 
@@ -231,26 +228,22 @@
             font-weight: 600;
             transition: all 0.3s ease;
         }
-
         .btn-success:hover {
             background-color: #157347;
             border-color: #146c43;
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
         }
-
         .btn-outline-secondary {
             border-radius: 8px;
             padding: 0.7rem 1.5rem;
             font-weight: 600;
             transition: all 0.3s ease;
         }
-
         .btn-outline-secondary:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-
         .last-updated {
             background-color: rgba(0, 0, 0, 0.03);
             border-radius: 8px;
@@ -259,7 +252,6 @@
             margin-top: 1.5rem;
             font-size: 0.9rem;
         }
-
         .action-buttons {
             display: flex;
             justify-content: space-between;
@@ -493,6 +485,7 @@
                     </div>
 
                 </div>
+
             </div>
         </div>
     </main>

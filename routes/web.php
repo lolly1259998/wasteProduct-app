@@ -24,6 +24,8 @@ use App\Http\Controllers\Front\ProductFrontController;
 use App\Http\Controllers\AI\CollectionAIController;
 use App\Http\Controllers\Campaign\CampaignController;
 
+
+
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
@@ -93,6 +95,19 @@ $totalWastes = $wastes->count();
 
     Route::get('/collectionpoints/predictions', [CollectionPointController::class, 'predictions'])
         ->name('collectionpoints.predictions');
+
+    // Donation Routes
+    Route::resource('donations', DonationController::class)->except(['edit', 'update']);
+
+    // Order Routes
+    Route::resource('orders', OrderController::class)->except(['edit', 'update']);
+
+    // Reservation Routes
+    Route::resource('reservations', ReservationController::class);
+
+//frontoffice home route
+    // Product Routes
+    Route::resource('products', ProductController::class);
 
     // Donation Routes
     Route::resource('donations', DonationController::class)->except(['edit', 'update']);
