@@ -1,5 +1,4 @@
 <?php
-
 use App\Http\Controllers\DonationController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\OrderController;
@@ -19,6 +18,9 @@ use App\Http\Controllers\AI\WasteAIController;
 use App\Http\Controllers\AI\RecyclingAIController;
 use App\Http\Controllers\Backoffice\CollectionPointController;
 use App\Http\Controllers\Front\CollectionPointFrontController;
+use App\Http\Controllers\Backoffice\RecyclingProcessController;
+use App\Http\Controllers\Backoffice\ProductController;
+use App\Http\Controllers\Front\ProductFrontController;
 use App\Http\Controllers\AI\CollectionAIController;
 use App\Http\Controllers\Campaign\CampaignController;
 use App\Http\Controllers\Backoffice\RecyclingProcessController;
@@ -98,6 +100,19 @@ Route::get('/collection-ai/predict/{id}', [CollectionAIController::class, 'predi
 
 Route::get('/collectionpoints/predictions', [CollectionPointController::class, 'predictions'])
     ->name('collectionpoints.predictions');
+
+//frontoffice home route
+    // Product Routes
+    Route::resource('products', ProductController::class);
+
+    // Donation Routes
+    Route::resource('donations', DonationController::class)->except(['edit', 'update']);
+
+    // Order Routes
+    Route::resource('orders', OrderController::class)->except(['edit', 'update']);
+
+    // Reservation Routes
+    Route::resource('reservations', ReservationController::class);
 
 //frontoffice home route
     // Product Routes
