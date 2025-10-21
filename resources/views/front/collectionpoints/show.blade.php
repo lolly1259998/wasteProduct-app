@@ -20,12 +20,14 @@
             --card-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
             --card-hover-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
         }
+        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
             color: var(--text-dark);
             min-height: 100vh;
         }
+        
         .page-header {
             background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
             color: white;
@@ -34,15 +36,18 @@
             margin-bottom: 2rem;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
+        
         .page-title {
             font-weight: 700;
             margin-bottom: 0.5rem;
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
         }
+        
         .page-subtitle {
             opacity: 0.9;
             font-size: 1.1rem;
         }
+        
         .detail-card {
             border: none;
             border-radius: 20px;
@@ -51,19 +56,25 @@
             background: white;
             margin-bottom: 2rem;
         }
+        
         .card-header-custom {
             background: linear-gradient(to right, var(--primary-color), var(--primary-light));
             color: white;
             padding: 1.5rem;
             border-bottom: none;
         }
+        
         .card-title {
             font-weight: 700;
             margin-bottom: 0;
             display: flex;
             align-items: center;
         }
-        .info-section { padding: 1.5rem; }
+        
+        .info-section {
+            padding: 1.5rem;
+        }
+        
         .info-item {
             display: flex;
             align-items: flex-start;
@@ -71,24 +82,47 @@
             padding-bottom: 1.5rem;
             border-bottom: 1px solid #f0f0f0;
         }
-        .info-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        
+        .info-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
         .info-icon {
             background-color: rgba(46, 125, 50, 0.1);
             color: var(--primary-color);
-            width: 40px; height: 40px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            margin-right: 1rem; flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            flex-shrink: 0;
         }
-        .info-content { flex: 1; }
-        .info-label { font-weight: 600; color: var(--text-dark); margin-bottom: 0.3rem; }
-        .info-value { color: var(--text-light); }
+        
+        .info-content {
+            flex: 1;
+        }
+        
+        .info-label {
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.3rem;
+        }
+        
+        .info-value {
+            color: var(--text-light);
+        }
+        
         .badge-custom {
             padding: 0.5rem 0.8rem;
             border-radius: 50px;
             font-weight: 600;
             font-size: 0.85rem;
         }
+        
         .category-badge {
             display: inline-block;
             background-color: rgba(46, 125, 50, 0.1);
@@ -98,16 +132,34 @@
             margin: 0.2rem;
             font-size: 0.85rem;
         }
-        .hours-list { list-style: none; padding-left: 0; margin-bottom: 0; }
-        .hours-list li { padding: 0.3rem 0; border-bottom: 1px solid #f5f5f5; }
-        .hours-list li:last-child { border-bottom: none; }
+        
+        .hours-list {
+            list-style: none;
+            padding-left: 0;
+            margin-bottom: 0;
+        }
+        
+        .hours-list li {
+            padding: 0.3rem 0;
+            border-bottom: 1px solid #f5f5f5;
+        }
+        
+        .hours-list li:last-child {
+            border-bottom: none;
+        }
+        
         .map-container {
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
             margin-top: 1rem;
         }
-        #map { height: 300px; width: 100%; }
+        
+        #map {
+            height: 300px;
+            width: 100%;
+        }
+        
         .btn-success {
             background-color: var(--primary-color);
             border-color: var(--primary-color);
@@ -116,22 +168,26 @@
             font-weight: 600;
             transition: all 0.3s ease;
         }
+        
         .btn-success:hover {
             background-color: var(--primary-dark);
             border-color: var(--primary-dark);
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
         }
+        
         .btn-outline-secondary {
             border-radius: 50px;
             padding: 0.7rem 1.5rem;
             font-weight: 600;
             transition: all 0.3s ease;
         }
+        
         .btn-outline-secondary:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
+        
         .last-updated {
             background-color: rgba(0, 0, 0, 0.03);
             border-radius: 10px;
@@ -139,6 +195,7 @@
             text-align: center;
             margin-top: 1.5rem;
         }
+        
         .action-buttons {
             display: flex;
             justify-content: space-between;
@@ -146,25 +203,46 @@
             padding-top: 1.5rem;
             border-top: 1px solid #f0f0f0;
         }
+        
         @media (max-width: 768px) {
-            .action-buttons { flex-direction: column; gap: 1rem; }
-            .action-buttons a { width: 100%; text-align: center; }
+            .page-header {
+                padding: 2rem 0;
+                border-radius: 0 0 20px 20px;
+            }
+            
+            .page-title {
+                font-size: 1.8rem;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .action-buttons a {
+                width: 100%;
+                text-align: center;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- En-tête de la page -->
     <div class="page-header">
-        <div class="container text-center">
-            <h1 class="page-title animate__animated animate__fadeIn">
-                <i class="bi bi-recycle me-2"></i> Détails du Point de Collecte
-            </h1>
-            <p class="page-subtitle animate__animated animate__fadeIn animate__delay-1s">
-                Informations complètes sur ce point de collecte
-            </p>
+        <div class="container">
+            <div class="text-center">
+                <h1 class="page-title animate__animated animate__fadeIn">
+                    <i class="bi bi-recycle me-2"></i> Détails du Point de Collecte
+                </h1>
+                <p class="page-subtitle animate__animated animate__fadeIn animate__delay-1s">
+                    Informations complètes sur ce point de collecte
+                </p>
+            </div>
         </div>
     </div>
 
     <div class="container mb-5">
+        <!-- Carte pour afficher les détails -->
         <div class="detail-card animate__animated animate__zoomIn">
             <div class="card-header-custom">
                 <h3 class="card-title">
@@ -172,31 +250,41 @@
                 </h3>
             </div>
             <div class="info-section">
-
+                <!-- Informations sur l'adresse -->
                 <div class="info-item">
-                    <div class="info-icon"><i class="bi bi-geo-alt-fill"></i></div>
+                    <div class="info-icon">
+                        <i class="bi bi-geo-alt-fill"></i>
+                    </div>
                     <div class="info-content">
                         <div class="info-label">Adresse</div>
                         <div class="info-value">{{ $collectionPoint->address }}, {{ $collectionPoint->city }} {{ $collectionPoint->postal_code }}</div>
                     </div>
                 </div>
-
+                
+                <!-- Informations de contact -->
                 <div class="info-item">
-                    <div class="info-icon"><i class="bi bi-telephone-fill"></i></div>
+                    <div class="info-icon">
+                        <i class="bi bi-telephone-fill"></i>
+                    </div>
                     <div class="info-content">
                         <div class="info-label">Téléphone</div>
                         <div class="info-value">
                             @if ($collectionPoint->contact_phone)
-                                <a href="tel:{{ $collectionPoint->contact_phone }}">{{ $collectionPoint->contact_phone }}</a>
+                                <a href="tel:{{ $collectionPoint->contact_phone }}" class="text-decoration-none">
+                                    {{ $collectionPoint->contact_phone }}
+                                </a>
                             @else
                                 <span class="text-muted">Non renseigné</span>
                             @endif
                         </div>
                     </div>
                 </div>
-
+                
+                <!-- Statut du point de collecte -->
                 <div class="info-item">
-                    <div class="info-icon"><i class="bi bi-info-circle-fill"></i></div>
+                    <div class="info-icon">
+                        <i class="bi bi-info-circle-fill"></i>
+                    </div>
                     <div class="info-content">
                         <div class="info-label">Statut</div>
                         <div class="info-value">
@@ -210,9 +298,12 @@
                         </div>
                     </div>
                 </div>
-
+                
+                <!-- Horaires d'ouverture -->
                 <div class="info-item">
-                    <div class="info-icon"><i class="bi bi-clock-fill"></i></div>
+                    <div class="info-icon">
+                        <i class="bi bi-clock-fill"></i>
+                    </div>
                     <div class="info-content">
                         <div class="info-label">Horaires d'ouverture</div>
                         <div class="info-value">
@@ -228,9 +319,12 @@
                         </div>
                     </div>
                 </div>
-
+                
+                <!-- Catégories acceptées -->
                 <div class="info-item">
-                    <div class="info-icon"><i class="bi bi-tags-fill"></i></div>
+                    <div class="info-icon">
+                        <i class="bi bi-tags-fill"></i>
+                    </div>
                     <div class="info-content">
                         <div class="info-label">Catégories acceptées</div>
                         <div class="info-value">
@@ -244,33 +338,43 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="info-item">
-                    <div class="info-icon"><i class="bi bi-map-fill"></i></div>
-                    <div class="info-content">
-                        <div class="info-label">Localisation</div>
-                        <div class="info-value">
-                            <div class="map-container"><div id="map"></div></div>
+                
+                <!-- Carte interactive -->
+                @if ($collectionPoint->latitude && $collectionPoint->longitude)
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="bi bi-map-fill"></i>
+                        </div>
+                        <div class="info-content">
+                            <div class="info-label">Localisation</div>
+                            <div class="info-value">
+                                <div class="map-container">
+                                    <div id="map"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-
+                @endif
+                
+                <!-- Dernière mise à jour -->
                 <div class="last-updated">
                     <i class="bi bi-arrow-clockwise me-2 text-muted"></i>
                     <small class="text-muted">Dernière mise à jour : {{ $collectionPoint->updated_at->format('d/m/Y à H:i') }}</small>
                 </div>
-
+                
+                <!-- Boutons d'action -->
                 <div class="action-buttons">
                     <a href="{{ route('front.collectionpoints.index') }}" class="btn btn-outline-secondary">
                         <i class="bi bi-arrow-left me-1"></i> Retour à la liste
                     </a>
                     @if ($collectionPoint->latitude && $collectionPoint->longitude)
-                        <a href="https://www.google.com/maps/dir/?api=1&destination={{ $collectionPoint->latitude }},{{ $collectionPoint->longitude }}" target="_blank" class="btn btn-success">
+                        <a href="https://www.google.com/maps/dir/?api=1&destination={{ $collectionPoint->latitude }},{{ $collectionPoint->longitude }}" 
+                           target="_blank" 
+                           class="btn btn-success">
                             <i class="bi bi-signpost-split me-1"></i> Obtenir l'itinéraire
                         </a>
                     @endif
                 </div>
-
             </div>
         </div>
     </div>
@@ -278,61 +382,37 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-   <script>
-document.addEventListener('DOMContentLoaded', function () {
-    @if ($collectionPoint->latitude && $collectionPoint->longitude)
-        // ✅ Si latitude/longitude existent
-        var lat = {{ $collectionPoint->latitude }};
-        var lon = {{ $collectionPoint->longitude }};
-        initMap(lat, lon, "{{ $collectionPoint->name }}", "{{ $collectionPoint->address }}", "{{ $collectionPoint->city }} {{ $collectionPoint->postal_code }}");
-    @else
-        // 🌍 Géocodage en Tunisie uniquement
-        var address = "{{ $collectionPoint->address ?? '' }} {{ $collectionPoint->city ?? '' }} {{ $collectionPoint->postal_code ?? '' }} Tunisie";
-        var url = `https://nominatim.openstreetmap.org/search?format=json&countrycodes=tn&limit=1&q=${encodeURIComponent(address)}`;
-
-        fetch(url, { headers: { 'User-Agent': 'Waste2Product-App' }})
-            .then(response => response.json())
-            .then(data => {
-                if (data && data.length > 0) {
-                    var lat = parseFloat(data[0].lat);
-                    var lon = parseFloat(data[0].lon);
-                    initMap(lat, lon, "{{ $collectionPoint->name }}", "{{ $collectionPoint->address }}", "{{ $collectionPoint->city }} {{ $collectionPoint->postal_code }}");
-                } else {
-                    console.warn("Adresse non trouvée en Tunisie. Centrage par défaut sur Tunis.");
-                    initMap(36.8065, 10.1815, "Tunis", "Tunisie", "");
-                }
-            })
-            .catch(error => {
-                console.error("Erreur de géocodage :", error);
-                initMap(36.8065, 10.1815, "Tunis", "Tunisie", "");
+    <script>
+        @if ($collectionPoint->latitude && $collectionPoint->longitude)
+            document.addEventListener('DOMContentLoaded', function () {
+                // Initialisation de la carte
+                var map = L.map('map').setView([{{ $collectionPoint->latitude }}, {{ $collectionPoint->longitude }}], 15);
+                
+                // Ajout des tuiles de la carte
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributeurs'
+                }).addTo(map);
+                
+                // Personnalisation du marqueur
+                var greenIcon = L.divIcon({
+                    html: '<i class="bi bi-geo-alt-fill" style="font-size: 24px; color: #2e7d32;"></i>',
+                    iconSize: [24, 24],
+                    className: 'leaflet-div-icon-custom'
+                });
+                
+                // Ajout du marqueur
+                L.marker([{{ $collectionPoint->latitude }}, {{ $collectionPoint->longitude }}], {icon: greenIcon})
+                    .addTo(map)
+                    .bindPopup(`
+                        <div class="text-center">
+                            <h5 class="mb-1">{{ $collectionPoint->name }}</h5>
+                            <p class="mb-1">{{ $collectionPoint->address }}</p>
+                            <p class="mb-0">{{ $collectionPoint->city }} {{ $collectionPoint->postal_code }}</p>
+                        </div>
+                    `)
+                    .openPopup();
             });
-    @endif
-});
-
-function initMap(lat, lon, name, address, city) {
-    var map = L.map('map').setView([lat, lon], 14);
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OpenStreetMap'
-    }).addTo(map);
-
-    var greenIcon = L.divIcon({
-        html: '<i class="bi bi-geo-alt-fill" style="font-size: 24px; color: #2e7d32;"></i>',
-        iconSize: [24, 24],
-        className: 'leaflet-div-icon-custom'
-    });
-
-    L.marker([lat, lon], { icon: greenIcon })
-        .addTo(map)
-        .bindPopup(`
-            <div class="text-center">
-                <h5 class="mb-1">${name}</h5>
-                <p class="mb-1">${address}</p>
-                <p class="mb-0">${city}</p>
-            </div>
-        `)
-        .openPopup();
-}
-</script>
+        @endif
+    </script>
 </body>
 </html>
