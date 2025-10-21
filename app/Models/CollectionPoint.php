@@ -10,6 +10,7 @@ class CollectionPoint extends Model
     use HasFactory;
 
     protected $fillable = [
+        'id',
         'name',
         'address',
         'city',
