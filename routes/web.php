@@ -24,6 +24,9 @@ use App\Http\Controllers\Backoffice\ProductController;
 use App\Http\Controllers\Front\ProductFrontController;
 use App\Http\Controllers\AI\CollectionAIController;
 use App\Http\Controllers\Campaign\CampaignController;
+use App\Http\Controllers\Participants\ParticipationController;
+use App\Http\Controllers\Auth\AuthentifController;
+use App\Http\Controllers\User\UserController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -103,6 +106,10 @@ $totalWastes = $wastes->count();
 
     // Reservation Routes
     Route::resource('reservations', ReservationController::class);
+    
+    //Participants
+    Route::post('/campaigns/{campaign}/toggle', [ParticipationController::class, 'toggle'])
+        ->name('campaigns.toggle');
 });
 
 //frontoffice home route
@@ -157,7 +164,9 @@ Route::prefix('ai/recycling')->group(function () {
 Route::get('/shop/products', [ProductFrontController::class, 'index'])->name('front.products.index');
 Route::get('/shop/products/{id}', [ProductFrontController::class, 'show'])->name('front.products.show');
 
+Route::view('/products', 'front.products');
 Route::view('/recycling', 'front.recycling');
+Route::view('/donations', 'front.donations');
 Route::view('/contact', 'front.contact');
 
 Route::get('/dashbored/collectionpoints', action: [CollectionPointController::class, 'index'])->name('back.home');
@@ -173,5 +182,33 @@ Route::get('/back/campaigns', function () {
 
 // Routes RESTful pour l'API des campagnes
 Route::resource('campaigns', CampaignController::class);
+
+//Profil
+Route::get('/profile', function () {
+    $user = Auth::user();
+    return view('front.profil.profile', compact('user'));
+})->middleware('auth')->name('profile.view');
+
+//Users Routes
+Route::prefix('users')->group(function () {
+    Route::get('/', [UserController::class, 'index']);
+    Route::post('/', [UserController::class, 'store']);
+    Route::get('/{id}', [UserController::class, 'show']);
+    Route::put('/{id}', [UserController::class, 'update']);
+    Route::delete('/{id}', [UserController::class, 'destroy']);
+});
+
+// Auth Routes
+Route::get('/register', [AuthentifController::class, 'showRegisterForm'])->name('register.form');
+Route::post('/register', [AuthentifController::class, 'register'])->name('register');
+
+Route::get('/login', [AuthentifController::class, 'showLoginForm'])->name('login.form');
+Route::post('/login', [AuthentifController::class, 'login'])->name('login');
+
+Route::post('/logout', [AuthentifController::class, 'logout'])->name('logout');
+
+Route::get('/dashboard', function() {
+    return view('dashboard');
+})->middleware('auth');
 
 require __DIR__.'/auth.php';
