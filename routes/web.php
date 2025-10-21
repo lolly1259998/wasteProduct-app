@@ -117,9 +117,10 @@ $totalWastes = $wastes->count();
 
     // Reservation Routes
     Route::resource('reservations', ReservationController::class);
+
+    Route::view('dashboard', 'dashboard')->name('dashboard');
 });
 
-//frontoffice home route
 Route::get('/waste2product', function () {
     return view('front.home');
 });
