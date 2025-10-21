@@ -27,6 +27,11 @@ class Product extends Model
         'is_available' => 'boolean',
     ];
 
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
     public function scopeAvailable($query)
     {
         return $query->where('is_available', true)

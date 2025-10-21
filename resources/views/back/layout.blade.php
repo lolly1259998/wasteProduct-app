@@ -188,6 +188,14 @@
 
     </li>
     <li>
+        <a href="{{ route('wastes.index') }}" class="nav-link text-white" data-tooltip="All Waste">
+            <i class="bi bi-recycle me-2"></i> All Waste
+        </a>
+    </li>
+    <li>
+        <a href="{{ route('waste_categories.index') }}" class="nav-link text-white" data-tooltip="Waste Categories">
+            <i class="bi bi-tags me-2"></i> Waste Categories
+        </a>
     </li>
     <li>
         <a href="{{ route('predictwaste') }}" class="nav-link text-white" data-tooltip="AI Waste Prediction">
@@ -250,6 +258,14 @@
                           
                         </li>
                         
+                            <a href="{{ route('recyclingprocesses.index') }}" class="nav-link {{ request()->routeIs('recyclingprocesses.*') ? 'active' : '' }}">
+                                <i class="bi bi-arrow-repeat me-2"></i> Processus de Recyclage
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('products.index') }}" class="nav-link {{ request()->routeIs('products.*') ? 'active' : '' }}">
+                                <i class="bi bi-box-seam me-2"></i> Produits Recyclés
+                            </a>
                         </li>
                         <li>
                             <a href="{{ route('ai.recycling.demo') }}" class="nav-link {{ request()->routeIs('ai.recycling.*') ? 'active' : '' }}">

@@ -151,7 +151,6 @@
         @fluxScripts
     </body>
 </html>
-</html>
 
 <script>
     function toggleSubMenu(submenuId) {

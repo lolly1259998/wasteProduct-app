@@ -11,9 +11,6 @@
 
     <style>
         body {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
             margin: 0;
             font-family: system-ui, sans-serif;
             overflow-x: hidden;
@@ -45,7 +42,6 @@
             transition: color 0.3s ease;
         }
 
-        .nav-link:hover, .nav-link.active {
         .nav-link:hover {
             text-decoration: underline;
             color: #a7f3d0 !important;
@@ -86,7 +82,6 @@
         }
 
         main {
-            flex: 1;
             background: linear-gradient(120deg, #f8fff8, #f5fff2);
             padding-top: 80px; /* espace sous navbar */
         }
@@ -96,7 +91,6 @@
             color: #fff;
             text-align: center;
             padding: 10px 0;
-            margin-top: auto;
         }
 
         .card {
