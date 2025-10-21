@@ -16,6 +16,8 @@
                     {{ __('Dashboard') }}
                 </flux:navbar.item>
             </flux:navbar>
+            
+           
 
             <flux:spacer />
 
@@ -117,7 +119,9 @@
             </flux:navlist>
         </flux:sidebar>
 
-        {{ $slot }}
+  
+    {{ $slot }}
+
 
         @fluxScripts
     </body>
