@@ -6,6 +6,7 @@
 <title>Back Office - Waste2Product</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
 <style>
     body {
         transition: all 0.3s;
@@ -16,7 +17,7 @@
     .sidebar {
         width: 250px;
         min-height: 100vh;
-background: linear-gradient(180deg, #003d39ff 0%, #000b0aff 100%);
+        background: linear-gradient(180deg, #003d39ff 0%, #000b0aff 100%);
         transition: width 0.3s ease;
         position: fixed;
         top: 0;
@@ -24,9 +25,8 @@ background: linear-gradient(180deg, #003d39ff 0%, #000b0aff 100%);
         z-index: 1100;
         box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
     }
-    .sidebar.collapsed {
-        width: 70px;
-    }
+    .sidebar.collapsed { width: 70px; }
+
     .sidebar .nav-link {
         color: #e6f4f3;
         padding: 12px 15px;
@@ -42,6 +42,7 @@ background: linear-gradient(180deg, #003d39ff 0%, #000b0aff 100%);
         background-color: rgba(255, 255, 255, 0.1);
         transform: scale(1.02);
     }
+
     .sidebar .nav-text {
         transition: opacity 0.3s, display 0.3s;
         margin-left: 12px;
@@ -50,6 +51,7 @@ background: linear-gradient(180deg, #003d39ff 0%, #000b0aff 100%);
         opacity: 0;
         display: none;
     }
+
     .sidebar .nav-item .submenu {
         display: none;
         list-style: none;
@@ -69,6 +71,8 @@ background: linear-gradient(180deg, #003d39ff 0%, #000b0aff 100%);
     .sidebar .submenu .nav-link:hover {
         background-color: rgba(255, 255, 255, 0.05);
     }
+
+    /* Tooltip */
     /* Tooltips for collapsed state */
     .sidebar.collapsed .nav-link::after {
         content: attr(data-tooltip);
@@ -89,6 +93,8 @@ background: linear-gradient(180deg, #003d39ff 0%, #000b0aff 100%);
     .sidebar.collapsed .nav-link:hover::after {
         opacity: 1;
     }
+
+    /* Toggle button */
     /* Toggle button animation */
     .sidebar .toggle-btn {
         transition: transform 0.3s ease, background-color 0.3s;
@@ -123,17 +129,15 @@ background: linear-gradient(180deg, #003d39ff 0%, #000b0aff 100%);
         z-index: 1000;
     }
 
+    /* Cards */
     /* Card style */
     .card {
         border-radius: 12px;
         box-shadow: 0 2px 12px rgba(0,0,0,0.1);
         transition: transform 0.2s;
     }
-    .card:hover {
-        transform: translateY(-5px);
-    }
+    .card:hover { transform: translateY(-5px); }
 
-    /* Responsive adjustments */
     @media (max-width: 768px) {
         .sidebar {
             width: 70px;
