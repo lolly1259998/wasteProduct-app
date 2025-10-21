@@ -194,7 +194,6 @@
                 <i class="bi bi-lightbulb me-2"></i> AI Recycling Advice
             </a>
     </li>
-    
 </ul>
                
 </li>
