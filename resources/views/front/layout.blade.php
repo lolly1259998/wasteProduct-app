@@ -119,6 +119,20 @@
         <a href="{{ url('/products') }}" class="btn btn-outline-light">Explore Products</a>
     </div>
     </section>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a href="{{ url('/') }}" class="nav-link {{ request()->is('/') ? 'active' : '' }}">Home</a></li>
+                    <li class="nav-item"><a href="{{ route('front.products.index') }}" class="nav-link {{ request()->routeIs('front.products.*') || request()->is('shop/products*') ? 'active' : '' }}">Products</a></li>
+                    <li class="nav-item"><a href="{{ url('/waste2product/collectionpoints') }}" class="nav-link {{ request()->is('waste2product/collectionpoints*') ? 'active' : '' }}">Points de collecte</a></li>
+                    <li class="nav-item"><a href="{{ route('front.wastes.index') }}" class="nav-link {{ request()->routeIs('front.wastes.*') ? 'active' : '' }}">Wastes</a></li>
+                    <li class="nav-item"><a href="{{ url('/categories') }}" class="nav-link {{ request()->is('categories*') ? 'active' : '' }}">Waste Categories</a></li>
+                    <li class="nav-item"><a href="{{ url('/contact') }}" class="nav-link {{ request()->is('contact') ? 'active' : '' }}">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
 
     <!-- Main content -->
     <main class="container-fluid py-5">
@@ -126,7 +140,6 @@
     </main>
 
     <!-- Footer -->
-
     <footer>
         © {{ date('Y') }} Waste2Product — Together for a Cleaner Future 🌱
     </footer>
