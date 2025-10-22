@@ -2,11 +2,13 @@
 
 // Updated: app/Http/Controllers/ReservationController.php
 // Added: use Illuminate\Support\Facades\Auth;
+// NEW: use App\Models\Product;  // For DB loading
 
 namespace App\Http\Controllers;
 
 use App\Enums\ReservationStatus;
 use App\Models\Reservation;
+use App\Models\Product;  // NEW
 use App\Services\RecommendationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,11 +16,7 @@ use Illuminate\Validation\Rule;
 
 class ReservationController extends Controller
 {
-    private static $products = [
-        1 => ['name' => 'Product A', 'price' => 10.00],
-        2 => ['name' => 'Product B', 'price' => 15.00],
-        3 => ['name' => 'Product C', 'price' => 20.00],
-    ];
+    // REMOVED: private static $products = [...];  // No longer needed
 
     private function isFrontRoute()
     {
@@ -81,6 +79,9 @@ class ReservationController extends Controller
 
     public function index()
     {
+        // NEW: Load DB products for search (replaces self::$products)
+        $dbProducts = Product::available()->get()->keyBy('id')->toArray();  // id => full model array
+
         $query = Reservation::with('user')
             ->when(request('date_from'), function ($query) {
                 return $query->where('created_at', '>=', request('date_from'));
@@ -91,8 +92,8 @@ class ReservationController extends Controller
             ->when(request('status'), function ($query, $status) {
                 return $query->where('status', $status);
             })
-            ->when(request('product_search'), function ($query, $search) {
-                $matchingProductIds = collect(self::$products)
+            ->when(request('product_search'), function ($query, $search) use ($dbProducts) {  // NEW: use $dbProducts
+                $matchingProductIds = collect($dbProducts)
                     ->filter(function ($product, $id) use ($search) {
                         return str_contains(strtolower($product['name']), strtolower($search));
                     })
@@ -110,7 +111,14 @@ class ReservationController extends Controller
 
     public function create()
     {
-        $products = self::$products;
+        // NEW: Load DB products (replaces self::$products; format matches static: id => ['name' => ..., 'price' => ...])
+        $products = Product::available()
+            ->get()
+            ->mapWithKeys(function ($product) {
+                return [$product->id => ['name' => $product->name, 'price' => $product->price]];
+            })
+            ->toArray();
+
         $viewPrefix = $this->getViewPrefix();
         $storeRoute = $this->getStoreRoute();
         $indexRoute = $this->getIndexRoute();
@@ -129,7 +137,7 @@ class ReservationController extends Controller
     {
         // Base rules without user_id for front
         $rules = [
-            'product_id' => ['required', Rule::in(array_keys(self::$products))],
+            'product_id' => ['required', Rule::exists('products', 'id')],  // CHANGED: DB exists check (FK safe)
             'quantity' => 'required|integer|min:1',
             'reserved_until' => 'required|date|after:now',
         ];
@@ -170,7 +178,14 @@ class ReservationController extends Controller
     public function edit(Reservation $reservation)
     {
         $reservation->load('user');
-        $products = self::$products;
+        // NEW: Load DB products (replaces self::$products)
+        $products = Product::available()
+            ->get()
+            ->mapWithKeys(function ($product) {
+                return [$product->id => ['name' => $product->name, 'price' => $product->price]];
+            })
+            ->toArray();
+
         $viewPrefix = $this->getViewPrefix();
         $updateRoute = $this->getUpdateRoute($reservation);
         $showRoute = $this->getShowRoute($reservation);
@@ -182,7 +197,7 @@ class ReservationController extends Controller
     {
         // Base rules without status
         $rules = [
-            'product_id' => ['required', Rule::in(array_keys(self::$products))],
+            'product_id' => ['required', Rule::exists('products', 'id')],  // CHANGED: DB exists check (FK safe)
             'quantity' => 'required|integer|min:1',
             'reserved_until' => 'required|date|after:now',
         ];
@@ -212,8 +227,10 @@ class ReservationController extends Controller
         return redirect()->route($indexRoute)->with('success', 'Reservation deleted!');
     }
 
+    // UPDATED: Query DB for product name (replaces static lookup)
     public static function getProductName($productId)
     {
-        return self::$products[$productId]['name'] ?? 'N/A';
+        $product = Product::find($productId);
+        return $product ? $product->name : 'N/A';
     }
 }
