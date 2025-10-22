@@ -169,27 +169,18 @@
             </div>
             <ul class="nav flex-column" role="navigation">
                 <li class="nav-item mb-2">
-                    <a href="{{ url('back/home') }}" class="nav-link {{ request()->routeIs('back.home') ? 'active' : '' }}" data-tooltip="Dashboard" aria-label="Dashboard"><i class="bi bi-speedometer2 me-2"></i> <span class="nav-text">Dashboard</span></a>
-                </li>
-                <li class="nav-item mb-2">
-                    <a href="{{ route('back.donations.index') }}" class="nav-link {{ request()->routeIs('back.donations.*') ? 'active' : '' }}" data-tooltip="Donations" aria-label="Donations"><i class="bi bi-heart-fill me-2"></i> <span class="nav-text">Donations</span></a>
-                </li>
-                <li class="nav-item mb-2">
-                    <a href="{{ route('back.orders.index') }}" class="nav-link {{ request()->routeIs('back.orders.*') ? 'active' : '' }}" data-tooltip="Orders" aria-label="Orders"><i class="bi bi-cart me-2"></i> <span class="nav-text">Orders</span></a>
-                </li>
-                <li class="nav-item mb-2">
-                    <a href="{{ route('back.reservations.index') }}" class="nav-link {{ request()->routeIs('back.reservations.*') ? 'active' : '' }}" data-tooltip="Reservations" aria-label="Reservations"><i class="bi bi-calendar-check me-2"></i> <span class="nav-text">Reservations</span></a>
+                    <a href="{{ url('back/home') }}" class="nav-link" data-tooltip="Dashboard" aria-label="Dashboard"><i class="bi bi-speedometer2 me-2"></i> <span class="nav-text">Dashboard</span></a>
                 </li>
                 <li class="nav-item mb-2">
                     <a href="#wasteSubmenu" class="nav-link" onclick="toggleSubmenu(event)" data-tooltip="Waste Management" aria-label="Waste Management"><i class="bi bi-trash3 me-2"></i> <span class="nav-text">Waste Management</span></a>
                   <ul class="submenu list-unstyled" id="wasteSubmenu">
     <li>
-        <a href="{{ route('back.wastes.index') }}" class="nav-link text-white" data-tooltip="All Waste">
+        <a href="{{ route('wastes.index') }}" class="nav-link text-white" data-tooltip="All Waste">
             <i class="bi bi-recycle me-2"></i> All Waste
         </a>
     </li>
     <li>
-        <a href="{{ route('back.waste_categories.index') }}" class="nav-link text-white" data-tooltip="Waste Categories">
+        <a href="{{ route('waste_categories.index') }}" class="nav-link text-white" data-tooltip="Waste Categories">
             <i class="bi bi-tags me-2"></i> Waste Categories
         </a>
     </li>
@@ -225,24 +216,6 @@
                     </ul>
                 </li>
 
-                <!-- Collection Points -->
-                <li class="nav-item mb-2">
-                    <a href="#collectionSubmenu" class="nav-link" onclick="toggleSubmenu(event)" data-tooltip="Collection Points" aria-label="Collection Points">
-                        <i class="bi bi-geo-alt me-2"></i> <span class="nav-text">Collection Points</span>
-                    </a>
-                    <ul class="submenu list-unstyled" id="collectionSubmenu">
-                        <li>
-                            <a href="{{ url('/dashbored/collectionpoints') }}" class="nav-link {{ request()->is('collectionpoints/index') ? 'active' : '' }}">
-                                <i class="bi bi-geo-alt me-2"></i> Collection Points
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ url('/collectionpoints/predictions') }}" class="nav-link {{ request()->is('collectionpoints/predictions') ? 'active' : '' }}">
-                                <i class="bi bi-cpu me-1"></i> IA Points de Collecte
-                            </a>
-                        </li>
-                    </ul>
-                </li>
 
                 <!-- NEW: Recycling & Products Section -->
                 <li class="nav-item mb-2">
@@ -251,13 +224,18 @@
                     </a>
                     <ul class="submenu list-unstyled" id="recyclingSubmenu">
                         <li>
-                            <a href="{{ route('back.recyclingprocesses.index') }}" class="nav-link {{ request()->routeIs('recyclingprocesses.*') ? 'active' : '' }}">
+                            <a href="{{ route('recyclingprocesses.index') }}" class="nav-link {{ request()->routeIs('recyclingprocesses.*') ? 'active' : '' }}">
                                 <i class="bi bi-arrow-repeat me-2"></i> Processus de Recyclage
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('back.products.index') }}" class="nav-link {{ request()->routeIs('products.*') ? 'active' : '' }}">
+                            <a href="{{ route('products.index') }}" class="nav-link {{ request()->routeIs('products.*') ? 'active' : '' }}">
                                 <i class="bi bi-box-seam me-2"></i> Produits Recyclés
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('ai.recycling.demo') }}" class="nav-link {{ request()->routeIs('ai.recycling.*') ? 'active' : '' }}">
+                                <i class="bi bi-robot me-2"></i> IA Recyclage
                             </a>
                         </li>
                     </ul>
@@ -276,7 +254,7 @@
         <div class="main-content" id="mainContent">
             <!-- Header -->
             <div class="header d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">@yield('title', 'Dashboard')</h5>
+                <h5 class="mb-0">Dashboard</h5>
                 <div class="d-flex align-items-center">
                     <input type="text" class="form-control form-control-sm me-2" placeholder="Search..." aria-label="Search">
                     <i class="bi bi-bell fs-4 me-3" aria-label="Notifications"></i>
