@@ -33,33 +33,39 @@ class WasteCategoryController extends Controller
         $validated = $request->validate([
             'name' => [
                 'required', 
+                'min:5',
                 'max:10', 
                 'regex:/^[a-zA-Z\s\-]+$/',
                 'unique:waste_categories,name'
             ],
             'description' => [
                 'required', 
+                'min:5',
                 'max:10', 
                 'regex:/^[a-zA-Z\s\-\.,!?()]+$/'
             ],
             'recycling_instructions' => [
                 'required', 
+                'min:5',
                 'max:10', 
                 'regex:/^[a-zA-Z\s\-\.,!?()]+$/'
             ],
         ], [
             'name.required' => 'Category name is required.',
+            'name.min' => 'Name must be at least 5 characters.',
             'name.max' => 'Name must not exceed 10 characters.',
-            'name.regex' => 'Name can only contain letters, spaces and hyphens & Numbers are not allowed.',
+            'name.regex' => 'Name can only contain letters, spaces and hyphens. Numbers are not allowed.',
             'name.unique' => 'This category already exists.',
             
             'description.required' => 'Description is required.',
+            'description.min' => 'Description must be at least 5 characters.',
             'description.max' => 'Description must not exceed 10 characters.',
-            'description.regex' => 'Description can only contain letters, spaces and the following special characters & Numbers are not allowed.',
+            'description.regex' => 'Description can only contain letters, spaces and the following special characters: - . , ! ? ( ). Numbers are not allowed.',
             
             'recycling_instructions.required' => 'Recycling instructions are required.',
+            'recycling_instructions.min' => 'Instructions must be at least 5 characters.',
             'recycling_instructions.max' => 'Instructions must not exceed 10 characters.',
-            'recycling_instructions.regex' => 'Instructions can only contain letters, spaces and the following special characters & Numbers are not allowed.',
+            'recycling_instructions.regex' => 'Instructions can only contain letters, spaces and the following special characters: - . , ! ? ( ). Numbers are not allowed.',
         ]);
 
         // Additional validation to prevent empty strings and numbers
@@ -98,33 +104,39 @@ class WasteCategoryController extends Controller
         $validated = $request->validate([
             'name' => [
                 'required', 
+                'min:5',
                 'max:10', 
                 'regex:/^[a-zA-Z\s\-]+$/',
                 'unique:waste_categories,name,' . $id
             ],
             'description' => [
                 'required', 
+                'min:5',
                 'max:10', 
                 'regex:/^[a-zA-Z\s\-\.,!?()]+$/'
             ],
             'recycling_instructions' => [
                 'required', 
+                'min:5',
                 'max:10', 
                 'regex:/^[a-zA-Z\s\-\.,!?()]+$/'
             ],
         ], [
             'name.required' => 'Category name is required.',
+            'name.min' => 'Name must be at least 5 characters.',
             'name.max' => 'Name must not exceed 10 characters.',
             'name.regex' => 'Name can only contain letters, spaces and hyphens. Numbers are not allowed.',
             'name.unique' => 'This category already exists.',
             
             'description.required' => 'Description is required.',
+            'description.min' => 'Description must be at least 5 characters.',
             'description.max' => 'Description must not exceed 10 characters.',
-            'description.regex' => 'Description can only contain letters, spaces and the following special characters & Numbers are not allowed.',
+            'description.regex' => 'Description can only contain letters, spaces and the following special characters: - . , ! ? ( ). Numbers are not allowed.',
             
             'recycling_instructions.required' => 'Recycling instructions are required.',
+            'recycling_instructions.min' => 'Instructions must be at least 5 characters.',
             'recycling_instructions.max' => 'Instructions must not exceed 10 characters.',
-            'recycling_instructions.regex' => 'Instructions can only contain letters, spaces and the following special characters & Numbers are not allowed.',
+            'recycling_instructions.regex' => 'Instructions can only contain letters, spaces and the following special characters: - . , ! ? ( ). Numbers are not allowed.',
         ]);
 
         // Additional validation to prevent empty strings and numbers
@@ -168,6 +180,14 @@ class WasteCategoryController extends Controller
             if (preg_match('/\d/', $request->$field)) {
                 throw \Illuminate\Validation\ValidationException::withMessages([
                     $field => "$fieldName cannot contain numbers. Only letters and special characters are allowed."
+                ]);
+            }
+
+            // Check length between 5 and 10 characters
+            $length = strlen(trim($request->$field));
+            if ($length < 5 || $length > 10) {
+                throw \Illuminate\Validation\ValidationException::withMessages([
+                    $field => "$fieldName must be between 5 and 10 characters long."
                 ]);
             }
         }
