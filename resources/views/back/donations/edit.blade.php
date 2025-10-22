@@ -21,7 +21,7 @@
                             {{ session('success') }}
                         </div>
                     @endif
-                    <form action="{{ $updateRoute }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ $updateRoute }}" method="POST">
                         @csrf
                         @method('PUT')
                         <!-- User -->
@@ -36,19 +36,19 @@
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
-                        <!-- Waste Type -->
+                        <!-- Waste Category -->
                         <div class="mb-3">
-                            <label for="waste_id" class="form-label fw-bold">Waste Type</label>
-                            <select name="waste_id" id="waste_id" class="form-select" required>
-                                @if(isset($wastes) && !empty($wastes))
-                                    @foreach($wastes as $id => $waste)
-                                        <option value="{{ $id }}" {{ ($donation->waste_id ?? old('waste_id')) == $id ? 'selected' : '' }}>{{ $waste['name'] }}</option>
+                            <label for="waste_category_id" class="form-label fw-bold">Waste Category</label>
+                            <select name="waste_category_id" id="waste_category_id" class="form-select" required>
+                                @if(isset($wasteCategories) && $wasteCategories->count() > 0)
+                                    @foreach($wasteCategories as $wasteCategory)
+                                        <option value="{{ $wasteCategory->id }}" {{ ($donation->waste->category->id ?? old('waste_category_id')) == $wasteCategory->id ? 'selected' : '' }}>{{ $wasteCategory->name }}</option>
                                     @endforeach
                                 @else
-                                    <option value="" disabled>No waste types available</option>
+                                    <option value="" disabled>No waste categories available</option>
                                 @endif
                             </select>
-                            @error('waste_id')
+                            @error('waste_category_id')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
@@ -130,7 +130,7 @@
                         </div>
                         <!-- Buttons -->
                         <div class="d-flex flex-column flex-md-row justify-content-between gap-2">
-                            <a href="{{ route('back.donations.index') }}" class="btn btn-secondary w-100 w-md-auto">Cancel</a>
+                            <a href="{{ route($indexRoute) }}" class="btn btn-secondary w-100 w-md-auto">Cancel</a>
                             <button type="submit" class="btn btn-success w-100 w-md-auto">Update</button>
                         </div>
                     </form>

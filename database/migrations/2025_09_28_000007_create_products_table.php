@@ -18,7 +18,7 @@ return new class extends Migration
         $table->decimal('price', 10, 2);
         $table->integer('stock_quantity')->default(0);
         $table->foreignId('waste_category_id')->constrained()->onDelete('cascade');
-        $table->foreignId('recycling_process_id')->constrained()->onDelete('cascade');
+        $table->foreignId('recycling_process_id')->nullable()->constrained()->onDelete('set null');
         $table->string('image_path')->nullable();
         $table->json('specifications')->nullable();
         $table->boolean('is_available')->default(true);

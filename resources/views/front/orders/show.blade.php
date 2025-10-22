@@ -34,33 +34,33 @@
                                     <label class="form-label fw-semibold">
                                         <i class="fas fa-tag me-1 text-muted"></i>Product
                                     </label>
-                                    <p class="form-control">{{ \App\Http\Controllers\OrderController::getProductName($order->product_id) }}</p>
+                                    <p class="form-control">{{ $order->product->name ?? 'N/A' }}</p>
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label fw-semibold">
                                         <i class="fas fa-hashtag me-1 text-muted"></i>Quantity
                                     </label>
-                                    <p class="form-control">{{ $order->quantity }}</p>
+                                    <p class="form-control">{{ $order->quantity ?? 'N/A' }}</p>
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label fw-semibold">
                                         <i class="fas fa-dollar-sign me-1 text-muted"></i>Total Amount
                                     </label>
-                                    <p class="form-control fw-bold text-success">${{ number_format($order->total_amount, 2) }}</p>
+                                    <p class="form-control fw-bold text-success">${{ number_format($order->total_amount ?? 0, 2) }}</p>
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label fw-semibold">
                                         <i class="fas fa-exclamation-circle me-1 text-muted"></i>Status
                                     </label>
                                     <p class="form-control">
-                                        <span class="badge @switch($order->status->value)
+                                        <span class="badge @switch($order->status->value ?? strtolower($order->status))
                                             @case('completed') bg-success @break
                                             @case('processing') bg-primary @break
                                             @case('pending') bg-warning @break
                                             @case('cancelled') bg-danger @break
                                             @default bg-secondary
                                         @endswitch">
-                                            {{ $order->status->value }}
+                                            {{ ucfirst($order->status->value ?? $order->status) }}
                                         </span>
                                     </p>
                                 </div>
@@ -68,7 +68,7 @@
                                     <label class="form-label fw-semibold">
                                         <i class="fas fa-calendar me-1 text-muted"></i>Order Date
                                     </label>
-                                    <p class="form-control">{{ $order->order_date->format('M d, Y H:i') }}</p>
+                                    <p class="form-control">{{ $order->order_date?->format('M d, Y H:i') ?? 'N/A' }}</p>
                                 </div>
                             </div>
                             <div class="col-12 col-md-6">
@@ -79,13 +79,13 @@
                                     <label class="form-label fw-semibold">
                                         <i class="fas fa-map-marker-alt me-1 text-muted"></i>Shipping Address
                                     </label>
-                                    <p class="form-control">{{ $order->shipping_address }}</p>
+                                    <p class="form-control">{{ $order->shipping_address ?? 'N/A' }}</p>
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label fw-semibold">
                                         <i class="fas fa-credit-card me-1 text-muted"></i>Payment Method
                                     </label>
-                                    <p class="form-control">{{ ucfirst($order->payment_method) }}</p>
+                                    <p class="form-control">{{ ucfirst($order->payment_method ?? 'N/A') }}</p>
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label fw-semibold">

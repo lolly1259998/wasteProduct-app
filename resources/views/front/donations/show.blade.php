@@ -23,13 +23,13 @@
                             <label class="form-label fw-bold">
                                 <i class="fas fa-user me-1 text-muted"></i>User
                             </label>
-                            <p class="form-control">{{ $donation->user->name ?? 'Guest' }}</p>
+                            <p class="form-control">{{ $donation->user ? $donation->user->name : 'Guest' }}</p>
                         </div>
                         <div class="col-12 col-md-6">
                             <label class="form-label fw-bold">
-                                <i class="fas fa-trash-alt me-1 text-muted"></i>Waste Type
+                                <i class="fas fa-trash-alt me-1 text-muted"></i>Waste Category
                             </label>
-                            <p class="form-control">{{ \App\Http\Controllers\DonationController::getWasteTypeName($donation->waste_id) }}</p>
+                            <p class="form-control">{{ $donation->waste->category->name ?? 'N/A' }}</p>
                         </div>
                         <div class="col-12 col-md-6">
                             <label class="form-label fw-bold">
@@ -48,14 +48,14 @@
                                 <i class="fas fa-exclamation-circle me-1 text-muted"></i>Status
                             </label>
                             <p class="form-control">
-                                <span class="badge @switch($donation->status->value)
+                                <span class="badge @switch($donation->status->value ?? $donation->status)
                                     @case('available') bg-success @break
                                     @case('claimed') bg-primary @break
                                     @case('completed') bg-info @break
                                     @case('cancelled') bg-danger @break
                                     @default bg-secondary
                                 @endswitch">
-                                    {{ $donation->status->value }}
+                                    {{ $donation->status->value ?? $donation->status }}
                                 </span>
                             </p>
                         </div>
@@ -77,9 +77,9 @@
                                     <i class="fas fa-images me-1 text-muted"></i>Images
                                 </label>
                                 <div class="row g-2">
-                                    @foreach($donation->images as $image)
+                                    @foreach($donation->images as $imagePath)
                                         <div class="col-6 col-md-4 col-lg-3">
-                                            <img src="{{ Storage::url($image) }}" alt="Donation Image" class="img-fluid rounded shadow-sm w-100" style="height: 150px; object-fit: cover;">
+                                            <img src="{{ Storage::url($imagePath) }}" alt="Donation Image" class="img-fluid rounded shadow-sm w-100" style="height: 150px; object-fit: cover;">
                                         </div>
                                     @endforeach
                                 </div>
@@ -91,13 +91,6 @@
                         <a href="{{ route($indexRoute) }}" class="btn btn-secondary w-100 w-md-auto">
                             <i class="fas fa-arrow-left me-1"></i>Back to List
                         </a>
-                        @auth
-                            @if($donation->user_id == auth()->id())
-                                <a href="{{ route('front.donations.edit', $donation) }}" class="btn btn-warning w-100 w-md-auto">
-                                    <i class="fas fa-edit me-1"></i>Edit
-                                </a>
-                            @endif
-                        @endauth
                     </div>
                 </div>
             </div>

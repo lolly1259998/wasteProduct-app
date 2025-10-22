@@ -37,18 +37,18 @@
                             <input type="hidden" name="status" value="{{ $donation->status->value ?? old('status') }}">
 
                             <div class="mb-3">
-                                <label for="waste_id" class="form-label fw-semibold">Waste Type</label>
-                                <select name="waste_id" id="waste_id" class="form-select" required>
-                                    <option value="">Select Waste Type</option>
-                                    @if(isset($wastes) && !empty($wastes))
-                                        @foreach($wastes as $id => $waste)
-                                            <option value="{{ $id }}" {{ ($donation->waste_id ?? old('waste_id')) == $id ? 'selected' : '' }}>{{ $waste['name'] }}</option>
+                                <label for="waste_category_id" class="form-label fw-semibold">Waste Category</label>
+                                <select name="waste_category_id" id="waste_category_id" class="form-select" required>
+                                    <option value="">Select Waste Category</option>
+                                    @if(isset($wasteCategories) && $wasteCategories->count() > 0)
+                                        @foreach($wasteCategories as $wasteCategory)
+                                            <option value="{{ $wasteCategory->id }}" {{ ($donation->waste->category->id ?? old('waste_category_id')) == $wasteCategory->id ? 'selected' : '' }}>{{ $wasteCategory->name }}</option>
                                         @endforeach
                                     @else
-                                        <option value="" disabled>No waste types available</option>
+                                        <option value="" disabled>No waste categories available</option>
                                     @endif
                                 </select>
-                                @error('waste_id')
+                                @error('waste_category_id')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -93,9 +93,9 @@
                                 <div class="mb-3">
                                     <label class="form-label fw-semibold">Current Images</label>
                                     <div class="row mb-2">
-                                        @foreach($donation->images as $image)
+                                        @foreach($donation->images as $imagePath)
                                             <div class="col-6 col-md-4 mb-2">
-                                                <img src="{{ Storage::url($image) }}" alt="Current Image" class="img-thumbnail w-100" style="max-height: 100px;">
+                                                <img src="{{ Storage::url($imagePath) }}" alt="Current Image" class="img-thumbnail w-100" style="max-height: 100px;">
                                             </div>
                                         @endforeach
                                     </div>

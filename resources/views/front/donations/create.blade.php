@@ -35,20 +35,20 @@
                         <input type="hidden" name="user_id" value="{{ auth()->id() }}">
 
                         <div class="mb-3">
-                            <label for="waste_id" class="form-label fw-bold">
-                                <i class="fas fa-trash-alt me-1 text-muted"></i>Waste Type
+                            <label for="waste_category_id" class="form-label fw-bold">
+                                <i class="fas fa-trash-alt me-1 text-muted"></i>Waste Category
                             </label>
-                            <select name="waste_id" id="waste_id" class="form-select" required>
-                                <option value="">Select Waste Type</option>
-                                @if(isset($wastes) && !empty($wastes))
-                                    @foreach($wastes as $id => $waste)
-                                        <option value="{{ $id }}" {{ old('waste_id') == $id ? 'selected' : '' }}>{{ $waste['name'] }}</option>
+                            <select name="waste_category_id" id="waste_category_id" class="form-select" required>
+                                <option value="">Select Waste Category</option>
+                                @if(isset($wasteCategories) && $wasteCategories->count() > 0)
+                                    @foreach($wasteCategories as $wasteCategory)
+                                        <option value="{{ $wasteCategory->id }}" {{ old('waste_category_id') == $wasteCategory->id ? 'selected' : '' }}>{{ $wasteCategory->name }}</option>
                                     @endforeach
                                 @else
-                                    <option value="" disabled>No waste types available</option>
+                                    <option value="" disabled>No waste categories available</option>
                                 @endif
                             </select>
-                            @error('waste_id')
+                            @error('waste_category_id')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
@@ -99,7 +99,7 @@
                             document.getElementById('description').addEventListener('input', function() {
                                 const desc = this.value;
                                 if (desc.length > 10) {  // AJAX to route for analysis
-                                        fetch('/analyze-sentiment', {
+                                    fetch('{{ route("front.donations.analyze-sentiment") }}', {
                                         method: 'POST',
                                         headers: {'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}'},
                                         body: JSON.stringify({description: desc})

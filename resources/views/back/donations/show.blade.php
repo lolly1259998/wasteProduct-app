@@ -18,8 +18,8 @@
                             <p class="form-control">{{ $donation->user ? $donation->user->name : 'Guest' }}</p>
                         </div>
                         <div class="col-12 col-md-6">
-                            <label class="form-label fw-bold">Waste Type</label>
-                            <p class="form-control">{{ \App\Http\Controllers\DonationController::getWasteTypeName($donation->waste_id) }}</p>
+                            <label class="form-label fw-bold">Waste Category</label>
+                            <p class="form-control">{{ $donation->waste->category->name ?? 'N/A' }}</p>
                         </div>
                         <div class="col-12 col-md-6">
                             <label class="form-label fw-bold">Item Name</label>
@@ -32,7 +32,7 @@
                         <div class="col-12 col-md-6">
                             <label class="form-label fw-bold">Status</label>
                             <p class="form-control">
-                                <span class="badge bg-info">{{ ucfirst($donation->status->value) }}</span>
+                                <span class="badge bg-info">{{ ucfirst($donation->status->value ?? $donation->status) }}</span>
                             </p>
                         </div>
                         <div class="col-12 col-md-6">
@@ -47,9 +47,9 @@
                             <div class="col-12">
                                 <label class="form-label fw-bold">Images</label>
                                 <div class="row g-2 mt-2">
-                                    @foreach($donation->images as $image)
+                                    @foreach($donation->images as $imagePath)
                                         <div class="col-6 col-md-4 col-lg-3">
-                                            <img src="{{ Storage::url($image) }}" alt="Donation Image" class="img-fluid rounded shadow-sm w-100" style="height: 150px; object-fit: cover;">
+                                            <img src="{{ Storage::url($imagePath) }}" alt="Donation Image" class="img-fluid rounded shadow-sm w-100" style="height: 150px; object-fit: cover;">
                                         </div>
                                     @endforeach
                                 </div>

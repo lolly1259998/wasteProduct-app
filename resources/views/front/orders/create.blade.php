@@ -28,7 +28,7 @@
                         </div>
                     @endif
 
-                    <form action="{{ route('front.orders.store') }}" method="POST" class="needs-validation" novalidate>
+                    <form action="{{ $storeRoute }}" method="POST" class="needs-validation" novalidate>
                         @csrf
                         
                         {{-- Hidden user_id for current authenticated user --}}
@@ -40,9 +40,9 @@
                             </label>
                             <select name="product_id" id="product_id" class="form-select" required>
                                 <option value="">Select Product</option>
-                                @if(isset($products) && !empty($products))
-                                    @foreach($products as $id => $product)
-                                        <option value="{{ $id }}" {{ old('product_id') == $id ? 'selected' : '' }}>{{ $product['name'] }} ({{ $product['price'] }})</option>
+                                @if(isset($products) && $products->count() > 0)
+                                    @foreach($products as $product)
+                                        <option value="{{ $product->id }}" {{ old('product_id') == $product->id ? 'selected' : '' }}>{{ $product->name }} ({{ $product->price }})</option>
                                     @endforeach
                                 @else
                                     <option value="" disabled>No products available</option>
@@ -57,9 +57,9 @@
                         $rec_product = $recommendations[0] ?? null;
                         $rec_id = null;
                         if ($rec_product && isset($products)) {
-                            foreach($products as $id => $product) {
-                                if ($product['name'] === $rec_product['name'] && $product['price'] == $rec_product['price']) {
-                                    $rec_id = $id;
+                            foreach($products as $product) {
+                                if ($product->name === ($rec_product['name'] ?? $rec_product->name ?? '') && $product->price == ($rec_product['price'] ?? $rec_product->price ?? 0)) {
+                                    $rec_id = $product->id;
                                     break;
                                 }
                             }
@@ -68,7 +68,7 @@
 
                         @if(isset($recommendations) && count($recommendations) > 0 && $rec_id)
                             <div class="alert alert-info mb-4" role="alert">
-                                <strong>AI Suggestion:</strong> Based on user history, try <strong>{{ $recommendations[0]['name'] }}</strong> ({{ $recommendations[0]['price'] }}).
+                                <strong>AI Suggestion:</strong> Based on user history, try <strong>{{ $recommendations[0]['name'] ?? $recommendations[0]->name ?? 'Recommended Product' }}</strong> ({{ $recommendations[0]['price'] ?? $recommendations[0]->price ?? 0 }}).
                                 <a href="#" class="btn btn-outline-success btn-sm ms-2" onclick="document.getElementById('product_id').value = {{ $rec_id }}; this.parentElement.style.display='none'; return false;">Select It</a>
                             </div>
                         @endif
@@ -119,7 +119,7 @@
                         </div>
 
                         <div class="d-flex flex-column flex-md-row justify-content-between gap-2">
-                            <a href="{{ route('front.orders.index') }}" class="btn btn-secondary w-100 w-md-auto">
+                            <a href="{{ $indexRoute }}" class="btn btn-secondary w-100 w-md-auto">
                                 <i class="fas fa-arrow-left me-1"></i>Cancel
                             </a>
                             <button type="submit" class="btn btn-success w-100 w-md-auto">

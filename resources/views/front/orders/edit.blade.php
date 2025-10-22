@@ -26,30 +26,23 @@
                             </div>
                         @endif
 
-                        <form action="{{ route('front.orders.update', $order) }}" method="POST" class="needs-validation" novalidate>
+                        <form action="{{ $updateRoute }}" method="POST" class="needs-validation" novalidate>
                             @csrf
                             @method('PUT')
                             
-                            <div class="mb-3">
-                                <label for="user_id" class="form-label fw-semibold">User</label>
-                                <select name="user_id" id="user_id" class="form-select" required>
-                                    <option value="">Select User</option>
-                                    @foreach(\App\Models\User::all() as $user)
-                                        <option value="{{ $user->id }}" {{ old('user_id', $order->user_id) == $user->id ? 'selected' : '' }}>{{ $user->name }}</option>
-                                    @endforeach
-                                </select>
-                                @error('user_id')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
+                            {{-- Hidden user_id for current authenticated user --}}
+                            <input type="hidden" name="user_id" value="{{ auth()->id() }}">
+
+                            {{-- Hidden status to preserve (front can't change) --}}
+                            <input type="hidden" name="status" value="{{ $order->status }}">
 
                             <div class="mb-3">
                                 <label for="product_id" class="form-label fw-semibold">Product</label>
                                 <select name="product_id" id="product_id" class="form-select" required>
                                     <option value="">Select Product</option>
-                                    @if(isset($products) && !empty($products))
-                                        @foreach($products as $id => $product)
-                                            <option value="{{ $id }}" {{ old('product_id', $order->product_id) == $id ? 'selected' : '' }}>{{ $product['name'] }} ({{ $product['price'] }})</option>
+                                    @if(isset($products) && $products->count() > 0)
+                                        @foreach($products as $product)
+                                            <option value="{{ $product->id }}" {{ old('product_id', $order->product_id) == $product->id ? 'selected' : '' }}>{{ $product->name }} ({{ $product->price }})</option>
                                         @endforeach
                                     @else
                                         <option value="" disabled>No products available</option>
@@ -59,6 +52,26 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
+
+                            @php
+                            $rec_product = $recommendations[0] ?? null;
+                            $rec_id = null;
+                            if ($rec_product && isset($products)) {
+                                foreach($products as $product) {
+                                    if ($product->name === ($rec_product['name'] ?? $rec_product->name ?? '') && $product->price == ($rec_product['price'] ?? $rec_product->price ?? 0)) {
+                                        $rec_id = $product->id;
+                                        break;
+                                    }
+                                }
+                            }
+                            @endphp
+
+                            @if(isset($recommendations) && count($recommendations) > 0 && $rec_id)
+                                <div class="alert alert-info mb-4" role="alert">
+                                    <strong>AI Suggestion:</strong> Based on user history, try <strong>{{ $recommendations[0]['name'] ?? $recommendations[0]->name ?? 'Recommended Product' }}</strong> ({{ $recommendations[0]['price'] ?? $recommendations[0]->price ?? 0 }}).
+                                    <a href="#" class="btn btn-outline-success btn-sm ms-2" onclick="document.getElementById('product_id').value = {{ $rec_id }}; this.parentElement.style.display='none'; return false;">Select It</a>
+                                </div>
+                            @endif
 
                             <div class="mb-3">
                                 <label for="quantity" class="form-label fw-semibold">Quantity</label>
@@ -89,17 +102,10 @@
                                 @enderror
                             </div>
 
+                            {{-- Status Display (Read-Only for Front) --}}
                             <div class="mb-3">
-                                <label for="status" class="form-label fw-semibold">Status</label>
-                                <select name="status" id="status" class="form-select" required>
-                                    <option value="">Select Status</option>
-                                    @foreach(\App\Enums\OrderStatus::cases() as $status)
-                                        <option value="{{ $status->value }}" {{ old('status', $order->status) == $status->value ? 'selected' : '' }}>{{ $status->value }}</option>
-                                    @endforeach
-                                </select>
-                                @error('status')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
+                                <label class="form-label fw-semibold">Status</label>
+                                <input type="text" class="form-control bg-secondary text-white" value="{{ $order->status->value ?? $order->status ?? 'N/A' }}" readonly>
                             </div>
 
                             <div class="mb-3">
@@ -111,7 +117,7 @@
                             </div>
 
                             <div class="d-flex flex-column flex-md-row justify-content-between gap-2">
-                                <a href="{{ route('front.orders.show', $order) }}" class="btn btn-secondary w-100 w-md-auto">Cancel</a>
+                                <a href="{{ $showRoute ?? route('front.orders.show', $order) }}" class="btn btn-secondary w-100 w-md-auto">Cancel</a>
                                 <button type="submit" class="btn btn-success w-100 w-md-auto">Update Order</button>
                             </div>
                         </form>

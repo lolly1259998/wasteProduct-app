@@ -21,14 +21,14 @@
                             {{ session('success') }}
                         </div>
                     @endif
-                    <form action="{{ route('back.orders.update', $order) }}" method="POST">
+                    <form action="{{ $updateRoute }}" method="POST">
                         @csrf
                         @method('PUT')
                         <!-- User -->
                         <div class="mb-3">
                             <label for="user_id" class="form-label fw-bold">User</label>
                             <select name="user_id" id="user_id" class="form-select" required>
-                                @foreach(\App\Models\User::all() as $user)
+                                @foreach($users ?? \App\Models\User::all() as $user)
                                     <option value="{{ $user->id }}" {{ old('user_id', $order->user_id) == $user->id ? 'selected' : '' }}>{{ $user->name }}</option>
                                 @endforeach
                             </select>
@@ -40,9 +40,9 @@
                         <div class="mb-3">
                             <label for="product_id" class="form-label fw-bold">Product</label>
                             <select name="product_id" id="product_id" class="form-select" required>
-                                @if(isset($products) && !empty($products))
-                                    @foreach($products as $id => $product)
-                                        <option value="{{ $id }}" {{ old('product_id', $order->product_id) == $id ? 'selected' : '' }}>{{ $product['name'] }} ({{ $product['price'] }})</option>
+                                @if(isset($products) && $products->count() > 0)
+                                    @foreach($products as $product)
+                                        <option value="{{ $product->id }}" {{ old('product_id', $order->product_id) == $product->id ? 'selected' : '' }}>{{ $product->name }} ({{ $product->price }})</option>
                                     @endforeach
                                 @else
                                     <option value="" disabled selected>No products available</option>
@@ -102,7 +102,7 @@
                         </div>
                         <!-- Buttons -->
                         <div class="d-flex flex-column flex-md-row justify-content-between gap-2">
-                            <a href="{{ route('back.orders.index') }}" class="btn btn-secondary w-100 w-md-auto">Cancel</a>
+                            <a href="{{ route($indexRoute) }}" class="btn btn-secondary w-100 w-md-auto">Cancel</a>
                             <button type="submit" class="btn btn-warning w-100 w-md-auto">Update</button>
                         </div>
                     </form>
