@@ -45,6 +45,24 @@
                 </li>
 
                 <li class="nav-item">
+                    <a href="{{ route('front.donations.index') }}" class="nav-link {{ request()->routeIs('front.donations.*') ? 'active' : '' }}">
+                        <i class="bi bi-heart-fill me-1"></i>Donations
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ route('front.orders.index') }}" class="nav-link {{ request()->routeIs('front.orders.*') ? 'active' : '' }}">
+                        <i class="bi bi-cart me-1"></i>Orders
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ route('front.reservations.index') }}" class="nav-link {{ request()->routeIs('front.reservations.*') ? 'active' : '' }}">
+                        <i class="bi bi-calendar-event me-1"></i>Reservations
+                    </a>
+                </li>
+
+                <li class="nav-item">
                     <a href="{{ url('/about') }}" class="nav-link {{ request()->is('about') ? 'active' : '' }}">
                         <i class="bi bi-info-circle me-1"></i>About
                     </a>
