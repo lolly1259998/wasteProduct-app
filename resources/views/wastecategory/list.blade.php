@@ -110,7 +110,7 @@
                                         @if($category->recycling_instructions)
                                             {{ $category->recycling_instructions }}
                                         @else
-                                            <span class="text-danger fw-bold">None</span>
+                                            <span class="">Without Instructions</span>
                                         @endif
                                     </td>
                                     <td>

@@ -45,10 +45,10 @@ class WasteCategoryController extends Controller
                 'regex:/^[a-zA-Z\s\-\.,!?()]+$/'
             ],
             'recycling_instructions' => [
-                'required', 
+                'nullable', 
                 'min:5',
-                'max:10', 
-                'regex:/^[a-zA-Z\s\-\.,!?()]+$/'
+                'max:100',
+                'regex:/^[a-zA-Z\s\-\.,!?()]*$/' 
             ],
         ], [
             'name.required' => 'Category name is required.',
@@ -62,9 +62,8 @@ class WasteCategoryController extends Controller
             'description.max' => 'Description must not exceed 10 characters.',
             'description.regex' => 'Description can only contain letters, spaces and the following special characters: - . , ! ? ( ). Numbers are not allowed.',
             
-            'recycling_instructions.required' => 'Recycling instructions are required.',
             'recycling_instructions.min' => 'Instructions must be at least 5 characters.',
-            'recycling_instructions.max' => 'Instructions must not exceed 10 characters.',
+            'recycling_instructions.max' => 'Instructions must not exceed 100 characters.',
             'recycling_instructions.regex' => 'Instructions can only contain letters, spaces and the following special characters: - . , ! ? ( ). Numbers are not allowed.',
         ]);
 
@@ -116,10 +115,10 @@ class WasteCategoryController extends Controller
                 'regex:/^[a-zA-Z\s\-\.,!?()]+$/'
             ],
             'recycling_instructions' => [
-                'required', 
+                'nullable', // CORRECTION : Changer 'required' en 'nullable'
                 'min:5',
-                'max:10', 
-                'regex:/^[a-zA-Z\s\-\.,!?()]+$/'
+                'max:100',
+                'regex:/^[a-zA-Z\s\-\.,!?()]*$/' // CORRECTION : * au lieu de +
             ],
         ], [
             'name.required' => 'Category name is required.',
@@ -133,9 +132,9 @@ class WasteCategoryController extends Controller
             'description.max' => 'Description must not exceed 10 characters.',
             'description.regex' => 'Description can only contain letters, spaces and the following special characters: - . , ! ? ( ). Numbers are not allowed.',
             
-            'recycling_instructions.required' => 'Recycling instructions are required.',
+            // CORRECTION : Retirer le message pour 'recycling_instructions.required'
             'recycling_instructions.min' => 'Instructions must be at least 5 characters.',
-            'recycling_instructions.max' => 'Instructions must not exceed 10 characters.',
+            'recycling_instructions.max' => 'Instructions must not exceed 100 characters.',
             'recycling_instructions.regex' => 'Instructions can only contain letters, spaces and the following special characters: - . , ! ? ( ). Numbers are not allowed.',
         ]);
 
@@ -165,7 +164,6 @@ class WasteCategoryController extends Controller
         $fields = [
             'name' => 'Name',
             'description' => 'Description', 
-            'recycling_instructions' => 'Recycling instructions'
         ];
         
         foreach ($fields as $field => $fieldName) {
@@ -183,11 +181,36 @@ class WasteCategoryController extends Controller
                 ]);
             }
 
-            // Check length between 5 and 10 characters
+            // Check length between 5 and max characters
             $length = strlen(trim($request->$field));
-            if ($length < 5 || $length > 10) {
+            
+            // Define max length for each field
+            $maxLengths = [
+                'name' => 10,
+                'description' => 10,
+            ];
+            
+            if ($length < 5 || $length > $maxLengths[$field]) {
                 throw \Illuminate\Validation\ValidationException::withMessages([
-                    $field => "$fieldName must be between 5 and 10 characters long."
+                    $field => "$fieldName must be between 5 and {$maxLengths[$field]} characters long."
+                ]);
+            }
+        }
+
+        // Validation spécifique pour recycling_instructions (seulement si non vide)
+        if (!empty(trim($request->recycling_instructions))) {
+            // Check for numbers in recycling_instructions
+            if (preg_match('/\d/', $request->recycling_instructions)) {
+                throw \Illuminate\Validation\ValidationException::withMessages([
+                    'recycling_instructions' => "Recycling instructions cannot contain numbers. Only letters and special characters are allowed."
+                ]);
+            }
+
+            // Check length for recycling_instructions
+            $length = strlen(trim($request->recycling_instructions));
+            if ($length < 5 || $length > 100) {
+                throw \Illuminate\Validation\ValidationException::withMessages([
+                    'recycling_instructions' => "Recycling instructions must be between 5 and 100 characters long."
                 ]);
             }
         }
