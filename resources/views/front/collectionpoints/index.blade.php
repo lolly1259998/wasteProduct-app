@@ -8,7 +8,7 @@
     <!-- Bootstrap + Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-    <!-- Font Awesome pour les icônes utilisées -->
+    <!-- Font Awesome for used icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
@@ -18,7 +18,7 @@
             overflow-x: hidden;
         }
 
-        /* NAVBAR transparente au début */
+        /* Navbar transparent at the start */
         .navbar {
             position: fixed;
             top: 0;
@@ -28,7 +28,7 @@
             z-index: 1000;
         }
 
-        /* Quand on scrolle, elle devient verte */
+        /* When scrolled, it turns green */
         .navbar.scrolled {
             background-color: #198754 !important;
             box-shadow: 0 2px 10px rgba(0,0,0,0.2);
@@ -100,7 +100,7 @@
             box-shadow: 0 3px 10px rgba(0,0,0,0.1);
         }
 
-        /* Styles pour les cartes de points de collecte */
+        /* Styles for collection point cards */
         .collection-card {
             border: 1px solid #e0e0e0;
             border-radius: 10px;
@@ -191,7 +191,7 @@
 </head>
 
 <body>
-    <!-- Barre de navigation -->
+    <!-- Navigation bar -->
     <nav class="navbar navbar-expand-lg">
         <div class="container">
             <a class="navbar-brand" href="#">
@@ -216,7 +216,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="{{ url('/waste2product/collectionpoints') }}" class="nav-link {{ request()->is('front.collectionpoints.index') ? 'active' : '' }}">
-                        <i class="bi bi-geo-alt me-1"></i>collectionpoints
+                        <i class="bi bi-geo-alt me-1"></i>Collection Points
                     </a>
                 </li>
 
@@ -226,14 +226,14 @@
                     </a>
                 </li>
 
-                <!-- Nouveau lien Waste Categories -->
+                <!-- New Waste Categories link -->
                 <li class="nav-item">
                     <a href="{{ route('front.waste-categories.index') }}" class="nav-link {{ request()->is('categories*') ? 'active' : '' }}">
                         <i class="bi bi-grid-3x3-gap me-1"></i>Waste Categories
                     </a>
                 </li>
 
-                <!-- Nouveau lien Wastes -->
+                <!-- New Wastes link -->
                 <li class="nav-item">
                     <a href="{{ route('front.wastes.index') }}" class="nav-link {{ request()->is('wastess*') ? 'active' : '' }}">
                         <i class="bi bi-trash me-1"></i>Waste
@@ -262,19 +262,19 @@
     </div>
 </nav>
 
-    <!-- En-tête hero -->
+    <!-- Hero header -->
     <header class="hero-header">
         <div class="hero-content">
-            <h1>Transformons nos <span>déchets</span> en ressources</h1>
-            <p class="lead mt-3">Trouvez le point de collecte le plus proche et contribuez à un environnement plus propre.</p>
-            <button class="btn btn-success btn-lg mt-4">Trouver un point de collecte</button>
+            <h1>Transform our <span>waste</span> into resources</h1>
+            <p class="lead mt-3">Find the nearest collection point and contribute to a cleaner environment.</p>
+            <button class="btn btn-success btn-lg mt-4">Find a collection point</button>
         </div>
     </header>
 
-    <!-- Contenu principal -->
+    <!-- Main content -->
     <main>
         <div class="container mb-5">
-            <!-- Message de succès -->
+            <!-- Success message -->
             @if (session('success'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     <i class="fas fa-check-circle me-2"></i>
@@ -283,20 +283,20 @@
                 </div>
             @endif
 
-            <!-- Vérification si des points de collecte existent -->
+            <!-- Check if collection points exist -->
             @if ($collectionPoints->isEmpty())
                 <div class="empty-state">
                     <div class="empty-state-icon">
                         <i class="fas fa-map-marked-alt"></i>
                     </div>
-                    <h3 class="mb-3">Aucun point de collecte trouvé</h3>
-                    <p class="text-muted mb-4">Il n'y a actuellement aucun point de collecte actif dans votre région.</p>
-                    <button class="btn btn-outline-success">Suggérer un emplacement</button>
+                    <h3 class="mb-3">No collection points found</h3>
+                    <p class="text-muted mb-4">There are currently no active collection points in your area.</p>
+                    <button class="btn btn-outline-success">Suggest a location</button>
                 </div>
             @else
                 <div class="results-count">
                     <i class="fas fa-info-circle me-2"></i>
-                    {{ $collectionPoints->count() }} point(s) de collecte trouvé(s)
+                    {{ $collectionPoints->count() }} collection point(s) found
                 </div>
                 
                 <div class="row">
@@ -322,14 +322,14 @@
                                         </span>
                                         <span class="text-muted small">
                                             <i class="far fa-clock me-1"></i>
-                                            Ouvert jusqu'à 18h
+                                            Open until 6 PM
                                         </span>
                                     </div>
                                     
                                     <div class="d-grid">
                                         <a href="{{ route('front.collectionpoints.show', $collectionPoint->id) }}" class="btn btn-success">
                                             <i class="fas fa-info-circle me-2"></i>
-                                            Voir les détails
+                                            View details
                                         </a>
                                     </div>
                                 </div>
@@ -341,17 +341,17 @@
         </div>
     </main>
 
-    <!-- Pied de page -->
+    <!-- Footer -->
     <footer>
         <div class="container">
-            <p class="mb-0">&copy; 2023 Waste2Product. Tous droits réservés.</p>
+            <p class="mb-0">&copy; 2023 Waste2Product. All rights reserved.</p>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
-        // Script pour la navbar qui change au scroll
+        // Script for navbar that changes on scroll
         window.addEventListener('scroll', function() {
             const navbar = document.querySelector('.navbar');
             if (window.scrollY > 50) {

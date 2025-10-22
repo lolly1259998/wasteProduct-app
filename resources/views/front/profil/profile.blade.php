@@ -8,7 +8,7 @@
         background: #ffffff;
         border-radius: 15px;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        padding: 40px 30px;
+        paddingაფ, padding: 40px 30px;
         max-width: 850px;
         margin: 60px auto;
         transition: all 0.3s ease-in-out;
@@ -109,12 +109,7 @@
             <a href="{{ route('settings.password') }}" class="btn btn-sm btn-outline-success mt-2">Modifier</a>
         </div>
 
-        <div class="info-card">
-            <i class="bi bi-person-lines-fill"></i>
-            <div class="info-title">Informations personnelles</div>
-            <div class="info-text">Gérez vos informations de contact</div>
-            <a href="{{ route('settings.profile') }}" class="btn btn-sm btn-outline-primary mt-2">Modifier</a>
-        </div>
+      
 
         <div class="info-card">
             <i class="bi bi-house-door"></i>

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Détails du Point de Collecte - Waste2Product</title>
+    <title>Collection Point Details - Waste2Product</title>
 
     <!-- Bootstrap + Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -21,7 +21,7 @@
             background: linear-gradient(120deg, #f8fff8, #f5fff2);
         }
 
-        /* NAVBAR identique à la première page */
+        /* Navbar identical to the first page */
         .navbar {
             position: fixed;
             top: 0;
@@ -51,7 +51,7 @@
             color: #a7f3d0 !important;
         }
 
-        /* Hero Header amélioré */
+        /* Enhanced Hero Header */
         .hero-header {
             height: 50vh;
             background: url("{{ asset('images/Earth.png') }}") no-repeat center center/cover;
@@ -90,7 +90,7 @@
             padding-top: 80px;
         }
 
-        /* Styles des cartes identiques à la première page */
+        /* Card styles identical to the first page */
         .card {
             border: none;
             border-radius: 10px;
@@ -296,7 +296,7 @@
 </head>
 
 <body>
-    <!-- Barre de navigation identique -->
+    <!-- Identical navigation bar -->
     <nav class="navbar navbar-expand-lg">
         <div class="container">
             <a class="navbar-brand" href="{{ url('/') }}">
@@ -358,18 +358,18 @@
         </div>
     </nav>
 
-    <!-- En-tête hero amélioré -->
+    <!-- Enhanced hero header -->
     <header class="hero-header">
         <div class="hero-content">
-            <h1>Détails du <span>Point de Collecte</span></h1>
-            <p class="lead mt-3">Informations complètes sur {{ $collectionPoint->name }}</p>
+            <h1>Details of the <span>Collection Point</span></h1>
+            <p class="lead mt-3">Complete information about {{ $collectionPoint->name }}</p>
         </div>
     </header>
 
-    <!-- Contenu principal -->
+    <!-- Main content -->
     <main>
         <div class="container mb-5">
-            <!-- Message de succès -->
+            <!-- Success message -->
             @if (session('success'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     <i class="fas fa-check-circle me-2"></i>
@@ -378,7 +378,7 @@
                 </div>
             @endif
 
-            <!-- Carte de détails -->
+            <!-- Details card -->
             <div class="detail-card card">
                 <div class="card-header">
                     <h3 class="card-title">
@@ -390,7 +390,7 @@
                     <div class="info-item">
                         <div class="info-icon"><i class="bi bi-geo-alt-fill"></i></div>
                         <div class="info-content">
-                            <div class="info-label">Adresse</div>
+                            <div class="info-label">Address</div>
                             <div class="info-value">{{ $collectionPoint->address }}, {{ $collectionPoint->city }} {{ $collectionPoint->postal_code }}</div>
                         </div>
                     </div>
@@ -398,12 +398,12 @@
                     <div class="info-item">
                         <div class="info-icon"><i class="bi bi-telephone-fill"></i></div>
                         <div class="info-content">
-                            <div class="info-label">Téléphone</div>
+                            <div class="info-label">Phone</div>
                             <div class="info-value">
                                 @if ($collectionPoint->contact_phone)
                                     <a href="tel:{{ $collectionPoint->contact_phone }}" class="text-decoration-none">{{ $collectionPoint->contact_phone }}</a>
                                 @else
-                                    <span class="text-muted">Non renseigné</span>
+                                    <span class="text-muted">Not provided</span>
                                 @endif
                             </div>
                         </div>
@@ -412,7 +412,7 @@
                     <div class="info-item">
                         <div class="info-icon"><i class="bi bi-info-circle-fill"></i></div>
                         <div class="info-content">
-                            <div class="info-label">Statut</div>
+                            <div class="info-label">Status</div>
                             <div class="info-value">
                                 <span class="status-badge {{ $collectionPoint->status == 'active' ? 'status-active' : 'status-inactive' }}">
                                     <i class="fas fa-circle me-1" style="font-size: 0.6rem;"></i>
@@ -425,7 +425,7 @@
                     <div class="info-item">
                         <div class="info-icon"><i class="bi bi-clock-fill"></i></div>
                         <div class="info-content">
-                            <div class="info-label">Horaires d'ouverture</div>
+                            <div class="info-label">Opening Hours</div>
                             <div class="info-value">
                                 @if (is_array($collectionPoint->opening_hours) && count($collectionPoint->opening_hours) > 0)
                                     <ul class="hours-list">
@@ -434,7 +434,7 @@
                                         @endforeach
                                     </ul>
                                 @else
-                                    <span class="text-muted">Non renseignés</span>
+                                    <span class="text-muted">Not provided</span>
                                 @endif
                             </div>
                         </div>
@@ -443,14 +443,14 @@
                     <div class="info-item">
                         <div class="info-icon"><i class="bi bi-tags-fill"></i></div>
                         <div class="info-content">
-                            <div class="info-label">Catégories acceptées</div>
+                            <div class="info-label">Accepted Categories</div>
                             <div class="info-value">
                                 @if (is_array($collectionPoint->accepted_categories) && count($collectionPoint->accepted_categories) > 0)
                                     @foreach ($collectionPoint->accepted_categories as $category)
                                         <span class="category-badge">{{ $category }}</span>
                                     @endforeach
                                 @else
-                                    <span class="text-muted">Aucune catégorie spécifiée</span>
+                                    <span class="text-muted">No categories specified</span>
                                 @endif
                             </div>
                         </div>
@@ -459,7 +459,7 @@
                     <div class="info-item">
                         <div class="info-icon"><i class="bi bi-map-fill"></i></div>
                         <div class="info-content">
-                            <div class="info-label">Localisation</div>
+                            <div class="info-label">Location</div>
                             <div class="info-value">
                                 <div class="map-container">
                                     <div id="map"></div>
@@ -470,16 +470,16 @@
 
                     <div class="last-updated">
                         <i class="bi bi-arrow-clockwise me-2 text-muted"></i>
-                        <small class="text-muted">Dernière mise à jour : {{ $collectionPoint->updated_at->format('d/m/Y à H:i') }}</small>
+                        <small class="text-muted">Last updated: {{ $collectionPoint->updated_at->format('d/m/Y at H:i') }}</small>
                     </div>
 
                     <div class="action-buttons">
                         <a href="{{ route('front.collectionpoints.index') }}" class="btn btn-outline-secondary">
-                            <i class="bi bi-arrow-left me-1"></i> Retour à la liste
+                            <i class="bi bi-arrow-left me-1"></i> Back to list
                         </a>
                         @if ($collectionPoint->latitude && $collectionPoint->longitude)
                             <a href="https://www.google.com/maps/dir/?api=1&destination={{ $collectionPoint->latitude }},{{ $collectionPoint->longitude }}" target="_blank" class="btn btn-success">
-                                <i class="bi bi-signpost-split me-1"></i> Obtenir l'itinéraire
+                                <i class="bi bi-signpost-split me-1"></i> Get Directions
                             </a>
                         @endif
                     </div>
@@ -490,10 +490,10 @@
         </div>
     </main>
 
-    <!-- Pied de page -->
+    <!-- Footer -->
     <footer>
         <div class="container">
-            <p class="mb-0">&copy; 2023 Waste2Product. Tous droits réservés.</p>
+            <p class="mb-0">&copy; 2023 Waste2Product. All rights reserved.</p>
         </div>
     </footer>
 
@@ -501,7 +501,7 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <script>
-        // Script pour la navbar qui change au scroll
+        // Script for navbar that changes on scroll
         window.addEventListener('scroll', function() {
             const navbar = document.querySelector('.navbar');
             if (window.scrollY > 50) {
@@ -511,14 +511,14 @@
             }
         });
 
-        // Script pour la carte
+        // Map script
         document.addEventListener('DOMContentLoaded', function () {
             @if ($collectionPoint->latitude && $collectionPoint->longitude)
                 var lat = {{ $collectionPoint->latitude }};
                 var lon = {{ $collectionPoint->longitude }};
                 initMap(lat, lon, "{{ $collectionPoint->name }}", "{{ $collectionPoint->address }}", "{{ $collectionPoint->city }} {{ $collectionPoint->postal_code }}");
             @else
-                var address = "{{ $collectionPoint->address ?? '' }} {{ $collectionPoint->city ?? '' }} {{ $collectionPoint->postal_code ?? '' }} Tunisie";
+                var address = "{{ $collectionPoint->address ?? '' }} {{ $collectionPoint->city ?? '' }} {{ $collectionPoint->postal_code ?? '' }} Tunisia";
                 var url = `https://nominatim.openstreetmap.org/search?format=json&countrycodes=tn&limit=1&q=${encodeURIComponent(address)}`;
 
                 fetch(url, { headers: { 'User-Agent': 'Waste2Product-App' }})
@@ -529,12 +529,12 @@
                             var lon = parseFloat(data[0].lon);
                             initMap(lat, lon, "{{ $collectionPoint->name }}", "{{ $collectionPoint->address }}", "{{ $collectionPoint->city }} {{ $collectionPoint->postal_code }}");
                         } else {
-                            initMap(36.8065, 10.1815, "Tunis", "Tunisie", "");
+                            initMap(36.8065, 10.1815, "Tunis", "Tunisia", "");
                         }
                     })
                     .catch(error => {
-                        console.error("Erreur de géocodage :", error);
-                        initMap(36.8065, 10.1815, "Tunis", "Tunisie", "");
+                        console.error("Geocoding error:", error);
+                        initMap(36.8065, 10.1815, "Tunis", "Tunisia", "");
                     });
             @endif
         });

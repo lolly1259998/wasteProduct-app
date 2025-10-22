@@ -26,23 +26,62 @@ use App\Http\Controllers\Campaign\CampaignController;
 use App\Http\Controllers\Participants\ParticipationController;
 use App\Http\Controllers\Auth\AuthentifController;
 use App\Http\Controllers\User\UserController;
-
-
-
-
-
-
+use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-Route::middleware(['auth'])->group(function () {
-    Route::redirect('settings', 'settings/profile');
+Route::get('/waste2product', function () {
+    return view('front.home');
+});
 
-    Route::get('settings/profile', Profile::class)->name('settings.profile');
-    Route::get('settings/password', Password::class)->name('settings.password');
-    Route::get('settings/appearance', Appearance::class)->name('settings.appearance');
+// Frontoffice home route (public first)
+Route::get('/waste2product', function () {
+    return view('front.home');
+})->name('front.home');
+// Frontoffice Routes (Public - Prefixed with /waste2product)
+Route::prefix('waste2product')->name('front.')->group(function () {
+    // Donations (Frontoffice)
+    Route::get('donations', [DonationController::class, 'index'])->name('donations.index');
+    Route::get('donations/create', [DonationController::class, 'create'])->name('donations.create');
+    Route::post('donations', [DonationController::class, 'store'])->name('donations.store');
+    Route::get('donations/{donation}', [DonationController::class, 'show'])->name('donations.show');
+    Route::delete('donations/{donation}', [DonationController::class, 'destroy'])->name('donations.destroy');
+    Route::get('donations/{donation}/edit', [DonationController::class, 'edit'])->name('donations.edit');
+    Route::put('donations/{donation}', [DonationController::class, 'update'])->name('donations.update');
+    Route::post('analyze-sentiment', [DonationController::class, 'analyzeSentiment'])->name('donations.analyze-sentiment');
+    // Orders (Frontoffice)
+    Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('orders/create', [OrderController::class, 'create'])->name('orders.create');
+    Route::post('orders', [OrderController::class, 'store'])->name('orders.store');
+    Route::get('orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+    Route::get('orders/{order}/edit', [OrderController::class, 'edit'])->name('orders.edit');
+    Route::put('orders/{order}', [OrderController::class, 'update'])->name('orders.update');
+    Route::delete('orders/{order}', [OrderController::class, 'destroy'])->name('orders.destroy');
+    // Reservations (Frontoffice)
+    Route::get('reservations', [ReservationController::class, 'index'])->name('reservations.index');
+    Route::get('reservations/create', [ReservationController::class, 'create'])->name('reservations.create');
+    Route::post('reservations', [ReservationController::class, 'store'])->name('reservations.store');
+    Route::get('reservations/{reservation}', [ReservationController::class, 'show'])->name('reservations.show');
+    Route::get('reservations/{reservation}/edit', [ReservationController::class, 'edit'])->name('reservations.edit');
+    Route::put('reservations/{reservation}', [ReservationController::class, 'update'])->name('reservations.update');
+    Route::delete('reservations/{reservation}', [ReservationController::class, 'destroy'])->name('reservations.destroy');
+  
+});
+
+Route::middleware(['auth'])->group(function () {
+    
+    // Password Routes
+    Route::get('settings/password', [UserController::class, 'editPassword'])->name('settings.password');
+    Route::put('settings/password', [UserController::class, 'updatePassword'])->name('settings.password.update');
+
+    // Profile View
+    Route::get('/profile', function () {
+        $user = Auth::user();
+        return view('front.profil.profile', compact('user'));
+    })->name('profile.view');
+});
 
     //Waste Routes
     Route::get('wastes', [WasteController::class, 'index'])->name('wastes.index');
@@ -101,37 +140,79 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/collectionpoints/predictions', [CollectionPointController::class, 'predictions'])
         ->name('collectionpoints.predictions');
 
-    
+    // Donation Routes
+    Route::resource('donations', DonationController::class)->except(['edit', 'update']);
 
+    // Order Routes
+    Route::resource('orders', OrderController::class)->except(['edit', 'update']);
+
+    // Reservation Routes
+    Route::resource('reservations', ReservationController::class);
+
+<<<<<<< HEAD
     // Dashboard route moved to bottom of file
 });
+=======
+    Route::view('dashboard', 'dashboard')->name('dashboard');
+
+    // Back-end Routes (Back - Prefixed with /back)
+    Route::prefix('back')->name('back.')->group(function () {
+        Route::get('home', function () {
+            $totalDonations = \App\Models\Donation::count();
+            $totalOrders = \App\Models\Order::count();
+            $totalReservations = \App\Models\Reservation::count();
+            return view('back.home', compact('totalDonations', 'totalOrders', 'totalReservations'));
+        })->name('home');
+        Route::prefix('home')->group(function () {
+            // Donations (Back-end)
+            Route::get('donations', [DonationController::class, 'index'])->name('donations.index');
+            Route::get('donations/create', [DonationController::class, 'create'])->name('donations.create');
+            Route::post('donations', [DonationController::class, 'store'])->name('donations.store');
+            Route::get('donations/{donation}', [DonationController::class, 'show'])->name('donations.show');
+            Route::delete('donations/{donation}', [DonationController::class, 'destroy'])->name('donations.destroy');
+            Route::put('donations/{donation}', [DonationController::class, 'update'])->name('donations.update');
+            Route::get('donations/{donation}/edit', [DonationController::class, 'edit'])->name('donations.edit');
+            Route::post('donations/analyze-sentiment', [DonationController::class, 'analyzeSentiment'])->name('donations.analyze-sentiment');
+            // Orders (Back-end)
+            Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
+            Route::get('orders/create', [OrderController::class, 'create'])->name('orders.create');
+            Route::post('orders', [OrderController::class, 'store'])->name('orders.store');
+            Route::get('orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+            Route::get('orders/{order}/edit', [OrderController::class, 'edit'])->name('orders.edit');
+            Route::put('orders/{order}', [OrderController::class, 'update'])->name('orders.update');
+            Route::delete('orders/{order}', [OrderController::class, 'destroy'])->name('orders.destroy');
+            // Reservations (Back-end)
+            Route::get('reservations', [ReservationController::class, 'index'])->name('reservations.index');
+            Route::get('reservations/create', [ReservationController::class, 'create'])->name('reservations.create');
+            Route::post('reservations', [ReservationController::class, 'store'])->name('reservations.store');
+            Route::get('reservations/{reservation}', [ReservationController::class, 'show'])->name('reservations.show');
+            Route::get('reservations/{reservation}/edit', [ReservationController::class, 'edit'])->name('reservations.edit');
+            Route::put('reservations/{reservation}', [ReservationController::class, 'update'])->name('reservations.update');
+            Route::delete('reservations/{reservation}', [ReservationController::class, 'destroy'])->name('reservations.destroy');
+       
+        });
+    });
+    Route::get('dashboard', function () {
+        return redirect()->route('back.home');
+    })->name('dashboard');
+
+>>>>>>> 004bd1cff035ea9992f03ca3d45f1ea0895fd039
 
 Route::get('/waste2product', function () {
     return view('front.home');
 });
 
 //frontoffice campaigns routes
-
-
 Route::get('/campaignsFront', [CampaignController::class, 'frontIndex'])->name('campaigns.front');
 
 // Frontoffice Waste Category Routes
 Route::get('/categories', [FrontWasteCategoryController::class, 'index'])->name('front.waste-categories.index');
-Route::get('/categories/create', [FrontWasteCategoryController::class, 'create'])->name('front.waste-categories.create');
-Route::post('/categories', [FrontWasteCategoryController::class, 'store'])->name('front.waste-categories.store');
 Route::get('/categories/{id}', [FrontWasteCategoryController::class, 'show'])->name('front.waste-categories.show');
-Route::get('/categories/{id}/edit', [FrontWasteCategoryController::class, 'edit'])->name('front.waste-categories.edit');
-Route::put('/categories/{id}', [FrontWasteCategoryController::class, 'update'])->name('front.waste-categories.update');
-Route::delete('/categories/{id}', [FrontWasteCategoryController::class, 'destroy'])->name('front.waste-categories.destroy');
 
 // Frontoffice Waste Routes
 Route::get('/wastess', [FrontWasteController::class, 'index'])->name('front.wastes.index');
-Route::get('/wastess/create', [FrontWasteController::class, 'create'])->name('front.wastes.create');
-Route::post('/wastess', [FrontWasteController::class, 'store'])->name('front.wastes.store');
 Route::get('/wastess/{id}', [FrontWasteController::class, 'show'])->name('front.wastes.show');       
-Route::get('/wastess/{id}/edit', [FrontWasteController::class, 'edit'])->name('front.wastes.edit');
-Route::put('/wastess/{id}', [FrontWasteController::class, 'update'])->name('front.wastes.update');
-Route::delete('/wastess/{id}', [FrontWasteController::class, 'destroy'])->name('front.wastes.destroy');
+
 
 Route::post('/ai/predict', [AIController::class, 'predictWaste'])->name('ai.predict');
 Route::get('/predictwaste', function () {
@@ -261,5 +342,8 @@ Route::get('/back/campaigns', function () {
 
 // Routes RESTful pour l'API des campagnes
 Route::resource('campaigns', CampaignController::class);
+<<<<<<< HEAD
 
 //require __DIR__.'/auth.php';
+=======
+>>>>>>> 004bd1cff035ea9992f03ca3d45f1ea0895fd039
