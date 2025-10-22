@@ -105,7 +105,7 @@
                     <i class="bi bi-recycle text-success display-5 mb-3"></i>
                     <h5 class="fw-bold text-success">Recycling</h5>
                     <p class="text-muted">Give waste a new life through smart, sustainable recycling methods.</p>
-                         <a href="{{ url('/register') }}" class="btn btn-success">Join Now</a>
+                         <a href="{{ url('/wastess') }}" class="btn btn-success">Join Now</a>
 
                 </div>
             </div>
