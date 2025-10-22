@@ -8,7 +8,7 @@
         background: #ffffff;
         border-radius: 15px;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        padding: 40px 30px;
+        paddingაფ, padding: 40px 30px;
         max-width: 850px;
         margin: 60px auto;
         transition: all 0.3s ease-in-out;
