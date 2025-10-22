@@ -15,56 +15,39 @@
     @else
         <div class="row">
             @foreach($wastes as $waste)
-                <div class="col-lg-4 col-md-6 mb-4">
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
                     <div class="waste-card card h-100 shadow">
-                        <div class="card-header bg-success text-white">
-                            <h5 class="card-title mb-0">
-                                <i class="fas fa-trash me-2"></i>{{ $waste->type }}
-                            </h5>
-                        </div>
-                        
+                        <!-- Waste Image -->
                         @if($waste->image_path)
                         <div class="text-center p-3">
                             <img src="{{ asset('storage/' . $waste->image_path) }}" 
                                  alt="{{ $waste->type }}" 
                                  class="waste-image img-fluid rounded"
-                                 style="max-height: 200px; object-fit: cover;">
+                                 style="height: 150px; object-fit: cover; width: 100%;">
+                        </div>
+                        @else
+                        <div class="text-center p-3">
+                            <div class="no-image bg-light rounded d-flex align-items-center justify-content-center"
+                                 style="height: 150px;">
+                                <i class="fas fa-trash text-muted" style="font-size: 3rem;"></i>
+                            </div>
                         </div>
                         @endif
 
                         <div class="card-body d-flex flex-column">
-                            <div class="waste-info mb-3">
-                                <div class="info-item d-flex justify-content-between mb-2">
-                                    <span class="text-muted"><i class="fas fa-weight me-2"></i>Weight:</span>
-                                    <span class="fw-bold text-dark">{{ $waste->weight }} kg</span>
-                                </div>
-                                
-                                <div class="info-item d-flex justify-content-between mb-2">
-                                    <span class="text-muted"><i class="fas fa-tag me-2"></i>Status:</span>
-                                    <span class="fw-bold text-dark">{{ $waste->status }}</span>
-                                </div>
-                                
-                                <div class="info-item d-flex justify-content-between mb-3">
-                                    <span class="text-muted"><i class="fas fa-folder me-2"></i>Category:</span>
-                                    <span class="fw-bold text-dark">{{ $waste->category->name ?? 'N/A' }}</span>
-                                </div>
+                            <!-- Category Only -->
+                            <div class="category-section text-center mb-3">
+                                <span class="badge bg-success fs-6">
+                                    <i class="fas fa-folder me-1"></i>{{ $waste->category->name ?? 'N/A' }}
+                                </span>
                             </div>
-
-                            @if($waste->description)
-                            <div class="waste-description mb-3">
-                                <p class="card-text small text-muted">
-                                    <i class="fas fa-align-left me-2"></i>
-                                    {{ Str::limit($waste->description, 100) }}
-                                </p>
-                            </div>
-                            @endif
 
                             <!-- Show Details Button -->
                             <div class="mt-auto">
-                                <button class="btn btn-success w-100" 
+                                <button class="btn btn-outline-success w-100" 
                                         data-bs-toggle="modal" 
                                         data-bs-target="#wasteModal{{ $waste->id }}">
-                                    <i class="fas fa-eye me-2"></i>Show Details
+                                    <i class="fas fa-eye me-2"></i>View Details
                                 </button>
                             </div>
                         </div>
@@ -78,21 +61,21 @@
                         <div class="modal-content">
                             <div class="modal-header bg-success text-white">
                                 <h5 class="modal-title" id="wasteModalLabel{{ $waste->id }}">
-                                    <i class="fas fa-trash me-2"></i>{{ $waste->type }} Details
+                                    <i class="fas fa-trash me-2"></i>{{ $waste->type }} - Complete Details
                                 </h5>
                                 <button type="button" class="btn-close btn-close-white" 
                                         data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div class="row">
-                                    <!-- Waste Image -->
+                                    <!-- Waste Image in Modal -->
                                     @if($waste->image_path)
                                     <div class="col-md-6 mb-4">
                                         <div class="text-center">
                                             <img src="{{ asset('storage/' . $waste->image_path) }}" 
                                                  alt="{{ $waste->type }}" 
                                                  class="img-fluid rounded shadow"
-                                                 style="max-height: 300px; object-fit: cover;">
+                                                 style="max-height: 300px; object-fit: cover; width: 100%;">
                                         </div>
                                     </div>
                                     @endif
@@ -122,14 +105,18 @@
                                                     <strong>Status:</strong>
                                                 </div>
                                                 <div class="col-6 mb-2 text-dark">
-                                                    {{ $waste->status }}
+                                                    <span class="badge status-{{ strtolower($waste->status) }}">
+                                                        {{ $waste->status }}
+                                                    </span>
                                                 </div>
                                                 
                                                 <div class="col-6 mb-2 text-muted">
                                                     <strong>Category:</strong>
                                                 </div>
                                                 <div class="col-6 mb-2 text-dark">
-                                                    {{ $waste->category->name ?? 'N/A' }}
+                                                    <span class="badge bg-success">
+                                                        {{ $waste->category->name ?? 'N/A' }}
+                                                    </span>
                                                 </div>
                                             </div>
                                         </div>
@@ -143,6 +130,31 @@
                                             <p class="mb-0 text-dark">{{ $waste->description }}</p>
                                         </div>
                                         @endif
+
+                                        <!-- Additional Information -->
+                                        <div class="info-section">
+                                            <h6 class="text-success mb-3">
+                                                <i class="fas fa-calendar-alt me-2"></i>Timeline
+                                            </h6>
+                                            <div class="row">
+                                                @if($waste->created_at)
+                                                <div class="col-12 mb-2">
+                                                    <small class="text-muted">
+                                                        <i class="fas fa-plus-circle me-1"></i>
+                                                        <strong>Created:</strong> {{ $waste->created_at->format('M d, Y') }}
+                                                    </small>
+                                                </div>
+                                                @endif
+                                                @if($waste->updated_at)
+                                                <div class="col-12">
+                                                    <small class="text-muted">
+                                                        <i class="fas fa-edit me-1"></i>
+                                                        <strong>Last Updated:</strong> {{ $waste->updated_at->format('M d, Y') }}
+                                                    </small>
+                                                </div>
+                                                @endif
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -162,35 +174,33 @@
 <style>
     .waste-card {
         border: none;
-        border-radius: 10px;
+        border-radius: 12px;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
+        overflow: hidden;
     }
 
     .waste-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-    }
-
-    .card-header {
-        border-radius: 10px 10px 0 0 !important;
-        padding: 15px 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
     }
 
     .waste-image {
         transition: transform 0.3s ease;
+        border-radius: 8px;
     }
 
     .waste-card:hover .waste-image {
         transform: scale(1.05);
     }
 
-    .info-item {
-        border-bottom: 1px solid #f0f0f0;
-        padding-bottom: 8px;
+    .category-section .badge {
+        font-size: 0.9rem;
+        padding: 8px 12px;
+        border-radius: 20px;
     }
 
-    .info-item:last-child {
-        border-bottom: none;
+    .no-image {
+        border: 2px dashed #dee2e6;
     }
 
     .empty-state {
@@ -210,29 +220,68 @@
         padding: 15px;
         border-radius: 8px;
         border-left: 4px solid #198754;
+        margin-bottom: 15px;
     }
 
     .modal-header {
-        border-radius: 10px 10px 0 0;
+        border-radius: 12px 12px 0 0;
     }
 
     .modal-content {
-        border-radius: 10px;
+        border-radius: 12px;
         border: none;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    }
-
-    .waste-description {
-        border-left: 3px solid #198754;
-        padding-left: 15px;
-        background-color: #f8fff8;
-        padding: 10px 15px;
-        border-radius: 5px;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.2);
     }
 
     .text-dark {
         color: #212529 !important;
         font-weight: 500;
+    }
+
+    /* Status badges for modal */
+    .status-pending {
+        background-color: #fff3cd;
+        color: #856404;
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 0.8rem;
+    }
+
+    .status-processed {
+        background-color: #d1ecf1;
+        color: #0c5460;
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 0.8rem;
+    }
+
+    .status-recycled {
+        background-color: #d4edda;
+        color: #155724;
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 0.8rem;
+    }
+
+    .status-disposed {
+        background-color: #f8d7da;
+        color: #721c24;
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 0.8rem;
+    }
+
+    .btn-outline-success {
+        border: 2px solid #198754;
+        color: #198754;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .btn-outline-success:hover {
+        background-color: #198754;
+        color: white;
+        transform: translateY(-2px);
     }
 </style>
 
@@ -253,7 +302,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Add click animation to buttons
-    const detailButtons = document.querySelectorAll('.btn-success');
+    const detailButtons = document.querySelectorAll('.btn-outline-success');
     detailButtons.forEach(btn => {
         btn.addEventListener('click', function() {
             this.style.transform = 'scale(0.95)';
