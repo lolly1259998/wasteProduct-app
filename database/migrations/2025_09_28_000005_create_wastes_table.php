@@ -12,7 +12,9 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('collection_point_id')->constrained()->onDelete('cascade');
             $table->foreignId('waste_category_id')->constrained()->onDelete('cascade');
+            $table->string('type');
             $table->string('description');
+            $table->string('image_path')->nullable();
             $table->decimal('weight', 8, 2);
             $table->string('status');
             $table->timestamps();

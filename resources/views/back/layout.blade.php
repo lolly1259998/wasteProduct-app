@@ -216,24 +216,6 @@
                     </ul>
                 </li>
 
-                <!-- Collection Points -->
-                <li class="nav-item mb-2">
-                    <a href="#collectionSubmenu" class="nav-link" onclick="toggleSubmenu(event)" data-tooltip="Collection Points" aria-label="Collection Points">
-                        <i class="bi bi-geo-alt me-2"></i> <span class="nav-text">Collection Points</span>
-                    </a>
-                    <ul class="submenu list-unstyled" id="collectionSubmenu">
-                        <li>
-                            <a href="{{ url('/dashbored/collectionpoints') }}" class="nav-link {{ request()->is('collectionpoints/index') ? 'active' : '' }}">
-                                <i class="bi bi-geo-alt me-2"></i> Collection Points
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ url('/collectionpoints/predictions') }}" class="nav-link {{ request()->is('collectionpoints/predictions') ? 'active' : '' }}">
-                                <i class="bi bi-cpu me-1"></i> IA Points de Collecte
-                            </a>
-                        </li>
-                    </ul>
-                </li>
 
                 <!-- NEW: Recycling & Products Section -->
                 <li class="nav-item mb-2">
