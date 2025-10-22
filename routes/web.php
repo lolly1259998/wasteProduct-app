@@ -243,4 +243,4 @@ Route::get('/back/campaigns', function () {
 // Routes RESTful pour l'API des campagnes
 Route::resource('campaigns', CampaignController::class);
 
-require __DIR__.'/auth.php';
+//require __DIR__.'/auth.php';
