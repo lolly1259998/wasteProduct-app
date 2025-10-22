@@ -194,27 +194,16 @@ Route::get('/waste2product', function () {
 });
 
 //frontoffice campaigns routes
-
-
 Route::get('/campaignsFront', [CampaignController::class, 'frontIndex'])->name('campaigns.front');
 
 // Frontoffice Waste Category Routes
 Route::get('/categories', [FrontWasteCategoryController::class, 'index'])->name('front.waste-categories.index');
-Route::get('/categories/create', [FrontWasteCategoryController::class, 'create'])->name('front.waste-categories.create');
-Route::post('/categories', [FrontWasteCategoryController::class, 'store'])->name('front.waste-categories.store');
 Route::get('/categories/{id}', [FrontWasteCategoryController::class, 'show'])->name('front.waste-categories.show');
-Route::get('/categories/{id}/edit', [FrontWasteCategoryController::class, 'edit'])->name('front.waste-categories.edit');
-Route::put('/categories/{id}', [FrontWasteCategoryController::class, 'update'])->name('front.waste-categories.update');
-Route::delete('/categories/{id}', [FrontWasteCategoryController::class, 'destroy'])->name('front.waste-categories.destroy');
 
 // Frontoffice Waste Routes
 Route::get('/wastess', [FrontWasteController::class, 'index'])->name('front.wastes.index');
-Route::get('/wastess/create', [FrontWasteController::class, 'create'])->name('front.wastes.create');
-Route::post('/wastess', [FrontWasteController::class, 'store'])->name('front.wastes.store');
 Route::get('/wastess/{id}', [FrontWasteController::class, 'show'])->name('front.wastes.show');       
-Route::get('/wastess/{id}/edit', [FrontWasteController::class, 'edit'])->name('front.wastes.edit');
-Route::put('/wastess/{id}', [FrontWasteController::class, 'update'])->name('front.wastes.update');
-Route::delete('/wastess/{id}', [FrontWasteController::class, 'destroy'])->name('front.wastes.destroy');
+
 
 Route::post('/ai/predict', [AIController::class, 'predictWaste'])->name('ai.predict');
 Route::get('/predictwaste', function () {

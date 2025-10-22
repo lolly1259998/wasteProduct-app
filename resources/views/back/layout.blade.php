@@ -180,7 +180,7 @@
         </a>
     </li>
     <li>
-        <a href="{{ route('waste_categories.index') }}" class="nav-link text-white" data-tooltip="Waste Categories">
+         <a href="{{ route('waste_categories.index') }}" class="nav-link text-white" data-tooltip="Waste Categories">
             <i class="bi bi-tags me-2"></i> Waste Categories
         </a>
     </li>

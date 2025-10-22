@@ -32,7 +32,7 @@
 
                 <!-- Nouveau lien Waste Categories -->
                 <li class="nav-item">
-                    <a href="{{ route('front.waste-categories.index') }}" class="nav-link {{ request()->is('categories*') ? 'active' : '' }}">
+                    <a href="{{ route('front.waste-categories.index') }}" class="nav-link {{ request()->is('waste-categories*') ? 'active' : '' }}">
                         <i class="bi bi-grid-3x3-gap me-1"></i>Waste Categories
                     </a>
                 </li>

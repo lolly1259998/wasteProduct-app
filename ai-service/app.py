@@ -26,14 +26,28 @@ def predict_waste():
     category = data.get('category', '').lower()
     weight = float(data.get('weight', 0))
 
-    if 'plastic' in type_ or 'bottle' in category:
-        prediction = 'recycler'
-    elif 'food' in category or 'organic' in type_:
-        prediction = 'composter'
+    if 'glass' in type_ or 'glass' in category:
+        prediction = 'Recycle in green bin 🟢'
+    
+        # Ensuite le papier/carton
+    elif 'paper' in type_ or 'cardboard' in type_ or 'paper' in category or 'cardboard' in category:
+        prediction = 'Recycle in yellow bin color🟡'
+    
+        # Puis le plastique
+    elif 'plastic' in type_ or 'plastic' in category:
+        prediction = 'Recycle in blue bin ♻️'
+    
+        # Déchets organiques
+    elif 'food' in type_ or 'organic' in type_ or 'food' in category or 'organic' in category:
+        prediction = 'Compost 🍂'
+    
+        # Pour les petits objets légers
     elif weight < 0.5:
-        prediction = 'réutiliser'
+        prediction = 'Reuse ♻️'
+    
+        # Par défaut - SIMPLIFIÉ
     else:
-        prediction = 'donner'
+           prediction = 'Recycle'
 
     return jsonify({'prediction': prediction})
 
