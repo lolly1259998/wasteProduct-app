@@ -116,7 +116,9 @@
                     <li class="nav-item"><a href="{{ url('/waste2product/collectionpoints') }}" class="nav-link {{ request()->is('waste2product/collectionpoints*') ? 'active' : '' }}">Points de collecte</a></li>
                     <li class="nav-item"><a href="{{ route('front.wastes.index') }}" class="nav-link {{ request()->routeIs('front.wastes.*') ? 'active' : '' }}">Wastes</a></li>
                     <li class="nav-item"><a href="{{ url('/categories') }}" class="nav-link {{ request()->is('categories*') ? 'active' : '' }}">Waste Categories</a></li>
-                    <li class="nav-item"><a href="{{ url('/donations') }}" class="nav-link {{ request()->is('donations') ? 'active' : '' }}">Donations</a></li>
+                    <li class="nav-item"><a href="{{ route('front.donations.index') }}" class="nav-link {{ request()->routeIs('front.donations.*') ? 'active' : '' }}">Donations</a></li>
+                    <li class="nav-item"><a href="{{ route('front.orders.index') }}" class="nav-link {{ request()->routeIs('front.orders.*') ? 'active' : '' }}">Orders</a></li>
+                    <li class="nav-item"><a href="{{ route('front.reservations.index') }}" class="nav-link {{ request()->routeIs('front.reservations.*') ? 'active' : '' }}">Reservations</a></li>
                     <li class="nav-item"><a href="{{ url('/contact') }}" class="nav-link {{ request()->is('contact') ? 'active' : '' }}">Contact</a></li>
                 </ul>
             </div>
