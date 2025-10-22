@@ -14,7 +14,7 @@ class WasteCategorySeeder extends Seeder
     {
         DB::table('waste_categories')->insert([
             [
-                'id' => 20,
+                'id' => 1,
                 'name' => 'plastique',
                 'description' => 'hjkm',
                 'recycling_instructions' => 'jjj',
@@ -22,7 +22,7 @@ class WasteCategorySeeder extends Seeder
                 'updated_at' => '2025-10-14 14:42:02',
             ],
             [
-                'id' => 23,
+                'id' => 2,
                 'name' => 'Glass',
                 'description' => 'glases',
                 'recycling_instructions' => 'non',
@@ -30,7 +30,7 @@ class WasteCategorySeeder extends Seeder
                 'updated_at' => '2025-10-14 13:14:49',
             ],
             [
-                'id' => 25,
+                'id' => 3,
                 'name' => 'Metal',
                 'description' => 'metal',
                 'recycling_instructions' => 'hdid',

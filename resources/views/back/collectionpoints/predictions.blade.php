@@ -1,11 +1,10 @@
-
 @extends('back.layout')
 <!DOCTYPE html>
-<html lang="fr" class="h-100">
+<html lang="en" class="h-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prédictions IA - Points de Collecte | Waste2Product</title>
+    <title>AI Predictions - Collection Points | Waste2Product</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -188,7 +187,7 @@
             display: block;
         }
         
-        /* Styles pour le contenu des prédictions IA */
+        /* Styles for AI prediction content */
         .status-badge {
             @apply px-3 py-1 rounded-full text-sm font-medium;
         }
@@ -205,7 +204,7 @@
             @apply bg-gray-100 text-gray-800;
         }
         .card {
-            @apply bg-white rounded-xl shadow-md overflow-hidden;
+            @apply bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100;
         }
         .loading-pulse {
             animation: pulse 1.5s infinite;
@@ -222,6 +221,29 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        
+        /* Design enhancements */
+        .btn {
+            @apply px-4 py-2 rounded-lg font-medium transition-all duration-200 flex items-center justify-center;
+        }
+        .btn-primary {
+            @apply bg-blue-600 text-white hover:bg-blue-700 shadow-sm;
+        }
+        .btn-outline {
+            @apply bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 shadow-sm;
+        }
+        .table-header {
+            @apply bg-gray-50 text-left text-sm font-semibold text-gray-600;
+        }
+        .table-cell {
+            @apply p-4 text-sm;
+        }
+        .progress-bar {
+            @apply h-2 bg-gray-200 rounded-full overflow-hidden;
+        }
+        .progress-fill {
+            @apply h-full rounded-full transition-all duration-500;
+        }
     </style>
 </head>
 <body class="h-100">
@@ -232,36 +254,34 @@
     <button class="mobile-menu-btn" id="mobileMenuBtn">
         <i class="bi bi-list"></i>
     </button>
- 
-   
-    
+
     <!-- Main Content -->
     <div class="main-content" id="mainContent">
         <div class="container mx-auto px-4 py-6">
-            <!-- En-tête avec informations -->
+            <!-- Header with information -->
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
                 <div>
                     <h1 class="text-2xl md:text-3xl font-bold text-gray-800 flex items-center">
                         <i class="fas fa-chart-line text-blue-500 mr-3"></i>
-                        Prédictions IA des Points de Collecte
+                        AI Predictions for Collection Points
                     </h1>
-                    <p class="text-gray-600 mt-2">Analyse prédictive des volumes de déchets pour optimiser la collecte</p>
+                    <p class="text-gray-600 mt-2">Predictive analysis of waste volumes to optimize collection</p>
                 </div>
                 <div class="bg-blue-50 border border-blue-200 rounded-lg p-3">
                     <div class="flex items-center text-blue-700">
                         <i class="fas fa-clock mr-2"></i>
-                        <span class="font-medium">Dernière mise à jour :</span>
+                        <span class="font-medium">Last update:</span>
                         <span id="lastUpdateTime" class="ml-2">{{ now()->format('H:i') }}</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Cartes de statistiques -->
+            <!-- Statistics cards -->
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
                 <div class="card p-4 border-l-4 border-blue-500">
                     <div class="flex justify-between items-center">
                         <div>
-                            <p class="text-sm text-gray-500">Points surveillés</p>
+                            <p class="text-sm text-gray-500">Monitored points</p>
                             <h3 class="text-2xl font-bold text-gray-800">{{ count($collectionPoints) }}</h3>
                         </div>
                         <div class="bg-blue-100 p-3 rounded-full">
@@ -273,7 +293,7 @@
                 <div class="card p-4 border-l-4 border-green-500">
                     <div class="flex justify-between items-center">
                         <div>
-                            <p class="text-sm text-gray-500">Statut normal</p>
+                            <p class="text-sm text-gray-500">Normal status</p>
                             <h3 id="normalCount" class="text-2xl font-bold text-gray-800">-</h3>
                         </div>
                         <div class="bg-green-100 p-3 rounded-full">
@@ -285,7 +305,7 @@
                 <div class="card p-4 border-l-4 border-orange-500">
                     <div class="flex justify-between items-center">
                         <div>
-                            <p class="text-sm text-gray-500">Presque plein</p>
+                            <p class="text-sm text-gray-500">Almost full</p>
                             <h3 id="almostFullCount" class="text-2xl font-bold text-gray-800">-</h3>
                         </div>
                         <div class="bg-orange-100 p-3 rounded-full">
@@ -297,7 +317,7 @@
                 <div class="card p-4 border-l-4 border-red-500">
                     <div class="flex justify-between items-center">
                         <div>
-                            <p class="text-sm text-gray-500">Plein</p>
+                            <p class="text-sm text-gray-500">Full</p>
                             <h3 id="fullCount" class="text-2xl font-bold text-gray-800">-</h3>
                         </div>
                         <div class="bg-red-100 p-3 rounded-full">
@@ -307,120 +327,142 @@
                 </div>
             </div>
 
-            <!-- Contrôles -->
+            <!-- Main chart at the top -->
+            <div class="card p-5 mb-6 fade-in">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4">
+                    <div>
+                        <h2 class="text-xl font-semibold text-gray-800">Evolution of Predicted Volumes</h2>
+                        <p class="text-gray-600 text-sm">Predictions of collection point fill levels</p>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <button id="chartDay" class="px-3 py-1 text-sm bg-blue-100 text-blue-700 rounded-lg font-medium">Day</button>
+                        <button id="chartWeek" class="px-3 py-1 text-sm bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200">Week</button>
+                        <button id="chartMonth" class="px-3 py-1 text-sm bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200">Month</button>
+                    </div>
+                </div>
+                <div class="relative">
+                    <canvas id="volumeChart" height="280"></canvas>
+                    <div id="noDataMessage" class="absolute inset-0 flex flex-col items-center justify-center text-gray-500 bg-white bg-opacity-90 hidden">
+                        <i class="fas fa-chart-bar text-4xl mb-2 text-gray-300"></i>
+                        <p class="text-lg">Not enough data to display the chart</p>
+                        <p class="text-sm mt-1">Data will appear after the first update</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Controls -->
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
                 <div class="flex flex-wrap gap-2">
-                    <button id="refreshPredictions" class="btn btn-primary bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-200 flex items-center shadow-sm">
+                    <button id="refreshPredictions" class="btn btn-primary">
                         <i class="fas fa-sync-alt mr-2"></i>
-                        Actualiser les prédictions
+                        Refresh Predictions
                         <span id="loadingSpinner" class="ml-2 hidden">
                             <i class="fas fa-spinner fa-spin"></i>
                         </span>
                     </button>
                     
-                    <button id="exportData" class="btn bg-white text-gray-700 border border-gray-300 px-4 py-2 rounded-lg hover:bg-gray-50 transition duration-200 flex items-center shadow-sm">
+                    <button id="exportData" class="btn btn-outline">
                         <i class="fas fa-download mr-2"></i>
-                        Exporter les données
+                        Export Data
                     </button>
                 </div>
                 
                 <div class="flex items-center bg-white rounded-lg border border-gray-300 px-3 py-2 shadow-sm">
                     <i class="fas fa-search text-gray-400 mr-2"></i>
-                    <input type="text" id="searchInput" placeholder="Rechercher un point..." class="outline-none bg-transparent w-full md:w-64">
+                    <input type="text" id="searchInput" placeholder="Search for a point..." class="outline-none bg-transparent w-full md:w-64">
                 </div>
             </div>
 
-            <!-- Tableau des prédictions -->
-            <div class="card mb-8 fade-in">
-                <div class="p-4 border-b border-gray-200">
-                    <h2 class="text-xl font-semibold text-gray-800">Points de collecte</h2>
-                    <p class="text-gray-600 text-sm">Prédictions de volume et statuts en temps réel</p>
-                </div>
-                <div class="overflow-x-auto">
-                    <table class="w-full">
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th class="p-4 text-left text-sm font-semibold text-gray-600">Point de collecte</th>
-                                <th class="p-4 text-left text-sm font-semibold text-gray-600">Volume prédit</th>
-                                <th class="p-4 text-left text-sm font-semibold text-gray-600">Statut</th>
-                                <th class="p-4 text-left text-sm font-semibold text-gray-600">Dernière collecte</th>
-                                <th class="p-4 text-left text-sm font-semibold text-gray-600">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="predictionsBody" class="divide-y divide-gray-200">
-                            @foreach($collectionPoints as $point)
-                            <tr id="row-{{ $point->id }}" class="hover:bg-gray-50 transition duration-150">
-                                <td class="p-4">
-                                    <div class="flex items-center">
-                                        <div class="bg-blue-100 p-2 rounded-lg mr-3">
-                                            <i class="fas fa-trash-alt text-blue-500"></i>
-                                        </div>
-                                        <div>
-                                            <div class="font-medium text-gray-900 point-name">{{ $point->name }}</div>
-                                            <div class="text-sm text-gray-500">{{ $point->address ?? 'Adresse non spécifiée' }}</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td id="volume-{{ $point->id }}" class="p-4">
-                                    <div class="loading-pulse bg-gray-200 h-6 w-16 rounded"></div>
-                                </td>
-                                <td id="status-{{ $point->id }}" class="p-4">
-                                    <div class="loading-pulse bg-gray-200 h-6 w-24 rounded"></div>
-                                </td>
-                                <td id="lastCollection-{{ $point->id }}" class="p-4 text-gray-500">
-                                    <div class="loading-pulse bg-gray-200 h-6 w-32 rounded"></div>
-                                </td>
-                                <td class="p-4">
-                                    <button class="text-blue-500 hover:text-blue-700 transition duration-150" title="Voir les détails">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-                <div class="p-4 border-t border-gray-200 text-sm text-gray-500 flex justify-between items-center">
-                    <div>Affichage de <span id="visibleCount">{{ count($collectionPoints) }}</span> points sur {{ count($collectionPoints) }}</div>
-                    <div class="flex space-x-2">
-                        <button class="px-3 py-1 border border-gray-300 rounded hover:bg-gray-50">Précédent</button>
-                        <button class="px-3 py-1 border border-gray-300 rounded bg-blue-50 text-blue-600 border-blue-200">1</button>
-                        <button class="px-3 py-1 border border-gray-300 rounded hover:bg-gray-50">Suivant</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Graphique et informations complémentaires -->
+            <!-- Predictions table and priority points -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- Graphique -->
-                <div class="lg:col-span-2 card p-5">
-                    <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-xl font-semibold text-gray-800">Évolution des volumes prédits</h2>
-                        <div class="flex space-x-2">
-                            <button id="chartDay" class="px-3 py-1 text-sm bg-blue-100 text-blue-700 rounded-lg font-medium">Jour</button>
-                            <button id="chartWeek" class="px-3 py-1 text-sm bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200">Semaine</button>
-                            <button id="chartMonth" class="px-3 py-1 text-sm bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200">Mois</button>
-                        </div>
+                <!-- Predictions table -->
+                <div class="lg:col-span-2 card mb-8 fade-in">
+                    <div class="p-4 border-b border-gray-200">
+                        <h2 class="text-xl font-semibold text-gray-800">Collection Points</h2>
+                        <p class="text-gray-600 text-sm">Volume predictions and real-time statuses</p>
                     </div>
-                    <div class="relative">
-                        <canvas id="volumeChart" height="250"></canvas>
-                        <div id="noDataMessage" class="absolute inset-0 flex flex-col items-center justify-center text-gray-500 bg-white bg-opacity-90 hidden">
-                            <i class="fas fa-chart-bar text-4xl mb-2 text-gray-300"></i>
-                            <p class="text-lg">Pas assez de données pour afficher le graphique</p>
-                            <p class="text-sm mt-1">Les données apparaîtront après la première actualisation</p>
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="table-header">
+                                <tr>
+                                    <th class="table-cell">Collection Point</th>
+                                    <th class="table-cell">Predicted Volume</th>
+                                    <th class="table-cell">Status</th>
+                                    <th class="table-cell">Last Collection</th>
+                                    <th class="table-cell">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="predictionsBody" class="divide-y divide-gray-200">
+                                @foreach($collectionPoints as $point)
+                                <tr id="row-{{ $point->id }}" class="hover:bg-gray-50 transition duration-150">
+                                    <td class="table-cell">
+                                        <div class="flex items-center">
+                                            <div class="bg-blue-100 p-2 rounded-lg mr-3">
+                                                <i class="fas fa-trash-alt text-blue-500"></i>
+                                            </div>
+                                            <div>
+                                                <div class="font-medium text-gray-900 point-name">{{ $point->name }}</div>
+                                                <div class="text-sm text-gray-500">{{ $point->address ?? 'Address not specified' }}</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td id="volume-{{ $point->id }}" class="table-cell">
+                                        <div class="loading-pulse bg-gray-200 h-6 w-16 rounded"></div>
+                                    </td>
+                                    <td id="status-{{ $point->id }}" class="table-cell">
+                                        <div class="loading-pulse bg-gray-200 h-6 w-24 rounded"></div>
+                                    </td>
+                                    <td id="lastCollection-{{ $point->id }}" class="table-cell text-gray-500">
+                                        <div class="loading-pulse bg-gray-200 h-6 w-32 rounded"></div>
+                                    </td>
+                                    <td class="table-cell">
+                                        <button class="text-blue-500 hover:text-blue-700 transition duration-150 p-1 rounded" title="View details">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="p-4 border-t border-gray-200 text-sm text-gray-500 flex justify-between items-center">
+                        <div>Displaying <span id="visibleCount">{{ count($collectionPoints) }}</span> points out of {{ count($collectionPoints) }}</div>
+                        <div class="flex space-x-2">
+                            <button class="px-3 py-1 border border-gray-300 rounded hover:bg-gray-50 transition">Previous</button>
+                            <button class="px-3 py-1 border border-gray-300 rounded bg-blue-50 text-blue-600 border-blue-200">1</button>
+                            <button class="px-3 py-1 border border-gray-300 rounded hover:bg-gray-50 transition">Next</button>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Points prioritaires -->
-                <div class="card p-5">
-                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Points prioritaires</h2>
-                    <p class="text-gray-600 mb-4">Points nécessitant une attention immédiate</p>
+                <!-- Priority points -->
+                <div class="card p-5 h-fit">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Priority Points</h2>
+                    <p class="text-gray-600 mb-4">Points requiring immediate attention</p>
                     
                     <div id="priorityList" class="space-y-3">
                         <div class="loading-pulse bg-gray-200 h-16 rounded-lg"></div>
                         <div class="loading-pulse bg-gray-200 h-16 rounded-lg"></div>
                         <div class="loading-pulse bg-gray-200 h-16 rounded-lg"></div>
+                    </div>
+                    
+                    <!-- Status legend -->
+                    <div class="mt-6 pt-4 border-t border-gray-200">
+                        <h3 class="text-sm font-medium text-gray-700 mb-2">Status Legend</h3>
+                        <div class="space-y-2">
+                            <div class="flex items-center">
+                                <span class="status-badge status-normal mr-2"></span>
+                                <span class="text-sm text-gray-600">Normal</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="status-badge status-almost-full mr-2"></span>
+                                <span class="text-sm text-gray-600">Almost full</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="status-badge status-full mr-2"></span>
+                                <span class="text-sm text-gray-600">Full</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -428,7 +470,7 @@
     </div>
 
     <script>
-        // Gestion de la barre latérale mobile
+        // Mobile sidebar management
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
         const sidebar = document.getElementById('sidebar');
         const sidebarOverlay = document.getElementById('sidebarOverlay');
@@ -444,20 +486,20 @@
             sidebarOverlay.classList.remove('show');
         });
 
-        // Script pour les prédictions IA
+        // AI predictions script
         const chartCtx = document.getElementById('volumeChart');
         const noDataMessage = document.getElementById('noDataMessage');
         let chart;
         let allPointsData = {};
 
-        // Mettre à jour l'heure de dernière actualisation
+        // Update last update time
         function updateLastUpdateTime() {
             const now = new Date();
             document.getElementById('lastUpdateTime').textContent = 
                 `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
         }
 
-        // Mettre à jour les compteurs de statut
+        // Update status counters
         function updateStatusCounters() {
             const normalCount = document.querySelectorAll('.status-normal').length;
             const almostFullCount = document.querySelectorAll('.status-almost-full').length;
@@ -468,19 +510,19 @@
             document.getElementById('fullCount').textContent = fullCount;
         }
 
-        // Fonction pour créer un badge de statut
+        // Function to create a status badge
         function createStatusBadge(status) {
             let badgeClass, badgeText, icon;
             
             switch(status) {
-                case "plein":
+                case "full":
                     badgeClass = "status-full";
-                    badgeText = "Plein";
+                    badgeText = "Full";
                     icon = "fas fa-times-circle";
                     break;
-                case "presque plein":
+                case "almost full":
                     badgeClass = "status-almost-full";
-                    badgeText = "Presque plein";
+                    badgeText = "Almost full";
                     icon = "fas fa-exclamation-triangle";
                     break;
                 case "normal":
@@ -490,7 +532,7 @@
                     break;
                 default:
                     badgeClass = "status-unknown";
-                    badgeText = "Inconnu";
+                    badgeText = "Unknown";
                     icon = "fas fa-question-circle";
             }
             
@@ -500,22 +542,22 @@
                     </span>`;
         }
 
-        // Fonction pour mettre à jour la liste des priorités
+        // Function to update the priority list
         function updatePriorityList() {
             const priorityList = document.getElementById('priorityList');
             const fullPoints = [];
             const almostFullPoints = [];
             
-            // Récupérer les points prioritaires
+            // Retrieve priority points
             for (const [id, data] of Object.entries(allPointsData)) {
-                if (data.status === "plein") {
+                if (data.status === "full") {
                     fullPoints.push({id, ...data});
-                } else if (data.status === "presque plein") {
+                } else if (data.status === "almost full") {
                     almostFullPoints.push({id, ...data});
                 }
             }
             
-            // Trier par volume (décroissant)
+            // Sort by volume (descending)
             fullPoints.sort((a, b) => b.predicted_volume - a.predicted_volume);
             almostFullPoints.sort((a, b) => b.predicted_volume - a.predicted_volume);
             
@@ -525,7 +567,8 @@
                 priorityList.innerHTML = `
                     <div class="text-center py-4 text-gray-500">
                         <i class="fas fa-check-circle text-green-400 text-2xl mb-2"></i>
-                        <p>Aucun point prioritaire</p>
+                        <p>No priority points</p>
+                        <p class="text-sm mt-1">All points are in a normal state</p>
                     </div>
                 `;
                 return;
@@ -533,25 +576,25 @@
             
             let html = '';
             priorityPoints.forEach(point => {
-                const statusClass = point.status === "plein" ? "status-full" : "status-almost-full";
-                const statusIcon = point.status === "plein" ? "fas fa-times-circle" : "fas fa-exclamation-triangle";
+                const statusClass = point.status === "full" ? "status-full" : "status-almost-full";
+                const statusIcon = point.status === "full" ? "fas fa-times-circle" : "fas fa-exclamation-triangle";
                 
                 html += `
-                <div class="border border-gray-200 rounded-lg p-3 hover:shadow-sm transition duration-150">
+                <div class="border border-gray-200 rounded-lg p-3 hover:shadow-sm transition duration-150 bg-white">
                     <div class="flex justify-between items-start">
-                        <div>
-                            <h3 class="font-medium text-gray-900">${point.name}</h3>
-                            <p class="text-sm text-gray-500">${point.address || 'Adresse non spécifiée'}</p>
+                        <div class="flex-1 min-w-0">
+                            <h3 class="font-medium text-gray-900 truncate">${point.name}</h3>
+                            <p class="text-sm text-gray-500 truncate">${point.address || 'Address not specified'}</p>
                         </div>
-                        <span class="status-badge ${statusClass} flex items-center text-xs">
+                        <span class="status-badge ${statusClass} flex items-center text-xs ml-2 flex-shrink-0">
                             <i class="${statusIcon} mr-1"></i>
-                            ${point.status === "plein" ? "Plein" : "Presque plein"}
+                            ${point.status === "full" ? "Full" : "Almost full"}
                         </span>
                     </div>
                     <div class="mt-2 flex justify-between items-center">
                         <span class="text-sm font-medium text-gray-700">${Math.round(point.predicted_volume)} kg</span>
-                        <button class="text-blue-500 hover:text-blue-700 text-sm font-medium">
-                            Planifier la collecte <i class="fas fa-arrow-right ml-1"></i>
+                        <button class="text-blue-500 hover:text-blue-700 text-sm font-medium transition">
+                            Schedule <i class="fas fa-arrow-right ml-1"></i>
                         </button>
                     </div>
                 </div>
@@ -582,29 +625,28 @@
                     const lastCollectionElement = document.getElementById(`lastCollection-${id}`);
                     const pointNameElement = row.querySelector('.point-name');
                     
-                    // Stocker les données pour utilisation ultérieure
+                    // Store data for later use
                     allPointsData[id] = {
                         ...data,
                         name: pointNameElement.textContent,
                         address: row.querySelector('td:first-child .text-sm').textContent
                     };
                     
-                    // Mettre à jour le volume
+                    // Update volume
                     volumeElement.innerHTML = `
-                        <div class="font-bold text-lg text-gray-800">${Math.round(data.predicted_volume)}</div>
-                        <div class="text-xs text-gray-500">kg</div>
+                        <div class="font-bold text-gray-800">${Math.round(data.predicted_volume)} kg</div>
                     `;
                     
-                    // Mettre à jour le statut avec badge
+                    // Update status with badge
                     statusElement.innerHTML = createStatusBadge(data.status);
                     
-                    // Simuler une date de dernière collecte (à remplacer par vos données réelles)
+                    // Simulate a last collection date (to be replaced with real data)
                     const daysAgo = Math.floor(Math.random() * 7) + 1;
                     lastCollectionElement.innerHTML = `
-                        <div class="text-gray-700">Il y a ${daysAgo} jour${daysAgo > 1 ? 's' : ''}</div>
+                        <div class="text-gray-700">${daysAgo} day${daysAgo > 1 ? 's' : ''} ago</div>
                     `;
                     
-                    // Ajouter les données pour le graphique - utiliser le nom réel du point
+                    // Add data for the chart - use the real point name
                     labels.push(pointNameElement.textContent);
                     dataValues.push(Math.round(data.predicted_volume));
 
@@ -612,19 +654,19 @@
                     document.getElementById(`status-${id}`).innerHTML = `
                         <span class="status-badge status-unknown flex items-center">
                             <i class="fas fa-exclamation-circle mr-1"></i>
-                            Erreur
+                            Error
                         </span>
                     `;
-                    console.error(`Erreur pour le point ${id}:`, error);
+                    console.error(`Error for point ${id}:`, error);
                 }
             }
 
-            // Mise à jour du graphique
+            // Update the chart
             if (chart) chart.destroy();
             if (dataValues.length > 0) {
                 noDataMessage.classList.add('hidden');
                 
-                // Configuration pour éviter que les labels soient trop longs
+                // Configuration to avoid overly long labels
                 const shortenedLabels = labels.map(label => {
                     if (label.length > 15) {
                         return label.substring(0, 15) + '...';
@@ -637,13 +679,13 @@
                     data: {
                         labels: shortenedLabels,
                         datasets: [{
-                            label: "Volume prédit (kg)",
+                            label: "Predicted Volume (kg)",
                             data: dataValues,
                             backgroundColor: dataValues.map((v, i) => {
                                 const id = rows[i].id.replace('row-', '');
                                 const status = allPointsData[id]?.status;
-                                return status === "plein" ? 'rgba(239, 68, 68, 0.7)' :
-                                       status === "presque plein" ? 'rgba(249, 115, 22, 0.7)' :
+                                return status === "full" ? 'rgba(239, 68, 68, 0.7)' :
+                                       status === "almost full" ? 'rgba(249, 115, 22, 0.7)' :
                                        status === "normal" ? 'rgba(34, 197, 94, 0.7)' : 'rgba(156, 163, 175, 0.7)';
                             }),
                             borderColor: dataValues.map(() => 'rgba(255, 255, 255, 1)'),
@@ -661,10 +703,13 @@
                                 title: { 
                                     display: true, 
                                     text: 'Volume (kg)',
-                                    font: { weight: 'bold' }
+                                    font: { weight: 'bold', size: 12 }
                                 },
                                 grid: {
                                     color: 'rgba(0, 0, 0, 0.05)'
+                                },
+                                ticks: {
+                                    font: { size: 11 }
                                 }
                             },
                             x: {
@@ -674,8 +719,8 @@
                                 ticks: {
                                     maxRotation: 45,
                                     minRotation: 45,
+                                    font: { size: 11 },
                                     callback: function(value, index) {
-                                        // Afficher le nom complet dans le tooltip
                                         return shortenedLabels[index];
                                     }
                                 }
@@ -688,16 +733,15 @@
                             tooltip: { 
                                 callbacks: { 
                                     title: function(context) {
-                                        // Afficher le nom complet dans le tooltip
                                         return labels[context[0].dataIndex];
                                     },
                                     label: ctx => `${ctx.raw} kg` 
                                 },
                                 backgroundColor: 'rgba(0, 0, 0, 0.7)',
-                                titleFont: { size: 14 },
-                                bodyFont: { size: 14 },
-                                padding: 10,
-                                cornerRadius: 8
+                                titleFont: { size: 12 },
+                                bodyFont: { size: 12 },
+                                padding: 8,
+                                cornerRadius: 6
                             }
                         }
                     }
@@ -706,27 +750,27 @@
                 noDataMessage.classList.remove('hidden');
             }
 
-            // Mettre à jour les compteurs et la liste des priorités
+            // Update counters and priority list
             updateStatusCounters();
             updatePriorityList();
             
-            // Mettre à jour l'heure de dernière actualisation
+            // Update last update time
             updateLastUpdateTime();
 
             refreshButton.disabled = false;
             loadingSpinner.classList.add('hidden');
             
-            // Ajouter un effet de mise à jour visuelle
+            // Add a visual update effect
             document.querySelectorAll('#predictionsBody tr').forEach(row => {
                 row.classList.add('fade-in');
                 setTimeout(() => row.classList.remove('fade-in'), 500);
             });
         }
 
-        // Initialisation
+        // Initialization
         document.getElementById('refreshPredictions').addEventListener('click', fetchPredictions);
         
-        // Recherche
+        // Search
         document.getElementById('searchInput').addEventListener('input', function(e) {
             const searchTerm = e.target.value.toLowerCase();
             const rows = document.querySelectorAll('#predictionsBody tr');
@@ -745,36 +789,33 @@
             document.getElementById('visibleCount').textContent = visibleCount;
         });
         
-        // Boutons de période pour le graphique
-        document.getElementById('chartDay').addEventListener('click', function() {
+        // Chart period buttons
+        function setActiveChartButton(activeButton) {
             document.querySelectorAll('[id^="chart"]').forEach(btn => {
                 btn.classList.remove('bg-blue-100', 'text-blue-700');
                 btn.classList.add('bg-gray-100', 'text-gray-700', 'hover:bg-gray-200');
             });
-            this.classList.add('bg-blue-100', 'text-blue-700');
-            this.classList.remove('bg-gray-100', 'text-gray-700', 'hover:bg-gray-200');
-            // Ici, vous pouvez recharger les données pour la période sélectionnée
+            activeButton.classList.add('bg-blue-100', 'text-blue-700');
+            activeButton.classList.remove('bg-gray-100', 'text-gray-700', 'hover:bg-gray-200');
+        }
+        
+        document.getElementById('chartDay').addEventListener('click', function() {
+            setActiveChartButton(this);
+            // Here, you can reload data for the selected period
         });
         
         document.getElementById('chartWeek').addEventListener('click', function() {
-            document.querySelectorAll('[id^="chart"]').forEach(btn => {
-                btn.classList.remove('bg-blue-100', 'text-blue-700');
-                btn.classList.add('bg-gray-100', 'text-gray-700', 'hover:bg-gray-200');
-            });
-            this.classList.add('bg-blue-100', 'text-blue-700');
-            this.classList.remove('bg-gray-100', 'text-gray-700', 'hover:bg-gray-200');
+            setActiveChartButton(this);
         });
         
         document.getElementById('chartMonth').addEventListener('click', function() {
-            document.querySelectorAll('[id^="chart"]').forEach(btn => {
-                btn.classList.remove('bg-blue-100', 'text-blue-700');
-                btn.classList.add('bg-gray-100', 'text-gray-700', 'hover:bg-gray-200');
-            });
-            this.classList.add('bg-blue-100', 'text-blue-700');
-            this.classList.remove('bg-gray-100', 'text-gray-700', 'hover:bg-gray-200');
+            setActiveChartButton(this);
         });
 
-        // Chargement initial
+        // Initialize Day button as active
+        setActiveChartButton(document.getElementById('chartDay'));
+
+        // Initial load
         setTimeout(() => {
             fetchPredictions();
         }, 1000);
