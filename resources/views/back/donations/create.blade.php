@@ -27,7 +27,7 @@
                         <div class="mb-3">
                             <label for="user_id" class="form-label fw-bold">User</label>
                             <select name="user_id" id="user_id" class="form-select" required>
-                                @foreach(\App\Models\User::all() as $user)
+                                @foreach($users as $user)
                                     <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>{{ $user->name }}</option>
                                 @endforeach
                             </select>
@@ -35,19 +35,19 @@
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
-                        <!-- Waste Type -->
+                        <!-- Waste Category -->
                         <div class="mb-3">
-                            <label for="waste_id" class="form-label fw-bold">Waste Type</label>
-                            <select name="waste_id" id="waste_id" class="form-select" required>
-                                @if(isset($wastes) && !empty($wastes))
-                                    @foreach($wastes as $id => $waste)
-                                        <option value="{{ $id }}" {{ old('waste_id') == $id ? 'selected' : '' }}>{{ $waste['name'] }}</option>
+                            <label for="waste_category_id" class="form-label fw-bold">Waste Category</label>
+                            <select name="waste_category_id" id="waste_category_id" class="form-select" required>
+                                @if(isset($wasteCategories) && $wasteCategories->count() > 0)
+                                    @foreach($wasteCategories as $wasteCategory)
+                                        <option value="{{ $wasteCategory->id }}" {{ old('waste_category_id') == $wasteCategory->id ? 'selected' : '' }}>{{ $wasteCategory->name }}</option>
                                     @endforeach
                                 @else
-                                    <option value="" disabled selected>No waste types available</option>
+                                    <option value="" disabled selected>No waste categories available</option>
                                 @endif
                             </select>
-                            @error('waste_id')
+                            @error('waste_category_id')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
@@ -128,7 +128,7 @@
         const desc = this.value;
         const preview = document.getElementById('sentiment-preview');
         if (desc.length > 10) {  // Trigger after 10 chars
-            fetch('{{ route('back.donations.analyze-sentiment') }}', {  // Use back route
+            fetch('{{ route('back.donations.analyze-sentiment') }}', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
