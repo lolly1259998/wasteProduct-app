@@ -1,14 +1,11 @@
 <?php
 
-// Updated: app/Http/Controllers/ReservationController.php
-// Added: use Illuminate\Support\Facades\Auth;
-// NEW: use App\Models\Product;  // For DB loading
 
 namespace App\Http\Controllers;
 
 use App\Enums\ReservationStatus;
 use App\Models\Reservation;
-use App\Models\Product;  // NEW
+use App\Models\Product;  
 use App\Services\RecommendationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
