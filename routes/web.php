@@ -71,11 +71,17 @@ Route::prefix('waste2product')->name('front.')->group(function () {
 });
 
 Route::middleware(['auth'])->group(function () {
-    Route::redirect('settings', 'settings/profile');
+    
+    // Password Routes
+    Route::get('settings/password', [UserController::class, 'editPassword'])->name('settings.password');
+    Route::put('settings/password', [UserController::class, 'updatePassword'])->name('settings.password.update');
 
-    Route::get('settings/profile', Profile::class)->name('settings.profile');
-    Route::get('settings/password', Password::class)->name('settings.password');
-    Route::get('settings/appearance', Appearance::class)->name('settings.appearance');
+    // Profile View
+    Route::get('/profile', function () {
+        $user = Auth::user();
+        return view('front.profil.profile', compact('user'));
+    })->name('profile.view');
+});
 
     //Waste Routes
     Route::get('wastes', [WasteController::class, 'index'])->name('wastes.index');
@@ -187,7 +193,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('dashboard', function () {
         return redirect()->route('back.home');
     })->name('dashboard');
-});
+
 
 Route::get('/waste2product', function () {
     return view('front.home');
