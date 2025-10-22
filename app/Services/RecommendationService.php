@@ -8,9 +8,9 @@ use Phpml\Association\Apriori;
 class RecommendationService
 {
     private array $products = [  // Reuse your hardcoded ones
-        1 => ['name' => 'Product A', 'price' => 10.00, 'related_waste' => 'plastic'],  // Add 'related_waste' for eco-links
-        2 => ['name' => 'Product B', 'price' => 15.00, 'related_waste' => 'paper'],
-        3 => ['name' => 'Product C', 'price' => 20.00, 'related_waste' => 'glass'],
+        1 => ['name' => 'Product ATT', 'price' => 10.00, 'related_waste' => 'plastic'],  // Add 'related_waste' for eco-links
+        2 => ['name' => 'Product ATTC', 'price' => 15.00, 'related_waste' => 'paper'],
+        3 => ['name' => 'Product ATTR', 'price' => 20.00, 'related_waste' => 'glass'],
     ];
 
     public function suggestForUser(User $user, int $limit = 3): array
