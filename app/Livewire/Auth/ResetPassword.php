@@ -12,42 +12,36 @@ use Livewire\Attributes\Layout;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
 
-#[Layout('components.layouts.auth')]
+#[Layout('layouts.minimal')]
 class ResetPassword extends Component
 {
     #[Locked]
     public string $token = '';
 
     public string $email = '';
-
     public string $password = '';
-
     public string $password_confirmation = '';
 
     /**
-     * Mount the component.
+     * Mount the component with the reset token.
      */
-    public function mount(string $token): void
+    public function mount(string $token)
     {
         $this->token = $token;
-
         $this->email = request()->string('email')->value();
     }
 
     /**
-     * Reset the password for the given user.
+     * Reset the user's password.
      */
-    public function resetPassword(): void
+    public function resetPassword()
     {
         $this->validate([
             'token' => ['required'],
-            'email' => ['required', 'string', 'email'],
+            'email' => ['required', 'string', 'email', 'max:255'],
             'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        // Here we will attempt to reset the user's password. If it is successful we
-        // will update the password on an actual user model and persist it to the
-        // database. Otherwise we will parse the error and return the response.
         $status = Password::reset(
             $this->only('email', 'password', 'password_confirmation', 'token'),
             function ($user) {
@@ -60,17 +54,12 @@ class ResetPassword extends Component
             }
         );
 
-        // If the password was successfully reset, we will redirect the user back to
-        // the application's home authenticated view. If there is an error we can
-        // redirect them back to where they came from with their error message.
-        if ($status != Password::PasswordReset) {
-            $this->addError('email', __($status));
-
+        if ($status !== Password::PASSWORD_RESET) {
+            $this->addError('email', 'Unable to reset password. Please try again.');
             return;
         }
 
-        Session::flash('status', __($status));
-
+        Session::flash('status', '✅ Your password has been reset successfully! You can now sign in with your new password.');
         $this->redirectRoute('login', navigate: true);
     }
 }

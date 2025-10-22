@@ -29,7 +29,7 @@ class ProductController extends Controller
     public function create()
     {
         $categories = WasteCategory::all();
-        // Uniquement les processus de recyclage complétés
+        // Only completed recycling processes
         $recyclingProcesses = RecyclingProcess::where('status', 'completed')
             ->with('waste')
             ->get();
@@ -54,24 +54,24 @@ class ProductController extends Controller
             'is_available' => 'boolean',
         ]);
 
-        // Gestion de l'upload d'image
+        // Handle image upload
         if ($request->hasFile('image_path')) {
             $validated['image_path'] = $request->file('image_path')->store('products', 'public');
         }
 
-        // Conversion des spécifications en array si nécessaire
+        // Convert specifications to array if necessary
         if (isset($validated['specifications'])) {
             $validated['specifications'] = json_decode($validated['specifications'], true) 
                 ?? ['description' => $validated['specifications']];
         }
 
-        // Définir is_available en fonction du stock
+        // Set is_available based on stock
         $validated['is_available'] = $validated['stock_quantity'] > 0;
 
         Product::create($validated);
 
         return redirect()->route('products.index')
-            ->with('success', 'Produit créé avec succès.');
+            ->with('success', 'Product created successfully.');
     }
 
     /**
@@ -118,28 +118,28 @@ class ProductController extends Controller
             'is_available' => 'boolean',
         ]);
 
-        // Gestion de l'upload d'image
+        // Handle image upload
         if ($request->hasFile('image_path')) {
-            // Supprimer l'ancienne image si elle existe
+            // Delete old image if it exists
             if ($product->image_path) {
                 Storage::disk('public')->delete($product->image_path);
             }
             $validated['image_path'] = $request->file('image_path')->store('products', 'public');
         }
 
-        // Conversion des spécifications en array si nécessaire
+        // Convert specifications to array if necessary
         if (isset($validated['specifications'])) {
             $validated['specifications'] = json_decode($validated['specifications'], true) 
                 ?? ['description' => $validated['specifications']];
         }
 
-        // Définir is_available en fonction du stock
+        // Set is_available based on stock
         $validated['is_available'] = $validated['stock_quantity'] > 0;
 
         $product->update($validated);
 
         return redirect()->route('products.index')
-            ->with('success', 'Produit mis à jour avec succès.');
+            ->with('success', 'Product updated successfully.');
     }
 
     /**

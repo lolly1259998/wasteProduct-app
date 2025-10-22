@@ -77,9 +77,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('products/{id}/toggle-availability', [ProductController::class, 'toggleAvailability'])
         ->name('products.toggle-availability');
 
-    Route::view('dashboard', 'back.home')
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+    // Dashboard route moved to bottom of file
     
     //Dashboard Route
     Route::get('/back/home', function () {
@@ -105,7 +103,7 @@ Route::middleware(['auth'])->group(function () {
 
     
 
-    Route::view('dashboard', 'dashboard')->name('dashboard');
+    // Dashboard route moved to bottom of file
 });
 
 Route::get('/waste2product', function () {
@@ -223,19 +221,38 @@ Route::post('/login', [AuthentifController::class, 'login'])->name('login');
 
 Route::post('/logout', [AuthentifController::class, 'logout'])->name('logout');
 
+// Routes pour mot de passe oublié
+Route::get('/forgot-password', [\App\Http\Controllers\Auth\ForgotPasswordController::class, 'showForgotPasswordForm'])->name('password.request');
+Route::post('/forgot-password', [\App\Http\Controllers\Auth\ForgotPasswordController::class, 'sendPasswordResetLink'])->name('password.email');
+Route::get('/reset-password/{token}', [\App\Http\Controllers\Auth\ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+Route::post('/reset-password', [\App\Http\Controllers\Auth\ResetPasswordController::class, 'reset'])->name('password.update');
+
+// Routes pour authentification sociale
+Route::get('/auth/google', [\App\Http\Controllers\Auth\SocialAuthController::class, 'redirectToGoogle'])->name('auth.google');
+Route::get('/auth/google/callback', [\App\Http\Controllers\Auth\SocialAuthController::class, 'handleGoogleCallback'])->name('auth.google.callback');
+
 Route::get('/dashboard', function() {
-    return view('dashboard');
-})->middleware('auth');
+    $categories = \App\Models\WasteCategory::all();
+    $wastes = \App\Models\Waste::all();
+    $totalWastes = $wastes->count();
+    $wasteStats = $categories->map(function ($category) use ($wastes, $totalWastes) {
+        $count = $wastes->where('waste_category_id', $category->id)->count();
+        $percentage = $totalWastes > 0 ? ($count / $totalWastes) * 100 : 0;
+        return [
+            'name' => $category->name,
+            'percentage' => round($percentage, 1),
+        ];
+    });
+    return view('back.home', compact('categories', 'wastes', 'wasteStats'));
+})->middleware('auth')->name('dashboard');
+
+Route::get('/waste2product', function() {
+    return view('front.home');
+});
 
 
 Route::view('/recycling', 'front.recycling');
 Route::view('/contact', 'front.contact');
-
-Route::get('/dashbored/collectionpoints', action: [CollectionPointController::class, 'index'])->name('back.home');
-Route::resource('collectionpoints', CollectionPointController::class);
-
-Route::get('/waste2product/collectionpoints', [CollectionPointFrontController::class, 'index'])->name('front.collectionpoints.index');
-Route::get('/waste2product/collectionpoints/{id}', [CollectionPointFrontController::class, 'show'])->name('front.collectionpoints.show');
 
 // Route pour la page de gestion des campagnes dans le back-office
 Route::get('/back/campaigns', function () {
@@ -245,4 +262,4 @@ Route::get('/back/campaigns', function () {
 // Routes RESTful pour l'API des campagnes
 Route::resource('campaigns', CampaignController::class);
 
-require __DIR__.'/auth.php';
+//require __DIR__.'/auth.php';

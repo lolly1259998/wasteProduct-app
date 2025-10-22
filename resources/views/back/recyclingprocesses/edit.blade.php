@@ -1,6 +1,6 @@
 @extends('back.layout')
 
-@section('title', 'Modifier le Processus de Recyclage')
+@section('title', 'Edit Recycling Process')
 
 @section('content')
 <div class="container-fluid px-0">
@@ -8,13 +8,13 @@
         <div class="col-12">
             <div class="d-flex align-items-center mb-4">
                 <a href="{{ route('recyclingprocesses.index') }}" class="btn btn-outline-secondary me-3">
-                    <i class="bi bi-arrow-left me-2"></i> Retour
+                    <i class="bi bi-arrow-left me-2"></i> Back
                 </a>
                 <div>
                     <h1 class="page-title text-success mb-1">
-                        <i class="bi bi-pencil-square me-2"></i> Modifier le Processus de Recyclage
+                        <i class="bi bi-pencil-square me-2"></i> Edit Recycling Process
                     </h1>
-                    <p class="text-muted mb-0">Mettre à jour les informations du processus #{{ $recyclingProcess->id }}</p>
+                    <p class="text-muted mb-0">Update process information #{{ $recyclingProcess->id }}</p>
                 </div>
             </div>
         </div>
@@ -24,26 +24,26 @@
         <div class="col-lg-8 mx-auto">
             <div class="card shadow-sm border-0 rounded-3">
                 <div class="card-header bg-warning text-dark py-3">
-                    <h5 class="mb-0"><i class="bi bi-file-earmark-text me-2"></i> Informations du Processus</h5>
+                    <h5 class="mb-0"><i class="bi bi-file-earmark-text me-2"></i> Process Information</h5>
                 </div>
                 <div class="card-body p-4">
                     <form action="{{ route('recyclingprocesses.update', $recyclingProcess->id) }}" method="POST">
                         @csrf
                         @method('PUT')
 
-                        <!-- Déchet -->
+                        <!-- Waste -->
                         <div class="mb-4">
                             <label for="waste_id" class="form-label fw-medium">
-                                <i class="bi bi-trash me-2 text-success"></i>Déchet à recycler <span class="text-danger">*</span>
+                                <i class="bi bi-trash me-2 text-success"></i>Waste to recycle <span class="text-danger">*</span>
                             </label>
                             <select name="waste_id" id="waste_id" 
                                     class="form-select @error('waste_id') is-invalid @enderror" 
                                     required>
-                                <option value="">-- Sélectionnez un déchet --</option>
+                                <option value="">-- Select a waste --</option>
                                 @foreach($wastes as $waste)
                                     <option value="{{ $waste->id }}" 
                                         {{ old('waste_id', $recyclingProcess->waste_id) == $waste->id ? 'selected' : '' }}>
-                                        {{ $waste->type }} - {{ $waste->category->name ?? 'Sans catégorie' }} ({{ $waste->weight }} kg)
+                                        {{ $waste->type }} - {{ $waste->category->name ?? 'No category' }} ({{ $waste->weight }} kg)
                                     </option>
                                 @endforeach
                             </select>
@@ -52,15 +52,15 @@
                             @enderror
                         </div>
 
-                        <!-- Méthode -->
+                        <!-- Method -->
                         <div class="mb-4">
                             <label for="method" class="form-label fw-medium">
-                                <i class="bi bi-gear me-2 text-success"></i>Méthode de recyclage <span class="text-danger">*</span>
+                                <i class="bi bi-gear me-2 text-success"></i>Recycling method <span class="text-danger">*</span>
                             </label>
                             <select name="method" id="method" 
                                     class="form-select @error('method') is-invalid @enderror" 
                                     required>
-                                <option value="">-- Sélectionnez une méthode --</option>
+                                <option value="">-- Select a method --</option>
                                 <option value="Compostage" {{ old('method', $recyclingProcess->method) == 'Compostage' ? 'selected' : '' }}>Compostage</option>
                                 <option value="Recyclage mécanique" {{ old('method', $recyclingProcess->method) == 'Recyclage mécanique' ? 'selected' : '' }}>Recyclage mécanique</option>
                                 <option value="Recyclage chimique" {{ old('method', $recyclingProcess->method) == 'Recyclage chimique' ? 'selected' : '' }}>Recyclage chimique</option>
@@ -73,10 +73,10 @@
                             @enderror
                         </div>
 
-                        <!-- Statut -->
+                        <!-- Status -->
                         <div class="mb-4">
                             <label for="status" class="form-label fw-medium">
-                                <i class="bi bi-flag me-2 text-success"></i>Statut <span class="text-danger">*</span>
+                                <i class="bi bi-flag me-2 text-success"></i>Status <span class="text-danger">*</span>
                             </label>
                             <select name="status" id="status" 
                                     class="form-select @error('status') is-invalid @enderror" 

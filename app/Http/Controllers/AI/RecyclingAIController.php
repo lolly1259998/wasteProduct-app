@@ -12,7 +12,7 @@ class RecyclingAIController extends Controller
     private $aiServiceUrl = 'http://localhost:5002';
 
     /**
-     * Classifier un déchet avec l'IA
+     * Classify waste with AI
      */
     public function classifyWaste(Request $request)
     {
@@ -29,20 +29,20 @@ class RecyclingAIController extends Controller
 
             return response()->json([
                 'success' => false,
-                'error' => 'Service IA indisponible'
+                'error' => 'AI Service unavailable'
             ], 503);
 
         } catch (\Exception $e) {
-            Log::error('Erreur classification IA: ' . $e->getMessage());
+            Log::error('AI Classification Error: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
-                'error' => 'Erreur lors de la classification'
+                'error' => 'Error during classification'
             ], 500);
         }
     }
 
     /**
-     * Prédire la qualité d'un produit recyclé
+     * Predict the quality of a recycled product
      */
     public function predictQuality(Request $request)
     {
@@ -60,20 +60,20 @@ class RecyclingAIController extends Controller
 
             return response()->json([
                 'success' => false,
-                'error' => 'Service IA indisponible'
+                'error' => 'AI Service unavailable'
             ], 503);
 
         } catch (\Exception $e) {
-            Log::error('Erreur prédiction qualité IA: ' . $e->getMessage());
+            Log::error('AI Quality Prediction Error: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
-                'error' => 'Erreur lors de la prédiction de qualité'
+                'error' => 'Error during quality prediction'
             ], 500);
         }
     }
 
     /**
-     * Estimer le prix d'un produit recyclé
+     * Estimate the price of a recycled product
      */
     public function estimatePrice(Request $request)
     {
@@ -92,20 +92,20 @@ class RecyclingAIController extends Controller
 
             return response()->json([
                 'success' => false,
-                'error' => 'Service IA indisponible'
+                'error' => 'AI Service unavailable'
             ], 503);
 
         } catch (\Exception $e) {
-            Log::error('Erreur estimation prix IA: ' . $e->getMessage());
+            Log::error('AI Price Estimation Error: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
-                'error' => 'Erreur lors de l\'estimation du prix'
+                'error' => 'Error during price estimation'
             ], 500);
         }
     }
 
     /**
-     * Générer une description de produit
+     * Generate a product description
      */
     public function generateDescription(Request $request)
     {
@@ -123,20 +123,20 @@ class RecyclingAIController extends Controller
 
             return response()->json([
                 'success' => false,
-                'error' => 'Service IA indisponible'
+                'error' => 'AI Service unavailable'
             ], 503);
 
         } catch (\Exception $e) {
-            Log::error('Erreur génération description IA: ' . $e->getMessage());
+            Log::error('AI Description Generation Error: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
-                'error' => 'Erreur lors de la génération de description'
+                'error' => 'Error during description generation'
             ], 500);
         }
     }
 
     /**
-     * Optimiser un processus de recyclage
+     * Optimize a recycling process
      */
     public function optimizeProcess(Request $request)
     {
@@ -152,20 +152,20 @@ class RecyclingAIController extends Controller
 
             return response()->json([
                 'success' => false,
-                'error' => 'Service IA indisponible'
+                'error' => 'AI Service unavailable'
             ], 503);
 
         } catch (\Exception $e) {
-            Log::error('Erreur optimisation processus IA: ' . $e->getMessage());
+            Log::error('AI Process Optimization Error: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
-                'error' => 'Erreur lors de l\'optimisation du processus'
+                'error' => 'Error during process optimization'
             ], 500);
         }
     }
 
     /**
-     * Vérifier l'état du service IA
+     * Check AI service status
      */
     public function healthCheck()
     {
@@ -178,13 +178,13 @@ class RecyclingAIController extends Controller
 
             return response()->json([
                 'status' => 'unhealthy',
-                'error' => 'Service IA indisponible'
+                'error' => 'AI Service unavailable'
             ], 503);
 
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'unhealthy',
-                'error' => 'Impossible de contacter le service IA'
+                'error' => 'Unable to contact AI service'
             ], 503);
         }
     }

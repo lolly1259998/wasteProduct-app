@@ -102,6 +102,24 @@
             color: #1b5e20;
         }
 
+        .forgot-password-link {
+            text-align: right;
+            margin-top: 0.5rem;
+        }
+
+        .forgot-password-link a {
+            color: #2e7d32;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .forgot-password-link a:hover {
+            color: #1b5e20;
+            text-decoration: underline;
+        }
+
         button[type="submit"] {
             padding: 0.9rem;
             border: none;
@@ -169,13 +187,19 @@
                     <input id="password" type="password" name="password" placeholder="••••••••" required>
                     <button type="button" class="toggle-password" onclick="togglePassword('password', this)">👁️</button>
                 </div>
+                <div class="forgot-password-link">
+                    <a href="{{ route('password.request') }}">Forgot your password?</a>
+                </div>
             </div>
 
             <button type="submit">Sign In</button>
         </form>
 
+        <!-- Social Login Buttons -->
+        <x-social-login-buttons />
+
         <div class="register-link">
-            <p>Don’t have an account? <a href="{{ route('register.form') }}">Create one</a></p>
+            <p>Don't have an account? <a href="{{ route('register.form') }}">Create one</a></p>
         </div>
     </div>
 

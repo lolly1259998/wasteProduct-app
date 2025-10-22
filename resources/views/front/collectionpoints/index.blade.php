@@ -210,7 +210,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="{{ url('/products') }}" class="nav-link {{ request()->is('products*') ? 'active' : '' }}">
+                    <a href="{{ url('/shop/products') }}" class="nav-link {{ request()->is('shop/products*') ? 'active' : '' }}">
                         <i class="bi bi-bag-check me-1"></i>Products
                     </a>
                 </li>

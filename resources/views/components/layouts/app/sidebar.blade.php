@@ -25,16 +25,9 @@
                             <x-heroicon-o-chevron-down class="h-3 w-3 ml-auto transition-transform cursor-pointer" id="products-chevron" onclick="event.stopPropagation(); toggleSubMenu('products-submenu')" />
                         </div>
                     </flux:navlist.item>
-                    <div id="products-submenu" class="pl-4 space-y-1 {{ request()->routeIs('donations.*', 'orders.*', 'reservations.*') ? 'block' : 'hidden' }}">
-                        <flux:navlist.item icon="gift" :href="route('donations.index')" :current="request()->routeIs('donations.*')" wire:navigate class="text-gray-600 dark:text-gray-300 hover:bg-green-400 dark:hover:bg-green-600 hover:text-white dark:hover:text-white" style="{{ request()->routeIs('donations.*') ? 'background-color: #34D399;' : '' }}">
-                            {{ __('Donations') }}
-                        </flux:navlist.item>
-                        <flux:navlist.item icon="shopping-cart" :href="route('orders.index')" :current="request()->routeIs('orders.*')" wire:navigate class="text-gray-600 dark:text-gray-300 hover:bg-green-400 dark:hover:bg-green-600 hover:text-white dark:hover:text-white" style="{{ request()->routeIs('orders.*') ? 'background-color: #34D399;' : '' }}">
-                            {{ __('Orders') }}
-                        </flux:navlist.item>
-                        <flux:navlist.item icon="calendar" :href="route('reservations.index')" :current="request()->routeIs('reservations.*')" wire:navigate class="text-gray-600 dark:text-gray-300 hover:bg-green-400 dark:hover:bg-green-600 hover:text-white dark:hover:text-white" style="{{ request()->routeIs('reservations.*') ? 'background-color: #34D399;' : '' }}">
-                            {{ __('Reservations') }}
-                        </flux:navlist.item>
+                    {{-- Submenu pour les fonctionnalités futures --}}
+                    <div id="products-submenu" class="pl-4 space-y-1 hidden">
+                        {{-- Fonctionnalités à implémenter --}}
                     </div>
                 </flux:navlist.group>
             </flux:navlist>

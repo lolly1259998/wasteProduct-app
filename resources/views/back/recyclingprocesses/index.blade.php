@@ -1,28 +1,28 @@
 @extends('back.layout')
 
-@section('title', 'Processus de Recyclage')
+@section('title', 'Recycling Processes')
 
 @section('content')
 <div class="container-fluid px-0">
-    <!-- En-tête avec statistiques -->
+    <!-- Header with statistics -->
     <div class="row mb-4">
         <div class="col-12">
             <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4">
                 <div class="mb-3 mb-md-0">
                     <h1 class="page-title text-success mb-2">
-                        <i class="bi bi-arrow-repeat me-2"></i> Processus de Recyclage
+                        <i class="bi bi-arrow-repeat me-2"></i> Recycling Processes
                     </h1>
-                    <p class="text-muted mb-0">Gérez la transformation des déchets en produits recyclés</p>
+                    <p class="text-muted mb-0">Manage the transformation of waste into recycled products</p>
                 </div>
                 <div class="d-flex flex-wrap gap-2">
                     <a href="{{ route('recyclingprocesses.create') }}" class="btn btn-success shadow-sm fw-medium px-4 py-2">
-                        <i class="bi bi-plus-circle me-2"></i> Nouveau Processus
+                        <i class="bi bi-plus-circle me-2"></i> New Process
                     </a>
                 </div>
             </div>
         </div>
 
-        <!-- Cartes de statistiques -->
+        <!-- Statistics cards -->
         <div class="col-12">
             <div class="row g-3 mb-4">
                 @php
@@ -38,7 +38,7 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-start">
                                 <div>
-                                    <h6 class="card-title text-muted mb-2">Total Processus</h6>
+                                    <h6 class="card-title text-muted mb-2">Total Processes</h6>
                                     <h3 class="text-success mb-0">{{ $totalProcesses }}</h3>
                                 </div>
                                 <div class="bg-success bg-opacity-10 p-3 rounded-circle">
@@ -54,7 +54,7 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-start">
                                 <div>
-                                    <h6 class="card-title text-muted mb-2">En cours</h6>
+                                    <h6 class="card-title text-muted mb-2">In Progress</h6>
                                     <h3 class="text-primary mb-0">{{ $inProgress }}</h3>
                                 </div>
                                 <div class="bg-primary bg-opacity-10 p-3 rounded-circle">
@@ -70,7 +70,7 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-start">
                                 <div>
-                                    <h6 class="card-title text-muted mb-2">Complétés</h6>
+                                    <h6 class="card-title text-muted mb-2">Completed</h6>
                                     <h3 class="text-info mb-0">{{ $completed }}</h3>
                                 </div>
                                 <div class="bg-info bg-opacity-10 p-3 rounded-circle">
@@ -86,7 +86,7 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-start">
                                 <div>
-                                    <h6 class="card-title text-muted mb-2">En attente</h6>
+                                    <h6 class="card-title text-muted mb-2">Pending</h6>
                                     <h3 class="text-warning mb-0">{{ $pending }}</h3>
                                 </div>
                                 <div class="bg-warning bg-opacity-10 p-3 rounded-circle">
@@ -100,7 +100,7 @@
         </div>
     </div>
 
-    {{-- Messages flash --}}
+    {{-- Flash messages --}}
     @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show shadow-sm border-0 mb-4 d-flex align-items-center" role="alert">
             <i class="bi bi-check-circle-fill me-2 fs-5 flex-shrink-0"></i>
@@ -125,23 +125,23 @@
         <div class="card shadow-sm border-0 rounded-3">
             <div class="card-body text-center py-5">
                 <i class="bi bi-inbox display-4 text-muted mb-3"></i>
-                <h4 class="text-muted mb-3">Aucun processus de recyclage trouvé</h4>
-                <p class="text-muted mb-4">Commencez par créer votre premier processus de recyclage</p>
+                <h4 class="text-muted mb-3">No recycling processes found</h4>
+                <p class="text-muted mb-4">Start by creating your first recycling process</p>
                 <a href="{{ route('recyclingprocesses.create') }}" class="btn btn-success px-4">
-                    <i class="bi bi-plus-circle me-2"></i> Créer un processus
+                    <i class="bi bi-plus-circle me-2"></i> Create a process
                 </a>
             </div>
         </div>
     @else
-        <!-- Tableau -->
+        <!-- Table -->
         <div class="card shadow-sm border-0 rounded-3 overflow-hidden">
             <div class="card-header bg-white py-3 border-bottom">
                 <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center">
                     <h5 class="card-title mb-2 mb-md-0 text-success fw-medium">
-                        <i class="bi bi-list-ul me-2"></i> Liste des Processus
+                        <i class="bi bi-list-ul me-2"></i> Process List
                     </h5>
                     <div class="text-muted small">
-                        Total: {{ $recyclingProcesses->count() }} processus
+                        Total: {{ $recyclingProcesses->count() }} processes
                     </div>
                 </div>
             </div>
@@ -151,13 +151,13 @@
                     <table class="table table-hover align-middle mb-0">
                         <thead class="table-success">
                             <tr>
-                                <th class="ps-4">Déchet</th>
-                                <th>Méthode</th>
-                                <th>Statut</th>
-                                <th class="d-none d-md-table-cell">Date début</th>
-                                <th class="d-none d-lg-table-cell">Date fin</th>
-                                <th class="d-none d-lg-table-cell">Quantité sortie</th>
-                                <th class="d-none d-lg-table-cell">Responsable</th>
+                                <th class="ps-4">Waste</th>
+                                <th>Method</th>
+                                <th>Status</th>
+                                <th class="d-none d-md-table-cell">Start Date</th>
+                                <th class="d-none d-lg-table-cell">End Date</th>
+                                <th class="d-none d-lg-table-cell">Output Quantity</th>
+                                <th class="d-none d-lg-table-cell">Responsible</th>
                                 <th class="text-center pe-4">Actions</th>
                             </tr>
                         </thead>
@@ -171,7 +171,7 @@
                                             </div>
                                             <div>
                                                 <h6 class="mb-0 fw-medium text-dark">{{ $process->waste->type ?? 'N/A' }}</h6>
-                                                <small class="text-muted">{{ $process->waste->category->name ?? 'Sans catégorie' }}</small>
+                                                <small class="text-muted">{{ $process->waste->category->name ?? 'No category' }}</small>
                                             </div>
                                         </div>
                                     </td>
@@ -187,10 +187,10 @@
                                                 'failed' => 'danger'
                                             ];
                                             $statusLabels = [
-                                                'pending' => 'En attente',
-                                                'in_progress' => 'En cours',
-                                                'completed' => 'Complété',
-                                                'failed' => 'Échoué'
+                                                'pending' => 'Pending',
+                                                'in_progress' => 'In Progress',
+                                                'completed' => 'Completed',
+                                                'failed' => 'Failed'
                                             ];
                                             $color = $statusColors[$process->status] ?? 'secondary';
                                             $label = $statusLabels[$process->status] ?? $process->status;
@@ -208,7 +208,7 @@
                                     <td class="d-none d-lg-table-cell">
                                         <small class="text-muted">
                                             <i class="bi bi-calendar-check me-1"></i>
-                                            {{ $process->end_date ? $process->end_date->format('d/m/Y') : 'En cours' }}
+                                            {{ $process->end_date ? $process->end_date->format('d/m/Y') : 'In Progress' }}
                                         </small>
                                     </td>
                                     <td class="d-none d-lg-table-cell">
@@ -222,7 +222,7 @@
                                     </td>
                                     <td class="d-none d-lg-table-cell">
                                         <small class="text-muted">
-                                            {{ $process->responsibleUser->name ?? 'Non assigné' }}
+                                            {{ $process->responsibleUser->name ?? 'Not assigned' }}
                                         </small>
                                     </td>
                                     <td class="text-center pe-4">
@@ -231,7 +231,7 @@
                                             <a href="{{ route('recyclingprocesses.edit', $process->id) }}" 
                                                class="action-btn action-edit" 
                                                data-bs-toggle="tooltip" 
-                                               title="Modifier">
+                                               title="Edit">
                                                 <i class="bi bi-pencil-square"></i>
                                             </a>
                                             <!-- Delete -->
@@ -240,9 +240,9 @@
                                                 @method('DELETE')
                                                 <button type="submit" 
                                                         class="action-btn action-delete" 
-                                                        onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce processus ?')"
+                                                        onclick="return confirm('Are you sure you want to delete this process?')"
                                                         data-bs-toggle="tooltip" 
-                                                        title="Supprimer">
+                                                        title="Delete">
                                                     <i class="bi bi-trash3"></i>
                                                 </button>
                                             </form>

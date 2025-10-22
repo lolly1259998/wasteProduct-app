@@ -122,7 +122,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a href="{{ url('/') }}" class="nav-link {{ request()->is('/') ? 'active' : '' }}">Home</a></li>
-                    <li class="nav-item"><a href="{{ route('front.products.index') }}" class="nav-link {{ request()->routeIs('front.products.*') || request()->is('shop/products*') ? 'active' : '' }}">Products</a></li>
+                    <li class="nav-item"><a href="{{ url('/shop/products') }}" class="nav-link {{ request()->is('shop/products*') ? 'active' : '' }}">Products</a></li>
                     <li class="nav-item"><a href="{{ url('/waste2product/collectionpoints') }}" class="nav-link {{ request()->is('waste2product/collectionpoints*') ? 'active' : '' }}">Points de collecte</a></li>
                     <li class="nav-item"><a href="{{ route('front.wastes.index') }}" class="nav-link {{ request()->routeIs('front.wastes.*') ? 'active' : '' }}">Wastes</a></li>
                     <li class="nav-item"><a href="{{ url('/categories') }}" class="nav-link {{ request()->is('categories*') ? 'active' : '' }}">Waste Categories</a></li>

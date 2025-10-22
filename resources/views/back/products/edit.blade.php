@@ -1,6 +1,6 @@
 @extends('back.layout')
 
-@section('title', 'Modifier le Produit')
+@section('title', 'Edit Product')
 
 @section('content')
 <div class="container-fluid px-0">
@@ -8,13 +8,13 @@
         <div class="col-12">
             <div class="d-flex align-items-center mb-4">
                 <a href="{{ route('products.index') }}" class="btn btn-outline-secondary me-3">
-                    <i class="bi bi-arrow-left me-2"></i> Retour
+                    <i class="bi bi-arrow-left me-2"></i> Back
                 </a>
                 <div>
                     <h1 class="page-title text-success mb-1">
-                        <i class="bi bi-pencil-square me-2"></i> Modifier le Produit
+                        <i class="bi bi-pencil-square me-2"></i> Edit Product
                     </h1>
-                    <p class="text-muted mb-0">Mettre à jour les informations du produit: {{ $product->name }}</p>
+                    <p class="text-muted mb-0">Update product information: {{ $product->name }}</p>
                 </div>
             </div>
         </div>
@@ -24,24 +24,24 @@
         <div class="col-lg-8 mx-auto">
             <div class="card shadow-sm border-0 rounded-3">
                 <div class="card-header bg-warning text-dark py-3">
-                    <h5 class="mb-0"><i class="bi bi-file-earmark-text me-2"></i> Informations du Produit</h5>
+                    <h5 class="mb-0"><i class="bi bi-file-earmark-text me-2"></i> Product Information</h5>
                 </div>
                 <div class="card-body p-4">
                     <form action="{{ route('products.update', $product->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
 
-                        <!-- Nom du produit -->
+                        <!-- Product name -->
                         <div class="mb-4">
                             <label for="name" class="form-label fw-medium">
-                                <i class="bi bi-box-seam me-2 text-success"></i>Nom du produit <span class="text-danger">*</span>
+                                <i class="bi bi-box-seam me-2 text-success"></i>Product name <span class="text-danger">*</span>
                             </label>
                             <input type="text" 
                                    name="name" 
                                    id="name" 
                                    class="form-control @error('name') is-invalid @enderror" 
                                    value="{{ old('name', $product->name) }}" 
-                                   placeholder="Ex: Sac à dos recyclé"
+                                   placeholder="Ex: Recycled backpack"
                                    required>
                             @error('name')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -57,7 +57,7 @@
                                       id="description" 
                                       class="form-control @error('description') is-invalid @enderror" 
                                       rows="4" 
-                                      placeholder="Décrivez le produit en détail..."
+                                      placeholder="Describe the product in detail..."
                                       required>{{ old('description', $product->description) }}</textarea>
                             @error('description')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -65,10 +65,10 @@
                         </div>
 
                         <div class="row">
-                            <!-- Prix -->
+                            <!-- Price -->
                             <div class="col-md-6 mb-4">
                                 <label for="price" class="form-label fw-medium">
-                                    <i class="bi bi-currency-dollar me-2 text-success"></i>Prix (DT) <span class="text-danger">*</span>
+                                    <i class="bi bi-currency-dollar me-2 text-success"></i>Price (DT) <span class="text-danger">*</span>
                                 </label>
                                 <input type="number" 
                                        name="price" 
@@ -87,7 +87,7 @@
                             <!-- Stock -->
                             <div class="col-md-6 mb-4">
                                 <label for="stock_quantity" class="form-label fw-medium">
-                                    <i class="bi bi-stack me-2 text-success"></i>Quantité en stock <span class="text-danger">*</span>
+                                    <i class="bi bi-stack me-2 text-success"></i>Stock quantity <span class="text-danger">*</span>
                                 </label>
                                 <input type="number" 
                                        name="stock_quantity" 
@@ -104,16 +104,16 @@
                         </div>
 
                         <div class="row">
-                            <!-- Catégorie -->
+                            <!-- Category -->
                             <div class="col-md-6 mb-4">
                                 <label for="waste_category_id" class="form-label fw-medium">
-                                    <i class="bi bi-tag me-2 text-success"></i>Catégorie <span class="text-danger">*</span>
+                                    <i class="bi bi-tag me-2 text-success"></i>Category <span class="text-danger">*</span>
                                 </label>
                                 <select name="waste_category_id" 
                                         id="waste_category_id" 
                                         class="form-select @error('waste_category_id') is-invalid @enderror" 
                                         required>
-                                    <option value="">-- Sélectionnez une catégorie --</option>
+                                    <option value="">-- Select a category --</option>
                                     @foreach($categories as $category)
                                         <option value="{{ $category->id }}" 
                                             {{ old('waste_category_id', $product->waste_category_id) == $category->id ? 'selected' : '' }}>
@@ -126,15 +126,15 @@
                                 @enderror
                             </div>
 
-                            <!-- Processus de recyclage -->
+                            <!-- Recycling process -->
                             <div class="col-md-6 mb-4">
                                 <label for="recycling_process_id" class="form-label fw-medium">
-                                    <i class="bi bi-arrow-repeat me-2 text-success"></i>Processus de recyclage
+                                    <i class="bi bi-arrow-repeat me-2 text-success"></i>Recycling process
                                 </label>
                                 <select name="recycling_process_id" 
                                         id="recycling_process_id" 
                                         class="form-select @error('recycling_process_id') is-invalid @enderror">
-                                    <option value="">-- Aucun --</option>
+                                    <option value="">-- None --</option>
                                     @foreach($recyclingProcesses as $process)
                                         <option value="{{ $process->id }}" 
                                             {{ old('recycling_process_id', $product->recycling_process_id) == $process->id ? 'selected' : '' }}>
@@ -145,19 +145,19 @@
                                 @error('recycling_process_id')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
-                                <small class="text-muted">Seuls les processus complétés sont disponibles</small>
+                                <small class="text-muted">Only completed processes are available</small>
                             </div>
                         </div>
 
-                        <!-- Image actuelle et nouvelle -->
+                        <!-- Current and new image -->
                         <div class="mb-4">
                             <label for="image_path" class="form-label fw-medium">
-                                <i class="bi bi-image me-2 text-success"></i>Image du produit
+                                <i class="bi bi-image me-2 text-success"></i>Product image
                             </label>
                             
                             @if($product->image_path)
                                 <div class="mb-3">
-                                    <p class="text-muted small mb-2">Image actuelle:</p>
+                                    <p class="text-muted small mb-2">Current image:</p>
                                     <img src="{{ asset('storage/' . $product->image_path) }}" 
                                          alt="{{ $product->name }}" 
                                          class="img-thumbnail" 
@@ -173,32 +173,32 @@
                             @error('image_path')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
-                            <small class="text-muted">Formats acceptés: JPEG, PNG, JPG, GIF. Taille max: 2 Mo. Laissez vide pour conserver l'image actuelle.</small>
+                            <small class="text-muted">Accepted formats: JPEG, PNG, JPG, GIF. Max size: 2 MB. Leave empty to keep current image.</small>
                             
-                            <!-- Aperçu de la nouvelle image -->
+                            <!-- New image preview -->
                             <div id="imagePreview" class="mt-3" style="display: none;">
-                                <p class="text-muted small mb-2">Nouvelle image:</p>
-                                <img id="previewImg" src="" alt="Aperçu" class="img-thumbnail" style="max-width: 300px;">
+                                <p class="text-muted small mb-2">New image:</p>
+                                <img id="previewImg" src="" alt="Preview" class="img-thumbnail" style="max-width: 300px;">
                             </div>
                         </div>
 
-                        <!-- Spécifications -->
+                        <!-- Specifications -->
                         <div class="mb-4">
                             <label for="specifications" class="form-label fw-medium">
-                                <i class="bi bi-list-check me-2 text-success"></i>Spécifications
+                                <i class="bi bi-list-check me-2 text-success"></i>Specifications
                             </label>
                             <textarea name="specifications" 
                                       id="specifications" 
                                       class="form-control @error('specifications') is-invalid @enderror" 
                                       rows="3" 
-                                      placeholder='Ex: {"dimensions": "30x40cm", "poids": "500g", "matériau": "Plastique recyclé"}'>{{ old('specifications', is_array($product->specifications) ? json_encode($product->specifications, JSON_PRETTY_PRINT) : $product->specifications) }}</textarea>
+                                      placeholder='Ex: {"dimensions": "30x40cm", "weight": "500g", "material": "Recycled plastic"}'>{{ old('specifications', is_array($product->specifications) ? json_encode($product->specifications, JSON_PRETTY_PRINT) : $product->specifications) }}</textarea>
                             @error('specifications')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
-                            <small class="text-muted">Entrez les spécifications au format texte ou JSON</small>
+                            <small class="text-muted">Enter specifications in text or JSON format</small>
                         </div>
 
-                        <!-- Disponibilité -->
+                        <!-- Availability -->
                         <div class="mb-4">
                             <div class="form-check">
                                 <input type="hidden" name="is_available" value="0">
@@ -209,19 +209,19 @@
                                        value="1"
                                        {{ old('is_available', $product->is_available) ? 'checked' : '' }}>
                                 <label class="form-check-label fw-medium" for="is_available">
-                                    <i class="bi bi-check-circle me-2 text-success"></i>Produit disponible à la vente
+                                    <i class="bi bi-check-circle me-2 text-success"></i>Product available for sale
                                 </label>
                             </div>
-                            <small class="text-muted">Décochez si le produit ne doit pas être visible pour les clients</small>
+                            <small class="text-muted">Uncheck if the product should not be visible to customers</small>
                         </div>
 
-                        <!-- Boutons -->
+                        <!-- Buttons -->
                         <div class="d-flex gap-2 justify-content-end">
                             <a href="{{ route('products.index') }}" class="btn btn-outline-secondary px-4">
-                                <i class="bi bi-x-circle me-2"></i> Annuler
+                                <i class="bi bi-x-circle me-2"></i> Cancel
                             </a>
                             <button type="submit" class="btn btn-warning px-4">
-                                <i class="bi bi-check-circle me-2"></i> Mettre à jour
+                                <i class="bi bi-check-circle me-2"></i> Update
                             </button>
                         </div>
                     </form>
@@ -238,7 +238,7 @@
 </style>
 
 <script>
-// Aperçu de l'image
+// Image preview
 document.getElementById('image_path').addEventListener('change', function(e) {
     const file = e.target.files[0];
     if (file) {
