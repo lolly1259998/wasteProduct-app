@@ -19,7 +19,7 @@
                         </div>
                         <div class="col-12 col-md-6">
                             <label class="form-label fw-bold">Product</label>
-                            <p class="form-control">{{ \App\Http\Controllers\OrderController::getProductName($order->product_id) }}</p>
+                            <p class="form-control">{{ $order->product->name ?? 'N/A' }}</p>
                         </div>
                         <div class="col-12 col-md-6">
                             <label class="form-label fw-bold">Quantity</label>
@@ -27,25 +27,25 @@
                         </div>
                         <div class="col-12 col-md-6">
                             <label class="form-label fw-bold">Total</label>
-                            <p class="form-control">${{ $order->total_amount }}</p>
+                            <p class="form-control">${{ number_format($order->total_amount ?? 0, 2) }}</p>
                         </div>
                         <div class="col-12 col-md-6">
                             <label class="form-label fw-bold">Status</label>
                             <p class="form-control">
-                                <span class="badge bg-info">{{ ucfirst($order->status->value) }}</span>
+                                <span class="badge bg-info">{{ ucfirst($order->status->value ?? $order->status) }}</span>
                             </p>
                         </div>
                         <div class="col-12 col-md-6">
                             <label class="form-label fw-bold">Order Date</label>
-                            <p class="form-control">{{ $order->order_date->format('Y-m-d') }}</p>
+                            <p class="form-control">{{ $order->order_date?->format('Y-m-d') ?? 'N/A' }}</p>
                         </div>
                         <div class="col-12 col-md-6">
                             <label class="form-label fw-bold">Shipping Address</label>
-                            <p class="form-control">{{ $order->shipping_address }}</p>
+                            <p class="form-control">{{ $order->shipping_address ?? 'N/A' }}</p>
                         </div>
                         <div class="col-12 col-md-6">
                             <label class="form-label fw-bold">Payment Method</label>
-                            <p class="form-control">{{ ucfirst($order->payment_method) }}</p>
+                            <p class="form-control">{{ ucfirst($order->payment_method ?? 'N/A') }}</p>
                         </div>
                         @if($order->tracking_number)
                             <div class="col-12 col-md-6">
@@ -57,7 +57,7 @@
                     <!-- Buttons -->
                     <div class="d-flex flex-column flex-md-row justify-content-between gap-2 mt-4">
                         <a href="{{ route('back.orders.index') }}" class="btn btn-secondary w-100 w-md-auto">Back</a>
-                        {{-- <a href="{{ route('back.orders.edit', $order) }}" class="btn btn-warning w-100 w-md-auto">Edit</a> --}}
+                        <a href="{{ route('back.orders.edit', $order) }}" class="btn btn-warning w-100 w-md-auto">Edit</a>
                         <form action="{{ route('back.orders.destroy', $order) }}" method="POST" class="d-inline w-100 w-md-auto">
                             @csrf
                             @method('DELETE')
