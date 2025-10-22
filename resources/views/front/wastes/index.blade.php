@@ -104,7 +104,7 @@
                                                 <div class="col-6 mb-2 text-muted">
                                                     <strong>Status:</strong>
                                                 </div>
-                                                <div class="col-6 mb-2 text-dark">
+                                                <div class="col-6 mb-2">
                                                     <span class="badge status-{{ strtolower($waste->status) }}">
                                                         {{ $waste->status }}
                                                     </span>
@@ -113,7 +113,7 @@
                                                 <div class="col-6 mb-2 text-muted">
                                                     <strong>Category:</strong>
                                                 </div>
-                                                <div class="col-6 mb-2 text-dark">
+                                                <div class="col-6 mb-2">
                                                     <span class="badge bg-success">
                                                         {{ $waste->category->name ?? 'N/A' }}
                                                     </span>
@@ -130,31 +130,6 @@
                                             <p class="mb-0 text-dark">{{ $waste->description }}</p>
                                         </div>
                                         @endif
-
-                                        <!-- Additional Information -->
-                                        <div class="info-section">
-                                            <h6 class="text-success mb-3">
-                                                <i class="fas fa-calendar-alt me-2"></i>Timeline
-                                            </h6>
-                                            <div class="row">
-                                                @if($waste->created_at)
-                                                <div class="col-12 mb-2">
-                                                    <small class="text-muted">
-                                                        <i class="fas fa-plus-circle me-1"></i>
-                                                        <strong>Created:</strong> {{ $waste->created_at->format('M d, Y') }}
-                                                    </small>
-                                                </div>
-                                                @endif
-                                                @if($waste->updated_at)
-                                                <div class="col-12">
-                                                    <small class="text-muted">
-                                                        <i class="fas fa-edit me-1"></i>
-                                                        <strong>Last Updated:</strong> {{ $waste->updated_at->format('M d, Y') }}
-                                                    </small>
-                                                </div>
-                                                @endif
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -238,37 +213,57 @@
         font-weight: 500;
     }
 
-    /* Status badges for modal */
+    /* Status badges for modal - COULEURS CORRIGÉES */
+    .badge {
+        display: inline-block;
+        padding: 6px 12px;
+        border-radius: 15px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-transform: capitalize;
+    }
+
     .status-pending {
-        background-color: #fff3cd;
-        color: #856404;
-        padding: 4px 8px;
-        border-radius: 12px;
-        font-size: 0.8rem;
+        background-color: #fff3cd !important;
+        color: #856404 !important;
+        border: 1px solid #ffeaa7;
     }
 
     .status-processed {
-        background-color: #d1ecf1;
-        color: #0c5460;
-        padding: 4px 8px;
-        border-radius: 12px;
-        font-size: 0.8rem;
+        background-color: #d1ecf1 !important;
+        color: #0c5460 !important;
+        border: 1px solid #bee5eb;
     }
 
     .status-recycled {
-        background-color: #d4edda;
-        color: #155724;
-        padding: 4px 8px;
-        border-radius: 12px;
-        font-size: 0.8rem;
+        background-color: #d4edda !important;
+        color: #155724 !important;
+        border: 1px solid #c3e6cb;
     }
 
     .status-disposed {
-        background-color: #f8d7da;
-        color: #721c24;
-        padding: 4px 8px;
-        border-radius: 12px;
-        font-size: 0.8rem;
+        background-color: #f8d7da !important;
+        color: #721c24 !important;
+        border: 1px solid #f5c6cb;
+    }
+
+    .status-collected {
+        background-color: #e2e3e5 !important;
+        color: #176fb6ff !important;
+        border: 1px solid #d6d8db;
+    }
+
+    .status-available {
+        background-color: #d1ecf1 !important;
+        color: #0c5460 !important;
+        border: 1px solid #bee5eb;
+    }
+
+    /* Fallback pour les statuts non définis */
+    [class*="status-"] {
+        background-color: #447aa8ff !important;
+        color: white !important;
+        border: 1px solid #608badff;
     }
 
     .btn-outline-success {
@@ -311,6 +306,11 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 150);
         });
     });
-});
+
+    // Debug: Log all status classes to console
+    const statusBadges = document.querySelectorAll('[class*="status-"]');
+    statusBadges.forEach(badge => {
+        console.log('Status badge:', badge.className, 'Text:', badge.textContent);
+    });
 </script>
 @endsection
