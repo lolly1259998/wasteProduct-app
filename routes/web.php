@@ -114,8 +114,8 @@ Route::get('/waste2product', function () {
 Route::get('/campaignsFront', [CampaignController::class, 'frontIndex'])->name('campaigns.front');
 
 // Frontoffice Waste Category Routes
-Route::get('/waste-categories', [FrontWasteCategoryController::class, 'index'])->name('front.waste-categories.index');
-Route::get('/waste-categories/{id}', [FrontWasteCategoryController::class, 'show'])->name('front.waste-categories.show');
+Route::get('/categories', [FrontWasteCategoryController::class, 'index'])->name('front.waste-categories.index');
+Route::get('/categories/{id}', [FrontWasteCategoryController::class, 'show'])->name('front.waste-categories.show');
 
 // Frontoffice Waste Routes
 Route::get('/wastess', [FrontWasteController::class, 'index'])->name('front.wastes.index');
