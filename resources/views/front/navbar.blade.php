@@ -37,13 +37,6 @@
                     </a>
                 </li>
 
-                <!-- Nouveau lien Wastes -->
-                <li class="nav-item">
-                    <a href="{{ route('front.wastes.index') }}" class="nav-link {{ request()->is('wastess*') ? 'active' : '' }}">
-                        <i class="bi bi-trash me-1"></i>Waste
-                    </a>
-                </li>
-
                 <li class="nav-item">
                     <a href="{{ route('front.donations.index') }}" class="nav-link {{ request()->routeIs('front.donations.*') ? 'active' : '' }}">
                         <i class="bi bi-heart-fill me-1"></i>Donations
