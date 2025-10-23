@@ -28,9 +28,9 @@ class RecyclingProcessController extends Controller
      */
     public function create()
     {
-        // Get only waste that doesn't have a recycling process yet
-        $wastes = Waste::whereDoesntHave('recyclingProcess')
-            ->with('category')
+        // Get all wastes with their categories
+        $wastes = Waste::with('category')
+            ->orderBy('created_at', 'desc')
             ->get();
         
         $users = User::all();

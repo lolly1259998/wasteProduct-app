@@ -27,6 +27,17 @@ class Product extends Model
         'is_available' => 'boolean',
     ];
 
+    // Relations
+    public function category()
+    {
+        return $this->belongsTo(WasteCategory::class, 'waste_category_id');
+    }
+
+    public function recyclingProcess()
+    {
+        return $this->belongsTo(RecyclingProcess::class, 'recycling_process_id');
+    }
+
     public function orders()
     {
         return $this->hasMany(Order::class);
