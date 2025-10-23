@@ -16,6 +16,7 @@ use App\Http\Controllers\Front\FrontWasteController;
 use App\Http\Controllers\AI\AIController;
 use App\Http\Controllers\AI\WasteAIController;
 use App\Http\Controllers\AI\RecyclingAIController;
+use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Http\Controllers\Backoffice\CollectionPointController;
 use App\Http\Controllers\Front\CollectionPointFrontController;
 use App\Http\Controllers\Backoffice\RecyclingProcessController;
@@ -34,12 +35,8 @@ Route::get('/', function () {
 
 Route::get('/waste2product', function () {
     return view('front.home');
-});
-
-// Frontoffice home route (public first)
-Route::get('/waste2product', function () {
-    return view('front.home');
 })->name('front.home');
+
 // Frontoffice Routes (Public - Prefixed with /waste2product)
 Route::prefix('waste2product')->name('front.')->group(function () {
     // Donations (Frontoffice)
@@ -195,10 +192,6 @@ Route::middleware(['auth'])->group(function () {
     })->name('dashboard');
 
 
-Route::get('/waste2product', function () {
-    return view('front.home');
-});
-
 //frontoffice campaigns routes
 Route::get('/campaignsFront', [CampaignController::class, 'frontIndex'])->name('campaigns.front');
 
@@ -299,6 +292,10 @@ Route::post('/register', [AuthentifController::class, 'register'])->name('regist
 
 Route::get('/login', [AuthentifController::class, 'showLoginForm'])->name('login.form');
 Route::post('/login', [AuthentifController::class, 'login'])->name('login');
+
+// Google OAuth Routes
+Route::get('/auth/google', [GoogleAuthController::class, 'redirectToGoogle'])->name('auth.google');
+Route::get('/auth/google/callback', [GoogleAuthController::class, 'handleGoogleCallback'])->name('auth.google.callback');
 
 Route::post('/logout', [AuthentifController::class, 'logout'])->name('logout');
 
