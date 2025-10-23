@@ -21,13 +21,14 @@
                             {{ session('success') }}
                         </div>
                     @endif
-                    <form action="{{ route('back.orders.store') }}" method="POST">
+                    {{-- FIXED: Use route($storeRoute) to generate full URL --}}
+                    <form action="{{ route($storeRoute) }}" method="POST">
                         @csrf
                         <!-- User -->
                         <div class="mb-3">
                             <label for="user_id" class="form-label fw-bold">User</label>
                             <select name="user_id" id="user_id" class="form-select" required>
-                                @foreach(\App\Models\User::all() as $user)
+                                @foreach($users ?? \App\Models\User::all() as $user)
                                     <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>{{ $user->name }}</option>
                                 @endforeach
                             </select>
@@ -39,9 +40,9 @@
                         <div class="mb-3">
                             <label for="product_id" class="form-label fw-bold">Product</label>
                             <select name="product_id" id="product_id" class="form-select" required>
-                                @if(isset($products) && !empty($products))
-                                    @foreach($products as $id => $product)
-                                        <option value="{{ $id }}" {{ old('product_id') == $id ? 'selected' : '' }}>{{ $product['name'] }} ({{ $product['price'] }})</option>
+                                @if(isset($products) && $products->count() > 0)
+                                    @foreach($products as $product)
+                                        <option value="{{ $product->id }}" {{ old('product_id') == $product->id ? 'selected' : '' }}>{{ $product->name }} ({{ $product->price }})</option>
                                     @endforeach
                                 @else
                                     <option value="" disabled selected>No products available</option>
@@ -56,9 +57,9 @@
                         $rec_product = $recommendations[0] ?? null;
                         $rec_id = null;
                         if ($rec_product && isset($products)) {
-                            foreach($products as $id => $product) {
-                                if ($product['name'] === $rec_product['name'] && $product['price'] == $rec_product['price']) {
-                                    $rec_id = $id;
+                            foreach($products as $product) {
+                                if ($product->name === ($rec_product['name'] ?? $rec_product->name ?? '') && $product->price == ($rec_product['price'] ?? $rec_product->price ?? 0)) {
+                                    $rec_id = $product->id;
                                     break;
                                 }
                             }
@@ -67,7 +68,7 @@
 
                         @if(isset($recommendations) && count($recommendations) > 0 && $rec_id)
                             <div class="alert alert-info mb-4" role="alert">
-                                <strong>AI Suggestion:</strong> Based on user history, try <strong>{{ $recommendations[0]['name'] }}</strong> ({{ $recommendations[0]['price'] }}).
+                                <strong>AI Suggestion:</strong> Based on user history, try <strong>{{ $recommendations[0]['name'] ?? $recommendations[0]->name ?? 'Recommended Product' }}</strong> ({{ $recommendations[0]['price'] ?? $recommendations[0]->price ?? 0 }}).
                                 <a href="#" class="btn btn-outline-success btn-sm ms-2" onclick="document.getElementById('product_id').value = {{ $rec_id }}; this.parentElement.style.display='none'; return false;">Select It</a>
                             </div>
                         @endif
@@ -110,7 +111,7 @@
                         </div>
                         <!-- Buttons -->
                         <div class="d-flex flex-column flex-md-row justify-content-between gap-2">
-                            <a href="{{ route('back.orders.index') }}" class="btn btn-secondary w-100 w-md-auto">Cancel</a>
+                            <a href="{{ $indexRoute }}" class="btn btn-secondary w-100 w-md-auto">Cancel</a>
                             <button type="submit" class="btn btn-success w-100 w-md-auto">Create</button>
                         </div>
                     </form>
