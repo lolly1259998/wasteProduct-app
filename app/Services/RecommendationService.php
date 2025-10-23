@@ -2,16 +2,30 @@
 
 namespace App\Services;
 
+use App\Models\Product;
 use App\Models\User;
 use Phpml\Association\Apriori;
 
 class RecommendationService
 {
-    private array $products = [  // Reuse your hardcoded ones
-        1 => ['name' => 'Product ATT', 'price' => 10.00, 'related_waste' => 'plastic'],  // Add 'related_waste' for eco-links
-        2 => ['name' => 'Product ATTC', 'price' => 15.00, 'related_waste' => 'paper'],
-        3 => ['name' => 'Product ATTR', 'price' => 20.00, 'related_waste' => 'glass'],
-    ];
+    private array $products = [];
+
+    public function __construct()
+    {
+        // Load products from DB on instantiation (cached if needed; add caching for prod)
+        $this->products = Product::available()  // Use scope if defined; else Product::where('is_available', true)->get()
+            ->get()
+            ->mapWithKeys(function ($product) {
+                return [
+                    $product->id => [
+                        'name' => $product->name,
+                        'price' => $product->price,
+                        'related_waste' => $product->waste_category_id ?? 'general',  // Assume relation; adjust if needed
+                    ]
+                ];
+            })
+            ->toArray();
+    }
 
     public function suggestForUser(User $user, int $limit = 3): array
     {
@@ -19,18 +33,18 @@ class RecommendationService
         $pastWaste = $user->donations->pluck('waste_id')->toArray();
         $pastProducts = $user->orders->pluck('product_id')->merge($user->reservations->pluck('product_id'))->toArray();
 
-        if (empty($pastWaste) && empty($pastProducts)) {
-            // Fallback: Slice to numeric indices (0,1,2)
+        if (empty($pastWaste) && empty($pastProducts) || empty($this->products)) {
+            // Fallback: Return first N products from DB
             return array_slice(array_values($this->products), 0, $limit, true);
         }
 
         // Train simple Apriori on history (associations like waste1 → product2)
         $transactions = $this->buildTransactions($pastWaste, $pastProducts);
         $apriori = new Apriori(0.5, 0.5);  // Support/confidence thresholds
-        $apriori->train($transactions, array_keys($this->products));  // Items: product IDs
+        $apriori->train($transactions, array_keys($this->products));  // Items: product IDs from DB
 
         // Predict next
-        $recommendations = $apriori->predict($pastProducts ?: [1]);  // Seed with dummy if empty
+        $recommendations = $apriori->predict($pastProducts ?: [array_key_first($this->products)]);  // Seed with first ID if empty
         $suggestions = [];
         foreach ($recommendations as $productId) {
             if (isset($this->products[$productId])) {
@@ -39,7 +53,7 @@ class RecommendationService
             }
         }
 
-        // Ensure numeric if needed (fallback)
+        // Ensure numeric if needed (fallback to DB products)
         if (empty($suggestions)) {
             $suggestions = array_slice(array_values($this->products), 0, $limit, true);
         }
