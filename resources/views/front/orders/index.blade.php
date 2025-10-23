@@ -9,12 +9,12 @@
     </div>
 
     {{-- Prominent CTA Button at Top --}}
-    <div class="text-center mb-4">
-        <a href="{{ route('front.orders.create') }}" class="btn btn-success btn-lg shadow-lg animate-pulse" style="background-color: #10b981; border-color: #10b981; color: white; font-weight: bold; padding: 12px 30px; transition: all 0.3s ease;">
-            <i class="fas fa-plus-circle me-2"></i>Place New Order
-        </a>
-    </div>
-
+{{-- Prominent CTA Button at Top --}}
+<div class="text-center mb-4">
+    <a href="{{ route('front.orders.create') }}" class="btn btn-success btn-lg shadow-lg animate-pulse" style="background-color: #10b981; border-color: #10b981; color: white; font-weight: bold; padding: 12px 30px; transition: all 0.3s ease;">
+        <i class="fas fa-plus-circle me-2"></i>Place New Order
+    </a>
+</div>
     {{-- Search and Filter Section --}}
     <div class="row justify-content-center mb-4">
         <div class="col-12 col-lg-10">
@@ -71,7 +71,7 @@
                         </div>
                         <h5 class="card-title text-muted mb-3">No Orders Found</h5>
                         <p class="card-text text-muted mb-4">You haven't placed any orders yet.</p>
-                        <a href="{{ route('front.orders.create') }}" class="btn btn-success">
+                        <a href="{{ $createRoute ?? route('front.orders.create') }}" class="btn btn-success">
                             <i class="fas fa-plus-circle me-2"></i>Create Your First Order
                         </a>
                     </div>
@@ -85,21 +85,25 @@
                     
                         {{-- Order Status Badge --}}
                         <div class="position-absolute top-0 end-0 m-2">
-                            <span class="badge @switch(strtolower($order->status))
+                            <span class="badge @switch($order->status->value ?? strtolower($order->status))
                                 @case('completed') bg-success @break
                                 @case('processing') bg-primary @break
                                 @case('pending') bg-warning @break
                                 @case('cancelled') bg-danger @break
                                 @default bg-secondary
                             @endswitch">
-                                {{ ucfirst($order->status) }}
+                                {{ ucfirst($order->status->value ?? $order->status) }}
                             </span>
                         </div>
 
                         {{-- Order Image/Icon --}}
                         <div class="card-img-top d-flex align-items-center justify-content-center bg-light text-success" 
                              style="height: 140px; border-bottom: 1px solid #e9ecef;">
-                            <i class="fas fa-box-open fa-3x"></i>
+                            @if($order->product->image_path)
+                                <img src="{{ Storage::url($order->product->image_path) }}" alt="{{ $order->product->name }}" class="img-fluid rounded object-fit-cover w-100 h-100" style="object-fit: cover;">
+                            @else
+                                <i class="fas fa-box-open fa-3x"></i>
+                            @endif
                         </div>
 
                         <div class="card-body d-flex flex-column">
@@ -110,7 +114,7 @@
                             <div class="order-details flex-grow-1">
                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                     <small class="text-muted">Product:</small>
-                                    <span class="fw-semibold text-end">{{ \App\Http\Controllers\OrderController::getProductName($order->product_id) }}</span>
+                                    <span class="fw-semibold text-end">{{ $order->product->name ?? 'N/A' }}</span>
                                 </div>
                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                     <small class="text-muted">Quantity:</small>
@@ -118,11 +122,11 @@
                                 </div>
                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                     <small class="text-muted">Total Amount:</small>
-                                    <span class="fw-bold text-success">${{ number_format($order->total_amount, 2) }}</span>
+                                    <span class="fw-bold text-success">${{ number_format($order->total_amount ?? 0, 2) }}</span>
                                 </div>
                                 <div class="d-flex justify-content-between align-items-center mb-3">
                                     <small class="text-muted">Date:</small>
-                                    <small class="text-muted">{{ $order->created_at->format('M d, Y') }}</small>
+                                    <small class="text-muted">{{ $order->order_date?->format('M d, Y') ?? 'N/A' }}</small>
                                 </div>
                             </div>
 
