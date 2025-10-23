@@ -18,17 +18,17 @@ class ProductFrontController extends Controller
             ->where('is_available', true)
             ->where('stock_quantity', '>', 0);
 
-        // Filtrer par catégorie
+        // Filter by category
         if ($request->has('category') && $request->category != '') {
             $query->where('waste_category_id', $request->category);
         }
 
-        // Recherche par nom
+        // Search by name
         if ($request->has('search') && $request->search != '') {
             $query->where('name', 'like', '%' . $request->search . '%');
         }
 
-        // Tri
+        // Sort
         $sortBy = $request->get('sort', 'latest');
         switch ($sortBy) {
             case 'price_asc':
@@ -60,7 +60,7 @@ class ProductFrontController extends Controller
             ->where('is_available', true)
             ->findOrFail($id);
 
-        // Produits similaires (même catégorie)
+        // Similar products (same category)
         $similarProducts = Product::where('waste_category_id', $product->waste_category_id)
             ->where('id', '!=', $product->id)
             ->where('is_available', true)

@@ -28,7 +28,7 @@ class RecyclingProcessController extends Controller
      */
     public function create()
     {
-        // Récupérer uniquement les déchets qui n'ont pas encore de processus de recyclage
+        // Get only waste that doesn't have a recycling process yet
         $wastes = Waste::whereDoesntHave('recyclingProcess')
             ->with('category')
             ->get();
@@ -55,7 +55,7 @@ class RecyclingProcessController extends Controller
             'notes' => 'nullable|string',
         ]);
 
-        // Si aucun utilisateur responsable n'est spécifié, utiliser l'utilisateur connecté
+        // If no responsible user is specified, use the logged-in user
         if (!isset($validated['responsible_user_id'])) {
             $validated['responsible_user_id'] = Auth::id();
         }
@@ -63,7 +63,7 @@ class RecyclingProcessController extends Controller
         RecyclingProcess::create($validated);
 
         return redirect()->route('recyclingprocesses.index')
-            ->with('success', 'Processus de recyclage créé avec succès.');
+            ->with('success', 'Recycling process created successfully.');
     }
 
     /**
@@ -84,7 +84,7 @@ class RecyclingProcessController extends Controller
     {
         $recyclingProcess = RecyclingProcess::findOrFail($id);
         
-        // Inclure le déchet actuel + les déchets sans processus
+        // Include current waste + waste without processes
         $wastes = Waste::whereDoesntHave('recyclingProcess')
             ->orWhere('id', $recyclingProcess->waste_id)
             ->with('category')
@@ -117,7 +117,7 @@ class RecyclingProcessController extends Controller
         $recyclingProcess->update($validated);
 
         return redirect()->route('recyclingprocesses.index')
-            ->with('success', 'Processus de recyclage mis à jour avec succès.');
+            ->with('success', 'Recycling process updated successfully.');
     }
 
     /**
@@ -127,16 +127,16 @@ class RecyclingProcessController extends Controller
     {
         $recyclingProcess = RecyclingProcess::findOrFail($id);
         
-        // Vérifier si des produits sont liés à ce processus
+        // Check if products are linked to this process
         if ($recyclingProcess->products()->count() > 0) {
             return redirect()->route('recyclingprocesses.index')
-                ->with('error', 'Impossible de supprimer ce processus car des produits y sont associés.');
+                ->with('error', 'Cannot delete this process because products are associated with it.');
         }
         
         $recyclingProcess->delete();
 
         return redirect()->route('recyclingprocesses.index')
-            ->with('success', 'Processus de recyclage supprimé avec succès.');
+            ->with('success', 'Recycling process deleted successfully.');
     }
 }
 

@@ -29,7 +29,7 @@ class ProductController extends Controller
     public function create()
     {
         $categories = WasteCategory::all();
-        // Uniquement les processus de recyclage complétés
+        // Only completed recycling processes
         $recyclingProcesses = RecyclingProcess::where('status', 'completed')
             ->with('waste')
             ->get();
@@ -54,24 +54,24 @@ class ProductController extends Controller
             'is_available' => 'boolean',
         ]);
 
-        // Gestion de l'upload d'image
+        // Image upload handling
         if ($request->hasFile('image_path')) {
             $validated['image_path'] = $request->file('image_path')->store('products', 'public');
         }
 
-        // Conversion des spécifications en array si nécessaire
+        // Convert specifications to array if necessary
         if (isset($validated['specifications'])) {
             $validated['specifications'] = json_decode($validated['specifications'], true) 
                 ?? ['description' => $validated['specifications']];
         }
 
-        // Définir is_available en fonction du stock
+        // Set is_available based on stock
         $validated['is_available'] = $validated['stock_quantity'] > 0;
 
         Product::create($validated);
 
         return redirect()->route('products.index')
-            ->with('success', 'Produit créé avec succès.');
+            ->with('success', 'Product created successfully.');
     }
 
     /**
@@ -118,28 +118,28 @@ class ProductController extends Controller
             'is_available' => 'boolean',
         ]);
 
-        // Gestion de l'upload d'image
+        // Image upload handling
         if ($request->hasFile('image_path')) {
-            // Supprimer l'ancienne image si elle existe
+            // Delete old image if it exists
             if ($product->image_path) {
                 Storage::disk('public')->delete($product->image_path);
             }
             $validated['image_path'] = $request->file('image_path')->store('products', 'public');
         }
 
-        // Conversion des spécifications en array si nécessaire
+        // Convert specifications to array if necessary
         if (isset($validated['specifications'])) {
             $validated['specifications'] = json_decode($validated['specifications'], true) 
                 ?? ['description' => $validated['specifications']];
         }
 
-        // Définir is_available en fonction du stock
+        // Set is_available based on stock
         $validated['is_available'] = $validated['stock_quantity'] > 0;
 
         $product->update($validated);
 
         return redirect()->route('products.index')
-            ->with('success', 'Produit mis à jour avec succès.');
+            ->with('success', 'Product updated successfully.');
     }
 
     /**
@@ -149,13 +149,13 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
         
-        // Vérifier si le produit a des commandes
+        // Check if product has orders
         if ($product->orders()->count() > 0) {
             return redirect()->route('products.index')
-                ->with('error', 'Impossible de supprimer ce produit car des commandes y sont associées.');
+                ->with('error', 'Cannot delete this product because orders are associated with it.');
         }
         
-        // Supprimer l'image si elle existe
+        // Delete image if it exists
         if ($product->image_path) {
             Storage::disk('public')->delete($product->image_path);
         }
@@ -163,7 +163,7 @@ class ProductController extends Controller
         $product->delete();
 
         return redirect()->route('products.index')
-            ->with('success', 'Produit supprimé avec succès.');
+            ->with('success', 'Product deleted successfully.');
     }
 
     /**
@@ -174,9 +174,9 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);
         $product->update(['is_available' => !$product->is_available]);
 
-        $status = $product->is_available ? 'disponible' : 'indisponible';
+        $status = $product->is_available ? 'available' : 'unavailable';
         return redirect()->route('products.index')
-            ->with('success', "Produit marqué comme {$status}.");
+            ->with('success', "Product marked as {$status}.");
     }
 }
 

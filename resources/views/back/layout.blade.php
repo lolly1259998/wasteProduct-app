@@ -218,23 +218,23 @@
 
                 <!-- NEW: Recycling & Products Section -->
                 <li class="nav-item mb-2">
-                    <a href="#recyclingSubmenu" class="nav-link" onclick="toggleSubmenu(event)" data-tooltip="Recyclage & Produits" aria-label="Recyclage & Produits">
-                        <i class="bi bi-arrow-repeat me-2"></i> <span class="nav-text">Recyclage & Produits</span>
+                    <a href="#recyclingSubmenu" class="nav-link" onclick="toggleSubmenu(event)" data-tooltip="Recycling & Products" aria-label="Recycling & Products">
+                        <i class="bi bi-arrow-repeat me-2"></i> <span class="nav-text">Recycling & Products</span>
                     </a>
                     <ul class="submenu list-unstyled" id="recyclingSubmenu">
                         <li>
                             <a href="{{ route('recyclingprocesses.index') }}" class="nav-link {{ request()->routeIs('recyclingprocesses.*') ? 'active' : '' }}">
-                                <i class="bi bi-arrow-repeat me-2"></i> Processus de Recyclage
+                                <i class="bi bi-arrow-repeat me-2"></i> Recycling Processes
                             </a>
                         </li>
                         <li>
                             <a href="{{ route('products.index') }}" class="nav-link {{ request()->routeIs('products.*') ? 'active' : '' }}">
-                                <i class="bi bi-box-seam me-2"></i> Produits Recyclés
+                                <i class="bi bi-box-seam me-2"></i> Recycled Products
                             </a>
                         </li>
                         <li>
                             <a href="{{ route('ai.recycling.demo') }}" class="nav-link {{ request()->routeIs('ai.recycling.*') ? 'active' : '' }}">
-                                <i class="bi bi-robot me-2"></i> IA Recyclage
+                                <i class="bi bi-robot me-2"></i> AI Recycling
                             </a>
                         </li>
                     </ul>

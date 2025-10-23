@@ -1,6 +1,6 @@
 @extends('back.layout')
 
-@section('title', 'Nouveau Processus de Recyclage')
+@section('title', 'New Recycling Process')
 
 @section('content')
 <div class="container-fluid px-0">
@@ -8,13 +8,13 @@
         <div class="col-12">
             <div class="d-flex align-items-center mb-4">
                 <a href="{{ route('recyclingprocesses.index') }}" class="btn btn-outline-secondary me-3">
-                    <i class="bi bi-arrow-left me-2"></i> Retour
+                    <i class="bi bi-arrow-left me-2"></i> Back
                 </a>
                 <div>
                     <h1 class="page-title text-success mb-1">
-                        <i class="bi bi-plus-circle me-2"></i> Nouveau Processus de Recyclage
+                        <i class="bi bi-plus-circle me-2"></i> New Recycling Process
                     </h1>
-                    <p class="text-muted mb-0">Créer un nouveau processus de transformation de déchet</p>
+                    <p class="text-muted mb-0">Create a new waste transformation process</p>
                 </div>
             </div>
         </div>
@@ -24,7 +24,7 @@
         <div class="col-lg-8 mx-auto">
             <div class="card shadow-sm border-0 rounded-3">
                 <div class="card-header bg-success text-white py-3">
-                    <h5 class="mb-0"><i class="bi bi-file-earmark-plus me-2"></i> Informations du Processus</h5>
+                    <h5 class="mb-0"><i class="bi bi-file-earmark-plus me-2"></i> Process Information</h5>
                 </div>
                 <div class="card-body p-4">
                     <form action="{{ route('recyclingprocesses.store') }}" method="POST">
@@ -33,15 +33,15 @@
                         <!-- Déchet -->
                         <div class="mb-4">
                             <label for="waste_id" class="form-label fw-medium">
-                                <i class="bi bi-trash me-2 text-success"></i>Déchet à recycler <span class="text-danger">*</span>
+                                <i class="bi bi-trash me-2 text-success"></i>Waste to Recycle <span class="text-danger">*</span>
                             </label>
                             <select name="waste_id" id="waste_id" 
                                     class="form-select @error('waste_id') is-invalid @enderror" 
                                     required>
-                                <option value="">-- Sélectionnez un déchet --</option>
+                                <option value="">-- Select a waste --</option>
                                 @foreach($wastes as $waste)
                                     <option value="{{ $waste->id }}" {{ old('waste_id') == $waste->id ? 'selected' : '' }}>
-                                        {{ $waste->type }} - {{ $waste->category->name ?? 'Sans catégorie' }} ({{ $waste->weight }} kg)
+                                        {{ $waste->type }} - {{ $waste->category->name ?? 'Uncategorized' }} ({{ $waste->weight }} kg)
                                     </option>
                                 @endforeach
                             </select>
@@ -51,7 +51,7 @@
                             @if($wastes->isEmpty())
                                 <small class="text-warning d-block mt-2">
                                     <i class="bi bi-exclamation-triangle me-1"></i>
-                                    Aucun déchet disponible. Tous les déchets ont déjà un processus de recyclage.
+                                    No waste available. All waste already has a recycling process.
                                 </small>
                             @endif
                         </div>
@@ -59,18 +59,18 @@
                         <!-- Méthode -->
                         <div class="mb-4">
                             <label for="method" class="form-label fw-medium">
-                                <i class="bi bi-gear me-2 text-success"></i>Méthode de recyclage <span class="text-danger">*</span>
+                                <i class="bi bi-gear me-2 text-success"></i>Recycling Method <span class="text-danger">*</span>
                             </label>
                             <select name="method" id="method" 
                                     class="form-select @error('method') is-invalid @enderror" 
                                     required>
-                                <option value="">-- Sélectionnez une méthode --</option>
-                                <option value="Compostage" {{ old('method') == 'Compostage' ? 'selected' : '' }}>Compostage</option>
-                                <option value="Recyclage mécanique" {{ old('method') == 'Recyclage mécanique' ? 'selected' : '' }}>Recyclage mécanique</option>
-                                <option value="Recyclage chimique" {{ old('method') == 'Recyclage chimique' ? 'selected' : '' }}>Recyclage chimique</option>
-                                <option value="Incinération avec récupération d'énergie" {{ old('method') == 'Incinération avec récupération d\'énergie' ? 'selected' : '' }}>Incinération avec récupération d'énergie</option>
-                                <option value="Réemploi" {{ old('method') == 'Réemploi' ? 'selected' : '' }}>Réemploi</option>
-                                <option value="Autre" {{ old('method') == 'Autre' ? 'selected' : '' }}>Autre</option>
+                                <option value="">-- Select a method --</option>
+                                <option value="Composting" {{ old('method') == 'Composting' ? 'selected' : '' }}>Composting</option>
+                                <option value="Mechanical recycling" {{ old('method') == 'Mechanical recycling' ? 'selected' : '' }}>Mechanical recycling</option>
+                                <option value="Chemical recycling" {{ old('method') == 'Chemical recycling' ? 'selected' : '' }}>Chemical recycling</option>
+                                <option value="Incineration with energy recovery" {{ old('method') == 'Incineration with energy recovery' ? 'selected' : '' }}>Incineration with energy recovery</option>
+                                <option value="Reuse" {{ old('method') == 'Reuse' ? 'selected' : '' }}>Reuse</option>
+                                <option value="Other" {{ old('method') == 'Other' ? 'selected' : '' }}>Other</option>
                             </select>
                             @error('method')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -80,15 +80,15 @@
                         <!-- Statut -->
                         <div class="mb-4">
                             <label for="status" class="form-label fw-medium">
-                                <i class="bi bi-flag me-2 text-success"></i>Statut <span class="text-danger">*</span>
+                                <i class="bi bi-flag me-2 text-success"></i>Status <span class="text-danger">*</span>
                             </label>
                             <select name="status" id="status" 
                                     class="form-select @error('status') is-invalid @enderror" 
                                     required>
-                                <option value="pending" {{ old('status') == 'pending' ? 'selected' : '' }}>En attente</option>
-                                <option value="in_progress" {{ old('status', 'in_progress') == 'in_progress' ? 'selected' : '' }}>En cours</option>
-                                <option value="completed" {{ old('status') == 'completed' ? 'selected' : '' }}>Complété</option>
-                                <option value="failed" {{ old('status') == 'failed' ? 'selected' : '' }}>Échoué</option>
+                                <option value="pending" {{ old('status') == 'pending' ? 'selected' : '' }}>Pending</option>
+                                <option value="in_progress" {{ old('status', 'in_progress') == 'in_progress' ? 'selected' : '' }}>In Progress</option>
+                                <option value="completed" {{ old('status') == 'completed' ? 'selected' : '' }}>Completed</option>
+                                <option value="failed" {{ old('status') == 'failed' ? 'selected' : '' }}>Failed</option>
                             </select>
                             @error('status')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -99,7 +99,7 @@
                             <!-- Date début -->
                             <div class="col-md-6 mb-4">
                                 <label for="start_date" class="form-label fw-medium">
-                                    <i class="bi bi-calendar me-2 text-success"></i>Date de début <span class="text-danger">*</span>
+                                    <i class="bi bi-calendar me-2 text-success"></i>Start Date <span class="text-danger">*</span>
                                 </label>
                                 <input type="date" 
                                        name="start_date" 
@@ -115,7 +115,7 @@
                             <!-- Date fin -->
                             <div class="col-md-6 mb-4">
                                 <label for="end_date" class="form-label fw-medium">
-                                    <i class="bi bi-calendar-check me-2 text-success"></i>Date de fin (optionnel)
+                                    <i class="bi bi-calendar-check me-2 text-success"></i>End Date (optional)
                                 </label>
                                 <input type="date" 
                                        name="end_date" 
@@ -132,7 +132,7 @@
                             <!-- Quantité sortie -->
                             <div class="col-md-6 mb-4">
                                 <label for="output_quantity" class="form-label fw-medium">
-                                    <i class="bi bi-box me-2 text-success"></i>Quantité en sortie (kg)
+                                    <i class="bi bi-box me-2 text-success"></i>Output Quantity (kg)
                                 </label>
                                 <input type="number" 
                                        name="output_quantity" 
@@ -150,14 +150,14 @@
                             <!-- Qualité sortie -->
                             <div class="col-md-6 mb-4">
                                 <label for="output_quality" class="form-label fw-medium">
-                                    <i class="bi bi-star me-2 text-success"></i>Qualité en sortie
+                                    <i class="bi bi-star me-2 text-success"></i>Output Quality
                                 </label>
                                 <select name="output_quality" id="output_quality" class="form-select @error('output_quality') is-invalid @enderror">
-                                    <option value="">-- Sélectionnez --</option>
+                                    <option value="">-- Select --</option>
                                     <option value="Excellent" {{ old('output_quality') == 'Excellent' ? 'selected' : '' }}>Excellent</option>
-                                    <option value="Bon" {{ old('output_quality') == 'Bon' ? 'selected' : '' }}>Bon</option>
-                                    <option value="Moyen" {{ old('output_quality') == 'Moyen' ? 'selected' : '' }}>Moyen</option>
-                                    <option value="Faible" {{ old('output_quality') == 'Faible' ? 'selected' : '' }}>Faible</option>
+                                    <option value="Good" {{ old('output_quality') == 'Good' ? 'selected' : '' }}>Good</option>
+                                    <option value="Average" {{ old('output_quality') == 'Average' ? 'selected' : '' }}>Average</option>
+                                    <option value="Poor" {{ old('output_quality') == 'Poor' ? 'selected' : '' }}>Poor</option>
                                 </select>
                                 @error('output_quality')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -168,10 +168,10 @@
                         <!-- Utilisateur responsable -->
                         <div class="mb-4">
                             <label for="responsible_user_id" class="form-label fw-medium">
-                                <i class="bi bi-person me-2 text-success"></i>Responsable du processus
+                                <i class="bi bi-person me-2 text-success"></i>Process Responsible
                             </label>
                             <select name="responsible_user_id" id="responsible_user_id" class="form-select @error('responsible_user_id') is-invalid @enderror">
-                                <option value="">-- Utilisateur actuel --</option>
+                                <option value="">-- Current user --</option>
                                 @foreach($users as $user)
                                     <option value="{{ $user->id }}" {{ old('responsible_user_id') == $user->id ? 'selected' : '' }}>
                                         {{ $user->name }}
@@ -181,19 +181,19 @@
                             @error('responsible_user_id')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
-                            <small class="text-muted">Si non spécifié, vous serez assigné par défaut</small>
+                            <small class="text-muted">If not specified, you will be assigned by default</small>
                         </div>
 
                         <!-- Notes -->
                         <div class="mb-4">
                             <label for="notes" class="form-label fw-medium">
-                                <i class="bi bi-journal-text me-2 text-success"></i>Notes additionnelles
+                                <i class="bi bi-journal-text me-2 text-success"></i>Additional Notes
                             </label>
                             <textarea name="notes" 
                                       id="notes" 
                                       class="form-control @error('notes') is-invalid @enderror" 
                                       rows="4" 
-                                      placeholder="Ajoutez des remarques ou informations supplémentaires...">{{ old('notes') }}</textarea>
+                                      placeholder="Add remarks or additional information...">{{ old('notes') }}</textarea>
                             @error('notes')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -202,10 +202,10 @@
                         <!-- Boutons -->
                         <div class="d-flex gap-2 justify-content-end">
                             <a href="{{ route('recyclingprocesses.index') }}" class="btn btn-outline-secondary px-4">
-                                <i class="bi bi-x-circle me-2"></i> Annuler
+                                <i class="bi bi-x-circle me-2"></i> Cancel
                             </a>
                             <button type="submit" class="btn btn-success px-4">
-                                <i class="bi bi-check-circle me-2"></i> Créer le processus
+                                <i class="bi bi-check-circle me-2"></i> Create Process
                             </button>
                         </div>
                     </form>
