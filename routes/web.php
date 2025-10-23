@@ -237,6 +237,9 @@ Route::prefix('ai/recycling')->group(function () {
 Route::get('/shop/products', [ProductFrontController::class, 'index'])->name('front.products.index');
 Route::get('/shop/products/{id}', [ProductFrontController::class, 'show'])->name('front.products.show');
 
+// Redirection pour éviter la confusion avec les routes back-office
+Route::redirect('/products', '/shop/products');
+
 
 Route::view('/contact', 'front.contact');
 

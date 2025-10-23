@@ -116,7 +116,7 @@
             for people, planet, and progress 🌍.
         </p>
         <a href="{{ url('/register') }}" class="btn btn-success me-2">Join Now</a>
-        <a href="{{ url('/products') }}" class="btn btn-outline-light">Explore Products</a>
+        <a href="{{ route('front.products.index') }}" class="btn btn-outline-light">Explore Products</a>
     </div>
     </section>
             <div class="collapse navbar-collapse" id="navbarNav">

@@ -14,7 +14,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="{{ url('/products') }}" class="nav-link {{ request()->is('products*') ? 'active' : '' }}">
+                    <a href="{{ route('front.products.index') }}" class="nav-link {{ request()->routeIs('front.products.*') || request()->is('shop/products*') ? 'active' : '' }}">
                         <i class="bi bi-bag-check me-1"></i>Products
                     </a>
                 </li>
