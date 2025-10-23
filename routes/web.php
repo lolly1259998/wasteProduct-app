@@ -8,6 +8,8 @@ use App\Livewire\Settings\Profile;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backoffice\WasteCategoryController;
 use App\Http\Controllers\Backoffice\WasteController;
+use App\Http\Controllers\Backoffice\ProfileController;
+
 use App\Models\WasteCategory;
 use APP\Models\Waste;
 use app\Models\CollectionPoint;
@@ -26,9 +28,11 @@ use App\Http\Controllers\Campaign\CampaignController;
 use App\Http\Controllers\Participants\ParticipationController;
 use App\Http\Controllers\Auth\AuthentifController;
 use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\Backoffice\UserBackendController;
 
 
-
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 
 
 
@@ -38,6 +42,8 @@ use App\Http\Controllers\User\UserController;
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
+
+Route::get('/back/profile', [ProfileController::class, 'index'])->name('back.profile');
 
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');
@@ -232,6 +238,15 @@ Route::post('/login', [AuthentifController::class, 'login'])->name('login');
 
 Route::post('/logout', [AuthentifController::class, 'logout'])->name('logout');
 
+
+
+
+Route::get('/forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+
+Route::get('/reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
+
 Route::get('/dashboard', function() {
     return view('dashboard');
 })->middleware('auth');
@@ -251,6 +266,41 @@ Route::get('/back/campaigns', function () {
     return view('back.campaign.campaigns');
 })->name('back.campaigns');
 
+
+// Route pour la page de gestion des participants dans le back-office
+Route::get('/back/participants', [ParticipationController::class, 'index'])
+    ->name('back.participants');
+
 // Routes RESTful pour l'API des campagnes
 Route::resource('campaigns', CampaignController::class);
+
+
+//participate
+Route::middleware(['auth'])->group(function () {
+    Route::get('/campaigns/{campaign}/check', [ParticipationController::class, 'check'])
+        ->name('campaigns.check');
+    Route::post('/campaigns/{campaign}/toggle', [ParticipationController::class, 'toggle'])
+        ->name('campaigns.toggle');
+});
+
+Route::get('/back/participants/{campaignId}', [ParticipationController::class, 'index'])
+    ->name('back.participants');
+
+Route::get('/admin/participants', [ParticipationController::class, 'listAll'])->name('participants.all');
+
+Route::get('/admin/participants/{campaignId}', [ParticipationController::class, 'list'])->name('participants.list');
+Route::put('/admin/participants/{id}/approve', [ParticipationController::class, 'approve'])->name('participants.approve');
+Route::delete('/admin/participants/{id}', [ParticipationController::class, 'destroy'])->name('participants.destroy');
+
+//Systeme de recommendation
+Route::get('/ai/recommendations', [CampaignController::class, 'recommendAI'])->middleware('auth');
+
+//usersbackoffice
+
+Route::prefix('back')->group(function () {
+    Route::get('/users', [UserBackendController::class, 'index'])->name('back.users');
+    Route::get('/users/list', [UserBackendController::class, 'list']);
+    Route::put('/users/{id}', [UserBackendController::class, 'update']);
+    Route::delete('/users/{id}', [UserBackendController::class, 'destroy']);
+});
 

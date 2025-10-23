@@ -1,207 +1,230 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Créer un compte - Waste2Product</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Join Waste2Product 🌍</title>
 
-    <style>
-        /* === RESET & GLOBAL === */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
 
-        body {
-            min-height: 100vh;
-            background: linear-gradient(135deg, #f1f8e9, #e8f5e9);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+    html, body {
+      height: 100%;
+      overflow: hidden;
+        background: url("{{ asset('images/backRegister.png') }}") no-repeat center center/cover;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-        /* === CONTAINER === */
-        .register-container {
-            background: #fff;
-            padding: 3rem 2.5rem;
-            border-radius: 20px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 430px;
-            transition: transform 0.3s ease;
-        }
+    /* === Animation fade-in === */
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
 
-        .register-container:hover {
-            transform: translateY(-5px);
-        }
+    .register-container {
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+      width: 460px;
+      padding: 2.3rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      animation: fadeUp 0.8s ease-out;
+      transition: all 0.3s ease;
+    }
 
-        /* === HEADER === */
-        .register-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
+    .register-container:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 14px 35px rgba(0, 0, 0, 0.15);
+    }
 
-        .register-header h2 {
-            color: #2e7d32;
-            font-size: 2rem;
-            font-weight: 600;
-        }
+    .register-header {
+      text-align: center;
+      margin-bottom: 1.4rem;
+    }
 
-        .register-header p {
-            color: #666;
-            font-size: 0.9rem;
-        }
+    .register-header h2 {
+      color: #2e7d32;
+      font-size: 1.9rem;
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+    }
 
-        /* === FORM === */
-        form {
-            display: flex;
-            flex-direction: column;
-            gap: 1.1rem;
-        }
+    .register-header p {
+      color: #555;
+      font-size: 0.9rem;
+    }
 
-        label {
-            font-weight: 500;
-            color: #2e7d32;
-        }
+    form {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.9rem 1rem;
+    }
 
-        .input-group {
-            position: relative;
-        }
+    form .full {
+      grid-column: span 2;
+    }
 
-        input {
-            padding: 0.9rem 1rem;
-            border: 2px solid #c8e6c9;
-            border-radius: 10px;
-            transition: 0.3s;
-            width: 100%;
-        }
+    label {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #2e7d32;
+      margin-bottom: 4px;
+    }
 
-        input:focus {
-            border-color: #43a047;
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(67, 160, 71, 0.2);
-        }
+    input {
+      width: 100%;
+      padding: 0.7rem 0.8rem;
+      border: 2px solid #c8e6c9;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      transition: 0.3s ease;
+    }
 
-        /* === EYE BUTTON === */
-        .toggle-password {
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 1.1rem;
-            color: #43a047;
-            transition: 0.3s;
-        }
+    input:focus {
+      border-color: #43a047;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(67, 160, 71, 0.2);
+    }
 
-        .toggle-password:hover {
-            color: #2e7d32;
-        }
+    input.is-invalid {
+      border-color: #e57373 !important;
+      background-color: #ffebee;
+    }
 
-        /* === BUTTON === */
-        button[type="submit"] {
-            padding: 0.9rem;
-            border: none;
-            border-radius: 10px;
-            background-color: #43a047;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.3s;
-        }
+    .text-danger {
+      color: #d32f2f;
+      font-size: 0.75rem;
+      margin-top: 2px;
+      line-height: 1.1;
+    }
 
-        button[type="submit"]:hover {
-            background-color: #2e7d32;
-            transform: scale(1.03);
-        }
+    /* === Button === */
+    button {
+      grid-column: span 2;
+      background: #43a047;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 0.9rem;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      margin-top: 0.4rem;
+    }
 
-        /* === LINK === */
-        .login-link {
-            text-align: center;
-            margin-top: 1rem;
-        }
+    button:hover {
+      background: #2e7d32;
+      transform: scale(1.03);
+    }
 
-        .login-link a {
-            text-decoration: none;
-            color: #2e7d32;
-            font-weight: 500;
-            transition: 0.3s;
-        }
+    /* === Login link === */
+    .login-link {
+      text-align: center;
+      font-size: 0.9rem;
+      margin-top: 0.9rem;
+    }
 
-        .login-link a:hover {
-            text-decoration: underline;
-            color: #1b5e20;
-        }
+    .login-link a {
+      color: #2e7d32;
+      text-decoration: none;
+      font-weight: 600;
+    }
 
-        /* === RESPONSIVE === */
-        @media (max-width: 480px) {
-            .register-container {
-                padding: 2rem 1.5rem;
-            }
+    .login-link a:hover {
+      text-decoration: underline;
+    }
 
-            .register-header h2 {
-                font-size: 1.6rem;
-            }
-        }
-    </style>
+    /* === Alignement parfait === */
+    form div {
+      display: flex;
+      flex-direction: column;
+    }
+
+    @media (max-height: 750px) {
+      html, body {
+        align-items: flex-start;
+        padding-top: 30px;
+      }
+    }
+  </style>
 </head>
 
 <body>
-    <div class="register-container">
-        <div class="register-header">
-            <h2>Join Waste2Product 🌍</h2>
-            <p>Create your account and help build a greener future</p>
-        </div>
-
-        <form method="POST" action="{{ route('register') }}">
-            @csrf
-
-            <div>
-                <label for="name">Full name</label>
-                <input id="name" type="text" name="name" placeholder="John Doe" required>
-            </div>
-
-            <div>
-                <label for="email">Email address</label>
-                <input id="email" type="email" name="email" placeholder="you@example.com" required>
-            </div>
-
-            <div>
-                <label for="password">Password</label>
-                <div class="input-group">
-                    <input id="password" type="password" name="password" placeholder="••••••••" required>
-                    <button type="button" class="toggle-password" onclick="togglePassword('password', this)">👁️</button>
-                </div>
-            </div>
-
-            <div>
-                <label for="password_confirmation">Confirm password</label>
-                <div class="input-group">
-                    <input id="password_confirmation" type="password" name="password_confirmation" placeholder="••••••••" required>
-                    <button type="button" class="toggle-password" onclick="togglePassword('password_confirmation', this)">👁️</button>
-                </div>
-            </div>
-
-            <button type="submit">Sign Up</button>
-        </form>
-
-        <div class="login-link">
-            <p>Already have an account? <a href="{{ route('login.form') }}">Sign in</a></p>
-        </div>
+  <div class="register-container">
+    <div class="register-header">
+      <h2>Join Waste2Product</h2>
+      <p>Create your account and help build a greener future</p>
     </div>
 
-    <script>
+    <form method="POST" action="{{ route('register') }}" novalidate>
+      @csrf
 
-        function togglePassword(id, btn) {
-            const input = document.getElementById(id);
-            const isPassword = input.type === "password";
-            input.type = isPassword ? "text" : "password";
-            btn.textContent = isPassword ? "🙈" : "👁️";
-        }
-    </script>
+      <div>
+        <label for="name">Full name</label>
+        <input id="name" type="text" name="name" value="{{ old('name') }}" class="@error('name') is-invalid @enderror">
+        @error('name') <small class="text-danger">{{ $message }}</small> @enderror
+      </div>
+
+      <div>
+        <label for="email">Email</label>
+        <input id="email" type="email" name="email" value="{{ old('email') }}" class="@error('email') is-invalid @enderror">
+        @error('email') <small class="text-danger">{{ $message }}</small> @enderror
+      </div>
+
+      <div>
+        <label for="phone">Phone</label>
+        <input id="phone" type="text" name="phone" value="{{ old('phone') }}" class="@error('phone') is-invalid @enderror">
+        @error('phone') <small class="text-danger">{{ $message }}</small> @enderror
+      </div>
+
+      <div>
+        <label for="city">City</label>
+        <input id="city" type="text" name="city" value="{{ old('city') }}" class="@error('city') is-invalid @enderror">
+        @error('city') <small class="text-danger">{{ $message }}</small> @enderror
+      </div>
+
+      <div class="full">
+        <label for="address">Address</label>
+        <input id="address" type="text" name="address" value="{{ old('address') }}" class="@error('address') is-invalid @enderror">
+        @error('address') <small class="text-danger">{{ $message }}</small> @enderror
+      </div>
+
+      <div>
+        <label for="password">Password</label>
+        <input id="password" type="password" name="password" class="@error('password') is-invalid @enderror">
+        @error('password') <small class="text-danger">{{ $message }}</small> @enderror
+      </div>
+
+      <div>
+        <label for="password_confirmation">Confirm</label>
+        <input id="password_confirmation" type="password" name="password_confirmation">
+      </div>
+
+      <button type="submit">Sign Up</button>
+    </form>
+
+    <div class="login-link">
+      <p>Already have an account? <a href="{{ route('login.form') }}">Sign in</a></p>
+    </div>
+  </div>
 </body>
 </html>

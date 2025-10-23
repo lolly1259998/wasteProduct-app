@@ -92,6 +92,17 @@
             font-size: 1.1rem;
         }
     }
+
+    .recommended-campaigns .card {
+  transition: transform 0.3s ease;
+}
+.recommended-campaigns .card:hover {
+  transform: translateY(-6px);
+}
+.recommended-campaigns h5 {
+  font-size: 1.1rem;
+}
+
 </style>
 
 
@@ -132,4 +143,69 @@
         </div>
     </div>
 </section>
+<!-- 🌍 Recommended Campaigns (AI Section) -->
+<section class="recommended-campaigns py-5" style="background:#f8fff9;">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold text-success">
+        <i class="bi bi-stars me-2"></i>Recommended Campaigns Near You
+      </h2>
+      <p class="text-muted">AI-selected campaigns based on your location and interests.</p>
+    </div>
+
+    <div id="ai-recommendations" class="row g-4 justify-content-center">
+      <!-- Les campagnes seront injectées ici -->
+    </div>
+
+    <div id="ai-loader" class="text-center text-muted mt-4">
+      <i class="bi bi-hourglass-split"></i> Loading AI recommendations...
+    </div>
+  </div>
+</section>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const container = document.getElementById('ai-recommendations');
+  const loader = document.getElementById('ai-loader');
+
+  fetch('/ai/recommendations')
+    .then(res => res.json())
+    .then(data => {
+      loader.style.display = 'none';
+      if (!data.recommendations || data.recommendations.length === 0) {
+        container.innerHTML = `<p class="text-muted text-center">No recommendations available for your location yet.</p>`;
+        return;
+      }
+
+      data.recommendations.forEach(c => {
+        container.innerHTML += `
+          <div class="col-md-4">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+              <img 
+  src="${c.image}" 
+  onerror="this.src='/images/default-campaign.png'" 
+  class="card-img-top rounded-top-4" 
+  style="height:220px; object-fit:cover;">
+
+              <div class="card-body">
+                <h5 class="fw-bold text-success">${c.title}</h5>
+                <p class="text-muted small mb-2"><i class="bi bi-geo-alt"></i> ${c.city ?? ''} - ${c.region ?? ''}</p>
+                <p class="small text-dark">${(c.similarity * 100).toFixed(1)}% match with your interests</p>
+                <a href="/campaignsFront" class="btn btn-outline-success btn-sm rounded-pill mt-2">
+                  <i class="bi bi-megaphone"></i> View Campaign
+                </a>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+      console.log("Campagnes envoyées à Flask :", campaigns);
+
+    })
+    .catch(err => {
+      loader.innerHTML = `<p class="text-danger">AI service unreachable. Please try again later.</p>`;
+      console.error('AI error:', err);
+    });
+});
+</script>
+
 @endsection

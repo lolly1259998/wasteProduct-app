@@ -2,13 +2,14 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Validator;
 use App\Models\Donation;
 use App\Models\Order;
 use App\Models\Reservation;
 use App\Policies\DonationPolicy;
 use App\Policies\OrderPolicy;
 use App\Policies\ReservationPolicy;
-use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -17,6 +18,7 @@ class AppServiceProvider extends ServiceProvider
         Donation::class => DonationPolicy::class,
         Reservation::class => ReservationPolicy::class,
     ];
+
     /**
      * Register any application services.
      */
@@ -30,6 +32,21 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // ✅ Custom validation messages (English version)
+        Validator::replacer('required', function ($message, $attribute) {
+            return "The $attribute field is required.";
+        });
+
+        Validator::replacer('email', function ($message, $attribute) {
+            return "The $attribute field must be a valid email address.";
+        });
+
+        Validator::replacer('confirmed', function ($message, $attribute) {
+            return "The $attribute confirmation does not match.";
+        });
+
+        Validator::replacer('min', function ($message, $attribute, $rule, $parameters) {
+            return "The $attribute field must be at least {$parameters[0]} characters long.";
+        });
     }
 }

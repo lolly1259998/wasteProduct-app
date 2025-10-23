@@ -9,9 +9,20 @@ class Campaign extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'title', 'description', 'image', 'start_date', 'end_date', 'status', 'user_id'
-    ];
+ protected $fillable = [
+    'title',
+    'description',
+    'image',
+    'start_date',
+    'end_date',
+    'status',
+    'user_id',
+    'deadline_registration',
+    'city',
+    'region',
+    'participants_count',
+];
+
 
     // Relation avec User (créateur de la campagne)
     public function user()

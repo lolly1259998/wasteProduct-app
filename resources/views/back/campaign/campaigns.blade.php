@@ -223,14 +223,17 @@
             <table id="campaigns-table" class="table table-hover align-middle w-100 mb-0">
                 <thead class="table-light">
                     <tr class="text-center">
-                        <th><i class="bi bi-hash"></i> ID</th>
-                        <th><i class="bi bi-tag"></i> Title</th>
-                        <th><i class="bi bi-text-paragraph"></i> Description</th>
-                        <th><i class="bi bi-calendar-range"></i> Dates</th>
-                        <th><i class="bi bi-flag"></i> Status</th>
-                        <th><i class="bi bi-person"></i> User</th>
-                        <th><i class="bi bi-gear"></i> Actions</th>
-                    </tr>
+        <th><i class="bi bi-tag"></i> Title</th>
+        <th><i class="bi bi-text-paragraph"></i> Description</th>
+                <th><i class="bi bi-image"></i> Image</th>
+        <th><i class="bi bi-calendar-range"></i> Dates</th>
+        <th><i class="bi bi-flag"></i> Status</th>
+        <th><i class="bi bi-geo-alt"></i> City</th>
+        <th><i class="bi bi-map"></i> Region</th>
+        <th><i class="bi bi-people-fill"></i> Participants</th>
+        <th><i class="bi bi-person"></i> User</th>
+        <th><i class="bi bi-gear"></i> Actions</th>
+    </tr>
                 </thead>
                 <tbody></tbody>
             </table>
@@ -260,25 +263,67 @@ $(document).ready(function () {
         pageLength: 10,
         lengthMenu: [5,10, 25, 50],
         columns: [
-            { data: 'id' },
-            { data: 'title', render: data => `<strong>${data}</strong>` },
-            { data: 'description', defaultContent: '' },
-            { data: null, render: data => `${data.start_date} → ${data.end_date}` },
-            {
-                data: 'status',
-                render: function(data, type, row) {
-                    const map = { draft: ['warning','Draft'], active:['success','Active'], closed:['secondary','Closed'] };
-                    if(type === 'display') {
-                        return `<span class="badge bg-${map[data][0]}">${map[data][1]}</span>`;
-                    }
-                    return data;
-                }
-            },
-            { data: 'user', render: data => data ? data.name : 'N/A' },
-            { data: null, orderable: false, render: data => `
-                <button class="btn btn-sm btn-outline-warning edit-btn" data-id="${data.id}"><i class="bi bi-pencil"></i></button>
-                <button class="btn btn-sm btn-outline-danger delete-btn" data-id="${data.id}"><i class="bi bi-trash"></i></button>`}
-        ]
+    { data: 'title', render: data => `<strong>${data}</strong>` },
+    { data: 'description', defaultContent: '' },
+      { 
+    data: 'image',
+    render: function(data) {
+        if (!data) return '—';
+
+        // Si l'image est une URL externe (commence par http ou https)
+        const imgUrl = data.startsWith('http') ? data : `/storage/${data}`;
+
+        return `
+            <a href="${imgUrl}" target="_blank">
+                <img src="${imgUrl}" alt="Campaign Image" 
+                     style="width:55px; height:55px; border-radius:8px; object-fit:cover; box-shadow:0 0 4px rgba(0,0,0,0.1);">
+            </a>`;
+    }
+},
+
+    { data: null, render: data => `${data.start_date} → ${data.end_date}` },
+    { 
+        data: 'status', 
+        render: function(data) {
+            const map = { draft: ['warning','Draft'], active:['success','Active'], closed:['secondary','Closed'] };
+            return `<span class="badge bg-${map[data][0]}">${map[data][1]}</span>`;
+        } 
+    },
+    { data: 'city', defaultContent: '—' },
+    { data: 'region', defaultContent: '—' },
+    { data: 'participants_count', defaultContent: '0' },
+    { 
+        data: 'user',
+        render: data => data ? data.name : 'N/A'
+    },
+    { 
+        data: null,
+    orderable: false,
+    render: function (data) {
+        let buttons = `
+            <button class="btn btn-sm btn-outline-warning edit-btn" data-id="${data.id}">
+                <i class="bi bi-pencil"></i>
+            </button>
+            <button class="btn btn-sm btn-outline-danger delete-btn" data-id="${data.id}">
+                <i class="bi bi-trash"></i>
+            </button>
+        `;
+
+        // ✅ Ajoute le bouton "View Participants" uniquement s’il y a des participants
+        if (data.participants_count && data.participants_count > 0) {
+            buttons = `
+                <a href="/back/participants/${data.id}" 
+                   class="btn btn-sm btn-outline-success me-1">
+                   <i class="bi bi-people-fill"></i> 
+                </a>` + buttons;
+        }
+
+        return buttons;
+    }
+        
+    }
+]
+
     });
 
     // === Statistics ===
@@ -299,16 +344,31 @@ $(document).ready(function () {
     });
 
     // === Creation ===
-    $('#createCampaignForm').on('submit', e => {
-        e.preventDefault();
-        $.post('{{ url("campaigns") }}', $('#createCampaignForm').serialize())
-            .done(() => {
-                $('#createCampaignModal').modal('hide');
-                $('#createCampaignForm')[0].reset();
-                table.ajax.reload();
-                updateStats();
-            }).fail(xhr => alert('Creation Error: ' + xhr.responseText));
-    });
+$('#createCampaignForm').on('submit', function(e) {
+  e.preventDefault();
+
+  const formData = new FormData(this);
+
+  $.ajax({
+    url: '{{ url("campaigns") }}',
+    type: 'POST',
+    data: formData,
+    contentType: false,
+    processData: false,
+    success: function() {
+      $('#createCampaignModal').modal('hide');
+      $('#createCampaignForm')[0].reset();
+      table.ajax.reload();
+      updateStats();
+    },
+    error: function(xhr) {
+      console.error(xhr.responseText);
+      alert('❌ Error: ' + xhr.responseText);
+    }
+  });
+});
+
+
 
     // Edit
     $('#editCampaignForm').on('submit', function(e) {

@@ -6,6 +6,7 @@
 <title>Back Office - Waste2Product</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 <style>
     body {
@@ -172,6 +173,12 @@
                     <a href="{{ url('back/home') }}" class="nav-link" data-tooltip="Dashboard" aria-label="Dashboard"><i class="bi bi-speedometer2 me-2"></i> <span class="nav-text">Dashboard</span></a>
                 </li>
                 <li class="nav-item mb-2">
+<a href="{{ route('back.users') }}" class="nav-link" data-tooltip="Users" aria-label="Users">
+    <i class="bi bi-people me-2"></i>
+    <span class="nav-text">Users</span>
+</a>
+                </li>
+                <li class="nav-item mb-2">
                     <a href="#wasteSubmenu" class="nav-link" onclick="toggleSubmenu(event)" data-tooltip="Waste Management" aria-label="Waste Management"><i class="bi bi-trash3 me-2"></i> <span class="nav-text">Waste Management</span></a>
                   <ul class="submenu list-unstyled" id="wasteSubmenu">
     <li>
@@ -247,6 +254,7 @@
                 <li class="nav-item mb-2">
                     <a href="{{ route('back.campaigns') }}" class="nav-link" data-tooltip="Campaign Management" aria-label="Campaign Management"><i class="bi bi-megaphone me-2"></i> <span class="nav-text">Campaign Management</span></a>
                 </li>
+                    
             </ul>
         </div>
 
@@ -254,13 +262,26 @@
         <div class="main-content" id="mainContent">
             <!-- Header -->
             <div class="header d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">Dashboard</h5>
-                <div class="d-flex align-items-center">
-                    <input type="text" class="form-control form-control-sm me-2" placeholder="Search..." aria-label="Search">
-                    <i class="bi bi-bell fs-4 me-3" aria-label="Notifications"></i>
-                    <i class="bi bi-person-circle fs-4" aria-label="User Profile"></i>
-                </div>
-            </div>
+    <!-- Titre ou breadcrumb -->
+    <h5 class="mb-0 fw-semibold text-success">Back Office</h5>
+
+    <!-- Zone de droite : recherche + profil -->
+    <div class="d-flex align-items-center gap-3">
+        <input type="text" class="form-control form-control-sm" placeholder="Search..." style="width: 200px;">
+        <div class="dropdown">
+            <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name ?? 'Admin') }}&background=198754&color=fff&bold=true"
+                     class="rounded-circle me-2" width="32" height="32" alt="User Avatar">
+                <span class="fw-semibold text-dark">{{ Auth::user()->name ?? 'Admin' }}</span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="userDropdown">
+                <li><a class="dropdown-item" href="{{ url('back/profile') }}"><i class="bi bi-person me-2"></i> My Profile</a></li>
+                <li><a class="dropdown-item text-danger" href="{{ route('logout') }}"><i class="bi bi-box-arrow-right me-2"></i> Logout</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
 
             <!-- Content -->
             <div class="p-4">

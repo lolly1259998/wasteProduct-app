@@ -16,24 +16,31 @@ class AuthentifController extends Controller
     }
 
     // Création du compte
-    public function register(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|confirmed|min:6',
-        ]);
+   public function register(Request $request)
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:users',
+        'password' => 'required|confirmed|min:6',
+        'phone' => 'required|string|max:20',
+        'address' => 'required|string|max:255',
+        'city' => 'required|string|max:100',
+    ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role_id' => 1, 
-        ]);
+    $user = User::create([
+        'name' => $request->name,
+        'email' => $request->email,
+        'password' => Hash::make($request->password),
+        'phone' => $request->phone,
+        'address' => $request->address,
+        'city' => $request->city,
+        'role_id' => 1, // par défaut citoyen
+    ]);
 
-        Auth::login($user);
-        return redirect('/waste2product');
-    }
+    Auth::login($user);
+
+    return redirect('/waste2product')->with('success', 'Welcome aboard 🌍');
+}
 
     // Formulaire de connexion
     public function showLoginForm()
