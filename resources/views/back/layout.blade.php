@@ -173,31 +173,31 @@
                 </li>
                 <li class="nav-item mb-2">
                     <a href="#wasteSubmenu" class="nav-link" onclick="toggleSubmenu(event)" data-tooltip="Waste Management" aria-label="Waste Management"><i class="bi bi-trash3 me-2"></i> <span class="nav-text">Waste Management</span></a>
-                    <ul class="submenu list-unstyled" id="wasteSubmenu">
-                        <li>
-                            <a href="{{ route('wastes.index') }}" class="nav-link text-white" data-tooltip="All Waste">
-                                <i class="bi bi-recycle me-2"></i> All Waste
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('waste_categories.index') }}" class="nav-link text-white" data-tooltip="Waste Categories">
-                                <i class="bi bi-tags me-2"></i> Waste Categories
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('predictwaste') }}" class="nav-link text-white" data-tooltip="AI Waste Prediction">
-                                <i class="bi bi-cpu me-2"></i> Predict Waste
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('ai.advice.form') }}" class="nav-link text-white" data-tooltip="AI Recycling Advice">
-                                <i class="bi bi-lightbulb me-2"></i> AI Recycling Advice
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-
-                <!-- Collection Points -->
+                  <ul class="submenu list-unstyled" id="wasteSubmenu">
+    <li>
+        <a href="{{ route('wastes.index') }}" class="nav-link text-white" data-tooltip="All Waste">
+            <i class="bi bi-recycle me-2"></i> All Waste
+        </a>
+    </li>
+    <li>
+         <a href="{{ route('waste_categories.index') }}" class="nav-link text-white" data-tooltip="Waste Categories">
+            <i class="bi bi-tags me-2"></i> Waste Categories
+        </a>
+    </li>
+    <li>
+        <a href="{{ route('predictwaste') }}" class="nav-link text-white" data-tooltip="AI Waste Prediction">
+                <i class="bi bi-cpu me-2"></i> Predict Waste
+            </a>
+    </li>
+    <li>
+         <a href="{{ route('ai.advice.form') }}" class="nav-link text-white" data-tooltip="AI Recycling Advice">
+                <i class="bi bi-lightbulb me-2"></i> AI Recycling Advice
+            </a>
+    </li>
+</ul>
+               
+</li>
+ <!-- NEW: Collection Points -->
                 <li class="nav-item mb-2">
                     <a href="#collectionSubmenu" class="nav-link" onclick="toggleSubmenu(event)" data-tooltip="Collection Points" aria-label="Collection Points">
                         <i class="bi bi-geo-alt me-2"></i> <span class="nav-text">Collection Points</span>
@@ -215,6 +215,7 @@
                         </li>
                     </ul>
                 </li>
+
 
                 <!-- NEW: Recycling & Products Section -->
                 <li class="nav-item mb-2">
@@ -235,6 +236,30 @@
                         <li>
                             <a href="{{ route('ai.recycling.demo') }}" class="nav-link {{ request()->routeIs('ai.recycling.*') ? 'active' : '' }}">
                                 <i class="bi bi-robot me-2"></i> AI Recycling
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- NEW: Transactions Section -->
+                <li class="nav-item mb-2">
+                    <a href="#transactionsSubmenu" class="nav-link" onclick="toggleSubmenu(event)" data-tooltip="Transactions" aria-label="Transactions">
+                        <i class="bi bi-credit-card me-2"></i> <span class="nav-text">Transactions</span>
+                    </a>
+                    <ul class="submenu list-unstyled" id="transactionsSubmenu">
+                        <li>
+                            <a href="{{ route('back.donations.index') }}" class="nav-link {{ request()->routeIs('back.donations.*') ? 'active' : '' }}" data-tooltip="Donations">
+                                <i class="bi bi-heart-fill me-2"></i> Donations
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('back.orders.index') }}" class="nav-link {{ request()->routeIs('back.orders.*') ? 'active' : '' }}" data-tooltip="Orders">
+                                <i class="bi bi-cart me-2"></i> Orders
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('back.reservations.index') }}" class="nav-link {{ request()->routeIs('back.reservations.*') ? 'active' : '' }}" data-tooltip="Reservations">
+                                <i class="bi bi-calendar-event me-2"></i> Reservations
                             </a>
                         </li>
                     </ul>

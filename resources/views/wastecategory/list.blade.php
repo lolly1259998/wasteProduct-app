@@ -22,63 +22,34 @@
             </div>
         </div>
 
-        <!-- Cartes de statistiques -->
+        <!-- Cartes de statistiques améliorées -->
         <div class="col-12">
-            <div class="row g-3 mb-4">
-                @php
-                    $totalCategories = $categories->count();
-                    $withInstructions = $categories->whereNotNull('recycling_instructions')->count();
-                    $withoutInstructions = $totalCategories - $withInstructions;
-                @endphp
+            <div class="stats-wrapper mb-4">
+                <div class="campaign-stats">
+                    @php
+                        $totalCategories = $categories->count();
+                        $withInstructions = $categories->whereNotNull('recycling_instructions')->count();
+                        $withoutInstructions = $totalCategories - $withInstructions;
+                    @endphp
 
-                <div class="col-md-4 col-sm-6">
-                    <div class="card stat-card border-0 rounded-3 shadow-sm h-100">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-start">
-                                <div>
-                                    <h6 class="card-title text-muted mb-2">Total Categories</h6>
-                                    <h3 class="text-success mb-0">{{ $totalCategories }}</h3>
-                                </div>
-                                <div class="bg-success bg-opacity-10 p-3 rounded-circle">
-                                    <i class="bi bi-recycle text-success fs-5"></i>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="stat-card bg-gradient-primary">
+                        <i class="bi bi-recycle stat-icon"></i>
+                        <div class="stat-number">{{ $totalCategories }}</div>
+                        <div class="stat-label">Total Categories</div>
+                    </div>
+
+                    <div class="stat-card bg-gradient-success">
+                        <i class="bi bi-check-circle-fill stat-icon"></i>
+                        <div class="stat-number">{{ $withInstructions }}</div>
+                        <div class="stat-label">With Instructions</div>
+                    </div>
+
+                    <div class="stat-card bg-gradient-warning">
+                        <i class="bi bi-exclamation-circle stat-icon"></i>
+                        <div class="stat-number">{{ $withoutInstructions }}</div>
+                        <div class="stat-label">Without Instructions</div>
                     </div>
                 </div>
-
-                <div class="col-md-4 col-sm-6">
-                    <div class="card stat-card border-0 rounded-3 shadow-sm h-100">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-start">
-                                <div>
-                                    <h6 class="card-title text-muted mb-2">With Instructions</h6>
-                                    <h3 class="text-primary mb-0">{{ $withInstructions }}</h3>
-                                </div>
-                                <div class="bg-primary bg-opacity-10 p-3 rounded-circle">
-                                    <i class="bi bi-check-circle text-primary fs-5"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4 col-sm-6">
-                    <div class="card stat-card border-0 rounded-3 shadow-sm h-100">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-start">
-                                <div>
-                                    <h6 class="card-title text-muted mb-2">Without Instructions</h6>
-                                    <h3 class="text-warning mb-0">{{ $withoutInstructions }}</h3>
-                                </div>
-                                <div class="bg-warning bg-opacity-10 p-3 rounded-circle">
-                                    <i class="bi bi-exclamation-circle text-warning fs-5"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </div>
     </div>
@@ -139,7 +110,7 @@
                                         @if($category->recycling_instructions)
                                             {{ $category->recycling_instructions }}
                                         @else
-                                            <span class="text-danger fw-bold">None</span>
+                                            <span class="">Without Instructions</span>
                                         @endif
                                     </td>
                                     <td>
@@ -182,5 +153,110 @@
 .action-edit:hover { background: linear-gradient(135deg,#e0a800,#c69500); }
 .action-delete { background: linear-gradient(135deg,#dc3545,#c82333); }
 .action-delete:hover { background: linear-gradient(135deg,#c82333,#a71e2a); }
+
+/* Statistics Section Styles */
+.campaign-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    padding: 1.8rem;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.1);
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+.stat-card::before {
+    content: "";
+    position: absolute;
+    top: -40%;
+    right: -40%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at top right, rgba(255,255,255,0.2), transparent 70%);
+    transform: rotate(25deg);
+}
+
+.stat-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    opacity: 0.9;
+    color: #1b4332;
+}
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1b4332;
+}
+
+.stat-label {
+    opacity: 0.9;
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+    color: #1b4332;
+}
+
+.stats-wrapper {
+    background: linear-gradient(135deg, #f2dd94, #e8c471);
+    border-radius: 25px;
+    padding: 2rem;
+    color: #1b4332;
+    margin-bottom: 2.5rem;
+}
+
+/* Smooth Animation */
+.fade-in-up {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Gradient backgrounds for cards */
+.bg-gradient-primary {
+    background: linear-gradient(135deg, #f8e3a3ff, #edd58bff) !important;
+}
+
+.bg-gradient-success {
+    background: linear-gradient(135deg, #f8e3a3ff, #edd58bff) !important;
+}
+
+.bg-gradient-warning {
+    background: linear-gradient(135deg,  #f8e3a3ff, #edd58bff) !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .stats-wrapper {
+        padding: 1rem;
+    }
+    .btn-add {
+        width: 100%;
+        margin-top: 1rem;
+    }
+}
 </style>
 @endsection
