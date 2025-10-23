@@ -27,12 +27,14 @@
                     <form method="GET" action="{{ route('back.donations.index') }}" class="mb-4">
                         <div class="row g-3 align-items-end">
                             <div class="col-md-2">
-                                <label class="form-label">Waste Type</label>
-                                <select name="waste_id" class="form-select">
-                                    <option value="">All Waste Types</option>
-                                    @foreach($wastes as $id => $waste)
-                                        <option value="{{ $id }}" {{ request('waste_id') == $id ? 'selected' : '' }}>{{ $waste['name'] }}</option>
-                                    @endforeach
+                                <label class="form-label">Waste Category</label>
+                                <select name="waste_category_id" class="form-select">
+                                    <option value="">All Categories</option>
+                                    @if(isset($wasteCategories) && is_array($wasteCategories))
+                                        @foreach($wasteCategories as $id => $name)
+                                            <option value="{{ $id }}" {{ request('waste_category_id') == $id ? 'selected' : '' }}>{{ $name }}</option>
+                                        @endforeach
+                                    @endif
                                 </select>
                             </div>
                             <div class="col-md-2">
@@ -76,7 +78,7 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>User</th>
-                                    <th>Waste Type</th>
+                                    <th>Waste Category</th>
                                     <th>Item Name</th>
                                     <th>Condition</th>
                                     <th>Sentiment</th>
@@ -94,7 +96,7 @@
                                         <tr>
                                             <td>{{ $donation->id }}</td>
                                             <td>{{ $donation->user ? $donation->user->name : 'Guest' }}</td>
-                                            <td>{{ \App\Http\Controllers\DonationController::getWasteTypeName($donation->waste_id) }}</td>
+                                            <td>{{ $donation->waste->category->name ?? 'N/A' }}</td>
                                             <td>{{ $donation->item_name }}</td>
                                             <td>{{ ucfirst($donation->condition) }}</td>
                                             <td>
@@ -106,7 +108,7 @@
                                                     <span class="badge bg-secondary">N/A</span>
                                                 @endif
                                             </td>
-                                            <td><span class="badge bg-info">{{ ucfirst($donation->status->value) }}</span></td>
+                                            <td><span class="badge bg-info">{{ ucfirst($donation->status->value ?? $donation->status) }}</span></td>
                                             <td>
                                                 <div class="d-flex gap-1">
                                                     <a href="{{ route('back.donations.show', $donation) }}" class="btn btn-warning btn-sm">View</a>

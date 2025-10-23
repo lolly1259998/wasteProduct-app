@@ -1,12 +1,14 @@
 <?php
 
 // Updated: app/Http/Controllers/OrderController.php
-// Added: use Illuminate\Support\Facades\Auth;
+// Removed static $products; now uses Product model from DB
+// Added: use App\Models\Product;
 
 namespace App\Http\Controllers;
 
 use App\Enums\OrderStatus;
 use App\Models\Order;
+use App\Models\Product;
 use App\Services\RecommendationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,12 +16,6 @@ use Illuminate\Validation\Rule;
 
 class OrderController extends Controller
 {
-    private static $products = [
-        1 => ['name' => 'Product A', 'price' => 10.00],
-        2 => ['name' => 'Product B', 'price' => 15.00],
-        3 => ['name' => 'Product C', 'price' => 20.00],
-    ];
-
     private function isFrontRoute()
     {
         return request()->route() && str_starts_with(request()->route()->getName(), 'front.');
@@ -81,7 +77,7 @@ class OrderController extends Controller
 
     public function index()
     {
-        $query = Order::with('user')
+        $query = Order::with(['user', 'product'])  // Eager load product for display/filtering
             ->when(request('date_from'), function ($query) {
                 return $query->where('order_date', '>=', request('date_from'));
             })
@@ -92,13 +88,9 @@ class OrderController extends Controller
                 return $query->where('status', $status);
             })
             ->when(request('product_search'), function ($query, $search) {
-                $matchingProductIds = collect(self::$products)
-                    ->filter(function ($product, $id) use ($search) {
-                        return str_contains(strtolower($product['name']), strtolower($search));
-                    })
-                    ->keys()
-                    ->toArray();
-                return $query->whereIn('product_id', $matchingProductIds);
+                return $query->whereHas('product', function($q) use ($search) {
+                    $q->where('name', 'like', '%' . $search . '%');
+                });
             });
 
         $orders = $query->paginate(4);  // Paginate with 4 items per page
@@ -110,7 +102,8 @@ class OrderController extends Controller
 
     public function create()
     {
-        $products = self::$products;
+        // Load available products from DB for dropdown
+        $products = Product::available()->get(['id', 'name', 'price']);  // Use scope for available/in-stock
         $viewPrefix = $this->getViewPrefix();
         $storeRoute = $this->getStoreRoute();
         $indexRoute = $this->getIndexRoute();
@@ -129,7 +122,7 @@ class OrderController extends Controller
     {
         // Base rules without user_id for front
         $rules = [
-            'product_id' => ['required', Rule::in(array_keys(self::$products))],
+            'product_id' => 'required|exists:products,id',  // Validate against DB
             'quantity' => 'required|integer|min:1',
             'shipping_address' => 'required|string|max:255',
             'payment_method' => 'required|string|in:cash,card,transfer',
@@ -150,11 +143,17 @@ class OrderController extends Controller
             $validated['user_id'] = Auth::id();
         }
 
+        // Get product price from DB
+        $product = Product::findOrFail($validated['product_id']);
+        $validated['total_amount'] = $validated['quantity'] * $product->price;
+
         $order = Order::create(array_merge($validated, [
             'status' => OrderStatus::Pending,
-            'total_amount' => $validated['quantity'] * self::$products[$validated['product_id']]['price'],
             'order_date' => now(),
         ]));
+
+        // Decrement stock
+        $product->decrementStock($validated['quantity']);
 
         $indexRoute = $this->getIndexRoute();
         return redirect()->route($indexRoute)->with('success', 'Order created successfully!');
@@ -162,7 +161,7 @@ class OrderController extends Controller
 
     public function show(Order $order)
     {
-        $order->load('user');
+        $order->load(['user', 'product']);  // Load product for display
         $viewPrefix = $this->getViewPrefix();
         $indexRoute = $this->getIndexRoute();
         $editRoute = $this->getEditRoute($order);
@@ -172,20 +171,21 @@ class OrderController extends Controller
 
     public function edit(Order $order)
     {
-        $order->load('user');
-        $products = self::$products;
+        $order->load(['user', 'product']);
+        // Load available products from DB for dropdown
+        $products = Product::available()->get(['id', 'name', 'price']);
         $viewPrefix = $this->getViewPrefix();
         $updateRoute = $this->getUpdateRoute($order);
         $showRoute = $this->getShowRoute($order);
-        $indexRoute = $this->getIndexRoute();  // Add this line
-        return view($viewPrefix . 'orders.edit', compact('order', 'products', 'updateRoute', 'showRoute', 'indexRoute'));  // Add 'indexRoute' to compact
+        $indexRoute = $this->getIndexRoute();
+        return view($viewPrefix . 'orders.edit', compact('order', 'products', 'updateRoute', 'showRoute', 'indexRoute'));
     }
 
     public function update(Request $request, Order $order)
     {
         // Base rules without status
         $rules = [
-            'product_id' => ['required', Rule::in(array_keys(self::$products))],
+            'product_id' => 'required|exists:products,id',  // Validate against DB
             'quantity' => 'required|integer|min:1',
             'shipping_address' => 'required|string|max:255',
             'payment_method' => 'required|string|in:cash,card,transfer',
@@ -204,7 +204,20 @@ class OrderController extends Controller
             $validated['status'] = $order->status;
         }
 
-        $validated['total_amount'] = $validated['quantity'] * self::$products[$validated['product_id']]['price'];
+        // Get product price from DB
+        $product = Product::findOrFail($validated['product_id']);
+        $validated['total_amount'] = $validated['quantity'] * $product->price;
+
+        // Handle stock adjustment if quantity changes
+        if ($validated['quantity'] != $order->quantity) {
+            $diff = $validated['quantity'] - $order->quantity;
+            if ($diff > 0) {
+                $product->decrementStock($diff);  // If increasing, but typically prevent or handle separately
+            } else {
+                $product->increment('stock_quantity', abs($diff));  // Return stock if decreasing
+            }
+        }
+
         $order->update($validated);
 
         $indexRoute = $this->getIndexRoute();
@@ -213,6 +226,10 @@ class OrderController extends Controller
 
     public function destroy(Order $order)
     {
+        // Return stock to product if order is deleted
+        if ($order->product) {
+            $order->product->increment('stock_quantity', $order->quantity);
+        }
         $order->delete();
         $indexRoute = $this->getIndexRoute();
         return redirect()->route($indexRoute)->with('success', 'Order deleted!');
@@ -220,6 +237,7 @@ class OrderController extends Controller
 
     public static function getProductName($productId)
     {
-        return self::$products[$productId]['name'] ?? 'N/A';
+        // Updated to use DB
+        return Product::find($productId)?->name ?? 'N/A';
     }
 }

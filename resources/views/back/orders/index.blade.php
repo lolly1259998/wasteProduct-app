@@ -20,13 +20,17 @@
                     
                     <!-- Add New Order Button -->
                     <div class="text-start mb-4">
-                        <a href="{{ route('back.orders.create') }}" class="btn btn-success">Add New Order</a>
+                        <a href="{{ $createRoute }}" class="btn btn-success">Add New Order</a>
                     </div>
 
                     <!-- Filter Form -->
                     <form method="GET" action="{{ route('back.orders.index') }}" class="mb-4">
                         <div class="row g-3 align-items-end">
-                            <div class="col-md-3">
+                            <div class="col-md-2">
+                                <label class="form-label">Product Search</label>
+                                <input type="text" name="product_search" value="{{ request('product_search') }}" class="form-control" placeholder="Search products...">
+                            </div>
+                            <div class="col-md-2">
                                 <label class="form-label">Status</label>
                                 <select name="status" class="form-select">
                                     <option value="">All Statuses</option>
@@ -35,15 +39,15 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <label class="form-label">Date From</label>
                                 <input type="date" name="date_from" value="{{ request('date_from') }}" class="form-control">
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <label class="form-label">Date To</label>
                                 <input type="date" name="date_to" value="{{ request('date_to') }}" class="form-control">
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <div class="d-flex flex-column flex-md-row gap-2 h-100 align-items-start align-items-md-end justify-content-md-end">
                                     <button type="submit" class="btn btn-success w-100 w-md-auto">Filter</button>
                                     <a href="{{ route('back.orders.index') }}" class="btn btn-outline-secondary w-100 w-md-auto">Reset</a>
@@ -76,10 +80,11 @@
                                         <tr>
                                             <td>{{ $order->id }}</td>
                                             <td>{{ $order->user->name ?? 'Unknown' }}</td>
-                                            <td>{{ \App\Http\Controllers\OrderController::getProductName($order->product_id) }}</td>
+                                            <td>{{ $order->product->name ?? 'N/A' }}</td>
                                             <td>{{ $order->quantity }}</td>
-                                            <td>${{ $order->total_amount }}</td>
-                                            <td><span class="badge bg-info">{{ ucfirst($order->status) }}</span></td>                                            <td>{{ $order->order_date->format('Y-m-d') }}</td>
+                                            <td>${{ number_format($order->total_amount, 2) }}</td>
+                                            <td><span class="badge bg-info">{{ ucfirst($order->status->value ?? $order->status) }}</span></td>
+                                            <td>{{ $order->order_date?->format('Y-m-d') ?? 'N/A' }}</td>
                                             <td>
                                                 <div class="d-flex gap-1">
                                                     <a href="{{ route('back.orders.show', $order) }}" class="btn btn-warning btn-sm">View</a>

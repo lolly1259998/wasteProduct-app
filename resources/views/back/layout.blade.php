@@ -226,23 +226,47 @@
 
                 <!-- NEW: Recycling & Products Section -->
                 <li class="nav-item mb-2">
-                    <a href="#recyclingSubmenu" class="nav-link" onclick="toggleSubmenu(event)" data-tooltip="Recyclage & Produits" aria-label="Recyclage & Produits">
-                        <i class="bi bi-arrow-repeat me-2"></i> <span class="nav-text">Recyclage & Produits</span>
+                    <a href="#recyclingSubmenu" class="nav-link" onclick="toggleSubmenu(event)" data-tooltip="Recycling & Products" aria-label="Recycling & Products">
+                        <i class="bi bi-arrow-repeat me-2"></i> <span class="nav-text">Recycling & Products</span>
                     </a>
                     <ul class="submenu list-unstyled" id="recyclingSubmenu">
                         <li>
                             <a href="{{ route('recyclingprocesses.index') }}" class="nav-link {{ request()->routeIs('recyclingprocesses.*') ? 'active' : '' }}">
-                                <i class="bi bi-arrow-repeat me-2"></i> Processus de Recyclage
+                                <i class="bi bi-arrow-repeat me-2"></i> Recycling Processes
                             </a>
                         </li>
                         <li>
                             <a href="{{ route('products.index') }}" class="nav-link {{ request()->routeIs('products.*') ? 'active' : '' }}">
-                                <i class="bi bi-box-seam me-2"></i> Produits Recyclés
+                                <i class="bi bi-box-seam me-2"></i> Recycled Products
                             </a>
                         </li>
                         <li>
                             <a href="{{ route('ai.recycling.demo') }}" class="nav-link {{ request()->routeIs('ai.recycling.*') ? 'active' : '' }}">
-                                <i class="bi bi-robot me-2"></i> IA Recyclage
+                                <i class="bi bi-robot me-2"></i> AI Recycling
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- NEW: Transactions Section -->
+                <li class="nav-item mb-2">
+                    <a href="#transactionsSubmenu" class="nav-link" onclick="toggleSubmenu(event)" data-tooltip="Transactions" aria-label="Transactions">
+                        <i class="bi bi-credit-card me-2"></i> <span class="nav-text">Transactions</span>
+                    </a>
+                    <ul class="submenu list-unstyled" id="transactionsSubmenu">
+                        <li>
+                            <a href="{{ route('back.donations.index') }}" class="nav-link {{ request()->routeIs('back.donations.*') ? 'active' : '' }}" data-tooltip="Donations">
+                                <i class="bi bi-heart-fill me-2"></i> Donations
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('back.orders.index') }}" class="nav-link {{ request()->routeIs('back.orders.*') ? 'active' : '' }}" data-tooltip="Orders">
+                                <i class="bi bi-cart me-2"></i> Orders
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('back.reservations.index') }}" class="nav-link {{ request()->routeIs('back.reservations.*') ? 'active' : '' }}" data-tooltip="Reservations">
+                                <i class="bi bi-calendar-event me-2"></i> Reservations
                             </a>
                         </li>
                     </ul>
@@ -254,7 +278,6 @@
                 <li class="nav-item mb-2">
                     <a href="{{ route('back.campaigns') }}" class="nav-link" data-tooltip="Campaign Management" aria-label="Campaign Management"><i class="bi bi-megaphone me-2"></i> <span class="nav-text">Campaign Management</span></a>
                 </li>
-                    
             </ul>
         </div>
 

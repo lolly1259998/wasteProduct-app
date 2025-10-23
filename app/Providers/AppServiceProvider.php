@@ -2,6 +2,12 @@
 
 namespace App\Providers;
 
+use App\Models\Donation;
+use App\Models\Order;
+use App\Models\Reservation;
+use App\Policies\DonationPolicy;
+use App\Policies\OrderPolicy;
+use App\Policies\ReservationPolicy;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Donation;
@@ -18,7 +24,6 @@ class AppServiceProvider extends ServiceProvider
         Donation::class => DonationPolicy::class,
         Reservation::class => ReservationPolicy::class,
     ];
-
     /**
      * Register any application services.
      */

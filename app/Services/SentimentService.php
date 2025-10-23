@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Donation;
 use Phpml\Classification\NaiveBayes;
+use Exception;
 
 class SentimentService
 {
@@ -27,7 +28,13 @@ class SentimentService
 
     public function __construct()
     {
-        $this->trainClassifier();
+        try {
+            $this->trainClassifier();
+        } catch (Exception $e) {
+            // Log the error for debugging (use your preferred logger, e.g., Laravel's Log facade)
+            // \Log::error('Sentiment training failed: ' . $e->getMessage());
+            $this->classifier = null; // Fallback to neutral predictions
+        }
     }
 
     private function trainClassifier(): void
@@ -44,7 +51,7 @@ class SentimentService
         }
 
         if (empty($samples)) {
-            throw new \Exception('No valid samples for sentiment training.');
+            throw new Exception('No valid samples for sentiment training.');
         }
 
         // Build vocabulary
@@ -55,7 +62,7 @@ class SentimentService
         $this->vocabulary = array_unique($all_tokens);
 
         if (empty($this->vocabulary)) {
-            throw new \Exception('Vocabulary is empty after tokenization.');
+            throw new Exception('Vocabulary is empty after tokenization.');
         }
 
         // Transform to count vectors
@@ -86,7 +93,7 @@ class SentimentService
 
     public function analyzeSentiment(string $description): string
     {
-        if (empty($description)) {
+        if (!$this->classifier || empty($description)) {
             return 'neutral';
         }
 
@@ -104,8 +111,15 @@ class SentimentService
             }
         }
 
-        return $this->classifier->predict($vector);
+        try {
+            return $this->classifier->predict($vector);
+        } catch (Exception $e) {
+            // Fallback on prediction error (e.g., invalid vector)
+            // \Log::warning('Sentiment prediction failed: ' . $e->getMessage());
+            return 'neutral';
+        }
     }
+
     // Batch for admin reports (e.g., in DonationController index)
     public function getSentimentsForDonations(array $donations): array
     {

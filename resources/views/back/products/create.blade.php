@@ -1,6 +1,6 @@
 @extends('back.layout')
 
-@section('title', 'Nouveau Produit Recyclé')
+@section('title', 'New Recycled Product')
 
 @section('content')
 <div class="container-fluid px-0">
@@ -8,13 +8,13 @@
         <div class="col-12">
             <div class="d-flex align-items-center mb-4">
                 <a href="{{ route('products.index') }}" class="btn btn-outline-secondary me-3">
-                    <i class="bi bi-arrow-left me-2"></i> Retour
+                    <i class="bi bi-arrow-left me-2"></i> Back
                 </a>
                 <div>
                     <h1 class="page-title text-success mb-1">
-                        <i class="bi bi-plus-circle me-2"></i> Nouveau Produit Recyclé
+                        <i class="bi bi-plus-circle me-2"></i> New Recycled Product
                     </h1>
-                    <p class="text-muted mb-0">Ajouter un nouveau produit issu du recyclage</p>
+                    <p class="text-muted mb-0">Add a new product from recycling</p>
                 </div>
             </div>
         </div>
@@ -24,7 +24,7 @@
         <div class="col-lg-8 mx-auto">
             <div class="card shadow-sm border-0 rounded-3">
                 <div class="card-header bg-success text-white py-3">
-                    <h5 class="mb-0"><i class="bi bi-file-earmark-plus me-2"></i> Informations du Produit</h5>
+                    <h5 class="mb-0"><i class="bi bi-file-earmark-plus me-2"></i> Product Information</h5>
                 </div>
                 <div class="card-body p-4">
                     <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
@@ -33,14 +33,14 @@
                         <!-- Nom du produit -->
                         <div class="mb-4">
                             <label for="name" class="form-label fw-medium">
-                                <i class="bi bi-box-seam me-2 text-success"></i>Nom du produit <span class="text-danger">*</span>
+                                <i class="bi bi-box-seam me-2 text-success"></i>Product Name <span class="text-danger">*</span>
                             </label>
                             <input type="text" 
                                    name="name" 
                                    id="name" 
                                    class="form-control @error('name') is-invalid @enderror" 
                                    value="{{ old('name') }}" 
-                                   placeholder="Ex: Sac à dos recyclé"
+                                   placeholder="Ex: Recycled backpack"
                                    required>
                             @error('name')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -56,7 +56,7 @@
                                       id="description" 
                                       class="form-control @error('description') is-invalid @enderror" 
                                       rows="4" 
-                                      placeholder="Décrivez le produit en détail..."
+                                      placeholder="Describe the product in detail..."
                                       required>{{ old('description') }}</textarea>
                             @error('description')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -67,7 +67,7 @@
                             <!-- Prix -->
                             <div class="col-md-6 mb-4">
                                 <label for="price" class="form-label fw-medium">
-                                    <i class="bi bi-currency-dollar me-2 text-success"></i>Prix (DT) <span class="text-danger">*</span>
+                                    <i class="bi bi-currency-dollar me-2 text-success"></i>Price (DT) <span class="text-danger">*</span>
                                 </label>
                                 <input type="number" 
                                        name="price" 
@@ -86,7 +86,7 @@
                             <!-- Stock -->
                             <div class="col-md-6 mb-4">
                                 <label for="stock_quantity" class="form-label fw-medium">
-                                    <i class="bi bi-stack me-2 text-success"></i>Quantité en stock <span class="text-danger">*</span>
+                                    <i class="bi bi-stack me-2 text-success"></i>Stock Quantity <span class="text-danger">*</span>
                                 </label>
                                 <input type="number" 
                                        name="stock_quantity" 
@@ -106,13 +106,13 @@
                             <!-- Catégorie -->
                             <div class="col-md-6 mb-4">
                                 <label for="waste_category_id" class="form-label fw-medium">
-                                    <i class="bi bi-tag me-2 text-success"></i>Catégorie <span class="text-danger">*</span>
+                                    <i class="bi bi-tag me-2 text-success"></i>Category <span class="text-danger">*</span>
                                 </label>
                                 <select name="waste_category_id" 
                                         id="waste_category_id" 
                                         class="form-select @error('waste_category_id') is-invalid @enderror" 
                                         required>
-                                    <option value="">-- Sélectionnez une catégorie --</option>
+                                    <option value="">-- Select a category --</option>
                                     @foreach($categories as $category)
                                         <option value="{{ $category->id }}" {{ old('waste_category_id') == $category->id ? 'selected' : '' }}>
                                             {{ $category->name }}
@@ -127,12 +127,12 @@
                             <!-- Processus de recyclage -->
                             <div class="col-md-6 mb-4">
                                 <label for="recycling_process_id" class="form-label fw-medium">
-                                    <i class="bi bi-arrow-repeat me-2 text-success"></i>Processus de recyclage
+                                    <i class="bi bi-arrow-repeat me-2 text-success"></i>Recycling Process
                                 </label>
                                 <select name="recycling_process_id" 
                                         id="recycling_process_id" 
                                         class="form-select @error('recycling_process_id') is-invalid @enderror">
-                                    <option value="">-- Aucun --</option>
+                                    <option value="">-- None --</option>
                                     @foreach($recyclingProcesses as $process)
                                         <option value="{{ $process->id }}" {{ old('recycling_process_id') == $process->id ? 'selected' : '' }}>
                                             {{ $process->method }} - {{ $process->waste->type ?? 'N/A' }}
@@ -142,14 +142,14 @@
                                 @error('recycling_process_id')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
-                                <small class="text-muted">Seuls les processus complétés sont disponibles</small>
+                                <small class="text-muted">Only completed processes are available</small>
                             </div>
                         </div>
 
                         <!-- Image -->
                         <div class="mb-4">
                             <label for="image_path" class="form-label fw-medium">
-                                <i class="bi bi-image me-2 text-success"></i>Image du produit
+                                <i class="bi bi-image me-2 text-success"></i>Product Image
                             </label>
                             <input type="file" 
                                    name="image_path" 
@@ -159,37 +159,37 @@
                             @error('image_path')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
-                            <small class="text-muted">Formats acceptés: JPEG, PNG, JPG, GIF. Taille max: 2 Mo</small>
+                            <small class="text-muted">Accepted formats: JPEG, PNG, JPG, GIF. Max size: 2 MB</small>
                             
                             <!-- Aperçu de l'image -->
                             <div id="imagePreview" class="mt-3" style="display: none;">
-                                <img id="previewImg" src="" alt="Aperçu" class="img-thumbnail" style="max-width: 300px;">
+                                <img id="previewImg" src="" alt="Preview" class="img-thumbnail" style="max-width: 300px;">
                             </div>
                         </div>
 
                         <!-- Spécifications -->
                         <div class="mb-4">
                             <label for="specifications" class="form-label fw-medium">
-                                <i class="bi bi-list-check me-2 text-success"></i>Spécifications
+                                <i class="bi bi-list-check me-2 text-success"></i>Specifications
                             </label>
                             <textarea name="specifications" 
                                       id="specifications" 
                                       class="form-control @error('specifications') is-invalid @enderror" 
                                       rows="3" 
-                                      placeholder='Ex: {"dimensions": "30x40cm", "poids": "500g", "matériau": "Plastique recyclé"}'>{{ old('specifications') }}</textarea>
+                                      placeholder='Ex: {"dimensions": "30x40cm", "weight": "500g", "material": "Recycled plastic"}'>{{ old('specifications') }}</textarea>
                             @error('specifications')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
-                            <small class="text-muted">Entrez les spécifications au format texte ou JSON</small>
+                            <small class="text-muted">Enter specifications in text or JSON format</small>
                         </div>
 
                         <!-- Boutons -->
                         <div class="d-flex gap-2 justify-content-end">
                             <a href="{{ route('products.index') }}" class="btn btn-outline-secondary px-4">
-                                <i class="bi bi-x-circle me-2"></i> Annuler
+                                <i class="bi bi-x-circle me-2"></i> Cancel
                             </a>
                             <button type="submit" class="btn btn-success px-4">
-                                <i class="bi bi-check-circle me-2"></i> Créer le produit
+                                <i class="bi bi-check-circle me-2"></i> Create Product
                             </button>
                         </div>
                     </form>

@@ -6,9 +6,9 @@
     <div class="row mb-4">
         <div class="col-12 text-center mb-4">
             <h1 class="display-4 fw-bold text-success">
-                <i class="bi bi-shop me-2"></i> Produits Recyclés
+                <i class="bi bi-shop me-2"></i> Recycled Products
             </h1>
-            <p class="lead text-muted">Découvrez notre catalogue de produits issus de l'économie circulaire</p>
+            <p class="lead text-muted">Discover our catalog of products from the circular economy</p>
         </div>
     </div>
 
@@ -25,7 +25,7 @@
                         <input type="text" 
                                name="search" 
                                class="form-control" 
-                               placeholder="Rechercher un produit..." 
+                               placeholder="Search for a product..." 
                                value="{{ request('search') }}">
                     </div>
                 </div>
@@ -33,7 +33,7 @@
                 <!-- Catégorie -->
                 <div class="col-md-3">
                     <select name="category" class="form-select">
-                        <option value="">Toutes les catégories</option>
+                        <option value="">All categories</option>
                         @foreach($categories as $category)
                             <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
                                 {{ $category->name }}
@@ -45,17 +45,17 @@
                 <!-- Tri -->
                 <div class="col-md-2">
                     <select name="sort" class="form-select">
-                        <option value="latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>Plus récents</option>
-                        <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Prix croissant</option>
-                        <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>Prix décroissant</option>
-                        <option value="name" {{ request('sort') == 'name' ? 'selected' : '' }}>Nom (A-Z)</option>
+                        <option value="latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>Latest</option>
+                        <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Price: Low to High</option>
+                        <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>Price: High to Low</option>
+                        <option value="name" {{ request('sort') == 'name' ? 'selected' : '' }}>Name (A-Z)</option>
                     </select>
                 </div>
 
                 <!-- Bouton -->
                 <div class="col-md-2">
                     <button type="submit" class="btn btn-success w-100">
-                        <i class="bi bi-funnel me-1"></i> Filtrer
+                        <i class="bi bi-funnel me-1"></i> Filter
                     </button>
                 </div>
             </form>
@@ -67,7 +67,7 @@
         <div class="col-12">
             <p class="text-muted">
                 <i class="bi bi-grid-3x3-gap me-2"></i>
-                {{ $products->total() }} produit(s) trouvé(s)
+                {{ $products->total() }} product(s) found
             </p>
         </div>
     </div>
@@ -77,8 +77,8 @@
         <div class="card shadow-sm border-0 rounded-3">
             <div class="card-body text-center py-5">
                 <i class="bi bi-inbox display-1 text-muted mb-3"></i>
-                <h4 class="text-muted mb-3">Aucun produit disponible</h4>
-                <p class="text-muted mb-4">Revenez plus tard pour découvrir nos nouveaux produits recyclés</p>
+                <h4 class="text-muted mb-3">No products available</h4>
+                <p class="text-muted mb-4">Come back later to discover our new recycled products</p>
             </div>
         </div>
     @else
@@ -102,7 +102,7 @@
                             <!-- Badge catégorie -->
                             <div class="position-absolute top-0 start-0 m-2">
                                 <span class="badge bg-success">
-                                    {{ $product->category->name ?? 'Non classé' }}
+                                    {{ $product->category->name ?? 'Unclassified' }}
                                 </span>
                             </div>
                         </div>
@@ -136,7 +136,7 @@
                             <!-- Bouton -->
                             <a href="{{ route('front.products.show', $product->id) }}" 
                                class="btn btn-outline-success w-100">
-                                <i class="bi bi-eye me-1"></i> Voir détails
+                                <i class="bi bi-eye me-1"></i> View Details
                             </a>
                         </div>
                     </div>

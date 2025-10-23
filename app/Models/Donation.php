@@ -32,6 +32,10 @@ class Donation extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function waste()
+    {
+        return $this->belongsTo(Waste::class);
+    }
 
     public function scopeAvailable($query)
     {

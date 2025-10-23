@@ -85,14 +85,14 @@
                     
                         {{-- Donation Status Badge --}}
                         <div class="position-absolute top-0 end-0 m-2">
-                            <span class="badge @switch($donation->status->value)
+                            <span class="badge @switch($donation->status->value ?? $donation->status)
                                 @case('available') bg-success @break
                                 @case('claimed') bg-primary @break
                                 @case('completed') bg-info @break
                                 @case('cancelled') bg-danger @break
                                 @default bg-secondary
                             @endswitch">
-                                {{ $donation->status->value }}
+                                {{ $donation->status->value ?? $donation->status }}
                             </span>
                         </div>
 
@@ -113,8 +113,8 @@
                             
                             <div class="donation-details flex-grow-1">
                                 <div class="d-flex justify-content-between align-items-center mb-2">
-                                    <small class="text-muted">Waste Type:</small>
-                                    <span class="fw-semibold text-end">{{ \App\Http\Controllers\DonationController::getWasteTypeName($donation->waste_id) }}</span>
+                                    <small class="text-muted">Waste Category:</small>
+                                    <span class="fw-semibold text-end">{{ $donation->waste->category->name ?? 'N/A' }}</span>
                                 </div>
                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                     <small class="text-muted">Item:</small>

@@ -32,15 +32,26 @@
 
                 <!-- Nouveau lien Waste Categories -->
                 <li class="nav-item">
-                    <a href="{{ route('front.waste-categories.index') }}" class="nav-link {{ request()->is('categories*') ? 'active' : '' }}">
+                    <a href="{{ route('front.waste-categories.index') }}" class="nav-link {{ request()->is('waste-categories*') ? 'active' : '' }}">
                         <i class="bi bi-grid-3x3-gap me-1"></i>Waste Categories
                     </a>
                 </li>
 
-                <!-- Nouveau lien Wastes -->
                 <li class="nav-item">
-                    <a href="{{ route('front.wastes.index') }}" class="nav-link {{ request()->is('wastess*') ? 'active' : '' }}">
-                        <i class="bi bi-trash me-1"></i>Waste
+                    <a href="{{ route('front.donations.index') }}" class="nav-link {{ request()->routeIs('front.donations.*') ? 'active' : '' }}">
+                        <i class="bi bi-heart-fill me-1"></i>Donations
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ route('front.orders.index') }}" class="nav-link {{ request()->routeIs('front.orders.*') ? 'active' : '' }}">
+                        <i class="bi bi-cart me-1"></i>Orders
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ route('front.reservations.index') }}" class="nav-link {{ request()->routeIs('front.reservations.*') ? 'active' : '' }}">
+                        <i class="bi bi-calendar-event me-1"></i>Reservations
                     </a>
                 </li>
 
