@@ -9,12 +9,12 @@
     </div>
 
     {{-- Prominent CTA Button at Top --}}
-    <div class="text-center mb-4">
-        <a href="{{ $createRoute ?? route('front.orders.create') }}" class="btn btn-success btn-lg shadow-lg animate-pulse" style="background-color: #10b981; border-color: #10b981; color: white; font-weight: bold; padding: 12px 30px; transition: all 0.3s ease;">
-            <i class="fas fa-plus-circle me-2"></i>Place New Order
-        </a>
-    </div>
-
+{{-- Prominent CTA Button at Top --}}
+<div class="text-center mb-4">
+    <a href="{{ route('front.orders.create') }}" class="btn btn-success btn-lg shadow-lg animate-pulse" style="background-color: #10b981; border-color: #10b981; color: white; font-weight: bold; padding: 12px 30px; transition: all 0.3s ease;">
+        <i class="fas fa-plus-circle me-2"></i>Place New Order
+    </a>
+</div>
     {{-- Search and Filter Section --}}
     <div class="row justify-content-center mb-4">
         <div class="col-12 col-lg-10">

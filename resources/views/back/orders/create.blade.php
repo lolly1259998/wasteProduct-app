@@ -21,7 +21,8 @@
                             {{ session('success') }}
                         </div>
                     @endif
-                    <form action="{{ route('back.orders.store') }}" method="POST">
+                    {{-- FIXED: Use route($storeRoute) to generate full URL --}}
+                    <form action="{{ route($storeRoute) }}" method="POST">
                         @csrf
                         <!-- User -->
                         <div class="mb-3">

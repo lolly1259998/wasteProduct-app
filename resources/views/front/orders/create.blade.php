@@ -28,7 +28,8 @@
                         </div>
                     @endif
 
-                    <form action="{{ $storeRoute }}" method="POST" class="needs-validation" novalidate>
+                    {{-- FIXED: Use route($storeRoute) for action to generate correct URL --}}
+                    <form action="{{ route($storeRoute) }}" method="POST" class="needs-validation" novalidate>
                         @csrf
                         
                         {{-- Hidden user_id for current authenticated user --}}

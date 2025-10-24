@@ -20,8 +20,7 @@
                     
                     <!-- Add New Order Button -->
                     <div class="text-start mb-4">
-                        <a href="{{ $createRoute }}" class="btn btn-success">Add New Order</a>
-                    </div>
+<a href="{{ route($createRoute) }}" class="btn btn-success">Add New Order</a>                    </div>
 
                     <!-- Filter Form -->
                     <form method="GET" action="{{ route('back.orders.index') }}" class="mb-4">
@@ -34,8 +33,11 @@
                                 <label class="form-label">Status</label>
                                 <select name="status" class="form-select">
                                     <option value="">All Statuses</option>
-                                    @foreach(\App\Enums\OrderStatus::cases() as $status)
-                                        <option value="{{ $status->value }}" {{ request('status') == $status->value ? 'selected' : '' }}>{{ ucfirst($status->value) }}</option>
+                                    @php
+                                        $statuses = ['pending', 'processing', 'completed', 'cancelled'];  
+                                    @endphp
+                                    @foreach($statuses as $status)
+                                        <option value="{{ $status }}" {{ request('status') == $status ? 'selected' : '' }}>{{ ucfirst($status) }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -83,7 +85,7 @@
                                             <td>{{ $order->product->name ?? 'N/A' }}</td>
                                             <td>{{ $order->quantity }}</td>
                                             <td>${{ number_format($order->total_amount, 2) }}</td>
-                                            <td><span class="badge bg-info">{{ ucfirst($order->status->value ?? $order->status) }}</span></td>
+                                            <td><span class="badge bg-info">{{ ucfirst($order->status ?? 'Unknown') }}</span></td>  {{-- FIXED: Treat status as string, no ->value --}}
                                             <td>{{ $order->order_date?->format('Y-m-d') ?? 'N/A' }}</td>
                                             <td>
                                                 <div class="d-flex gap-1">
